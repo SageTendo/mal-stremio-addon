@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+MAL Stremio Addon
+{% endblock %}
+
+{% block header %}
+MyAnimeList Stremio Addon
+{% endblock %}
+
+{% block content %}
+<div class="card border-0 text-center bg-dark text-white">
+
+    {% if manifest_url %}
+    <input id="manifest_url" class="bg-dark text-warning form-control" type="text" value="{{manifest_url}}" readonly>
+    <div class="d-col pt-3">
+        <button class="btn btn-primary mr-2" onclick="copy_to_clipboard()">
+            Copy Manifest URL
+        </button>
+
+        <button class="btn btn-primary ml-2" onclick="location.href='{{manifest_magnet}}'">
+            Open In Stremio
+        </button>
+    </div>
+    {% else %}
+    <input class="bg-dark form-control" type="text" placeholder="Generate MAL Token to get Manifest URL" readonly>
+    {% endif %}
+
+
+    <div class="card-body bg-dark text-white">
+        <button class="btn btn-success" onclick="location.href='{{url_for('auth.authorize_user')}}'">
+            Generate Token
+        </button>
+    </div>
+</div>
+{% endblock %}
