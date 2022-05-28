@@ -4,7 +4,7 @@ import secrets
 import requests
 from dotenv import load_dotenv
 
-from app.api import N_BYTES
+from app.api import N_BYTES, QUERY_LIMIT
 from app.api.utils import generate_verifier_challenger_pair, kwargs_to_dict, to_query_string
 
 AUTH_URL = "https://myanimelist.net/v1"
@@ -93,7 +93,7 @@ class MyAnimeListAPI:
         return resp.json()
 
     @staticmethod
-    def get_user_anime_list(token, **kwargs):
+    def get_user_anime_list(token, limit: int = QUERY_LIMIT, **kwargs):
         if token is None:
             raise Exception("Auth Token Must Be Provided")
 
@@ -101,9 +101,9 @@ class MyAnimeListAPI:
         query_params = to_query_string(kwargs)
 
         if query_params:
-            resp = requests.get(f'{BASE_URL}/users/@me/animelist?{query_params}', headers=headers)
+            resp = requests.get(f'{BASE_URL}/users/@me/animelist?limit={limit}&{query_params}', headers=headers)
         else:
-            resp = requests.get(f'{BASE_URL}/users/@me/animelist', headers=headers)
+            resp = requests.get(f'{BASE_URL}/users/@me/animelist?limit={limit}', headers=headers)
 
         resp.raise_for_status()
         return resp.json()

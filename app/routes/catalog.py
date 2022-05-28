@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from werkzeug.exceptions import abort
 
 from . import MANIFEST, mal_client
@@ -8,7 +8,8 @@ catalog_bp = Blueprint('catalog', __name__)
 
 
 @catalog_bp.route('/<token>/catalog/<catalog_type>/<catalog_id>.json')
-def addon_catalog(token: str, catalog_type: str, catalog_id: str):
+@catalog_bp.route('/<token>/catalog/<catalog_type>/<catalog_id>/<offset>.json')
+def addon_catalog(token: str, catalog_type: str, catalog_id: str, offset: str = None):
     if catalog_type not in MANIFEST['types']:
         abort(404)
 
@@ -20,8 +21,12 @@ def addon_catalog(token: str, catalog_type: str, catalog_id: str):
     if not catalog_exists:
         abort(404)
 
+    # Get offset value if exists (from 'skip=#')
+    if offset:
+        _, offset = offset.split('=')
+
     field_params = 'genres mean start_date end_date synopsis'  # Additional fields to return
-    response_data = mal_client.get_user_anime_list(token, status=catalog_id, fields=field_params)
+    response_data = mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=field_params)
     response_data = response_data['data']  # Get array of node objects
 
     meta_previews = {'metas': []}
@@ -33,12 +38,12 @@ def addon_catalog(token: str, catalog_type: str, catalog_id: str):
         medium_poster = posters['medium']
         # large_poster = posters['large']
         genres = [genre['name'] for genre in anime_item['genres']]
-        rating = anime_item['mean']
+        rating = anime_item['mean'] if 'mean' in anime_item.keys() else 0
         start_date = anime_item['start_date'][:4]  # Get the year only
         description = anime_item['synopsis']
 
         # Format start date if end_date of airing was returned
-        if not anime_item['end_date']:
+        if 'end_date' not in anime_item.keys():
             start_date += '-'
 
         meta_previews['metas'].append({
