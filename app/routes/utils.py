@@ -11,7 +11,7 @@ def respond_with(data):
     return resp
 
 
-def mal_to_meta(anime_item: dict, content_type: str):
+def mal_to_meta(anime_item: dict):
     # Metadata stuff
     content_id = f"mal-{anime_item['id']}"  # Format id to mal addon format
 
@@ -57,10 +57,20 @@ def mal_to_meta(anime_item: dict, content_type: str):
         # Get the randomly chosen picture object's largest size
         background = anime_item['pictures'][index]['large']
 
+    # Check for media type and filter out non series and movie types
+    media_type = None
+    if 'media_type' in anime_item.keys():
+        media_type = anime_item['media_type']
+
+        if media_type in ['ona', 'ova', 'special', 'tv', 'unknown']:
+            media_type = 'series'
+        elif media_type != 'movie':
+            media_type = None
+
     return {
         'id': content_id,
         'name': title,
-        'type': content_type,
+        'type': media_type,
         'genres': genres,
         'poster': poster,
         'background': background,

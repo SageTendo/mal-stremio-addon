@@ -10,7 +10,7 @@ MANIFEST = {
     'name': 'MAL Addon',
     'description': 'MyAnimeList watchlist addon',
 
-    'types': ['anime'],
+    'types': ['anime', 'series', 'movie'],
 
     'catalogs': [
         {
@@ -22,6 +22,8 @@ MANIFEST = {
     ],
 
     'resources': [
-        'catalog', 'meta'
-    ]
+        'catalog', 'meta', 'stream'
+    ],
+
+    'idPrefixes': ['mal-', 'tt', 'kitsu:']
 }
