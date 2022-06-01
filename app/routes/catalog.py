@@ -25,7 +25,7 @@ def addon_catalog(token: str, catalog_type: str, catalog_id: str, offset: str = 
     if offset:
         _, offset = offset.split('=')
 
-    field_params = 'genres mean start_date end_date synopsis'  # Additional fields to return
+    field_params = 'media_type genres mean start_date end_date synopsis'  # Additional fields to return
     response_data = mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=field_params)
     response_data = response_data['data']  # Get array of node objects
 
@@ -34,6 +34,6 @@ def addon_catalog(token: str, catalog_type: str, catalog_id: str, offset: str = 
         anime_item = data_item['node']
 
         # Metadata stuff
-        meta = mal_to_meta(anime_item, catalog_type)
+        meta = mal_to_meta(anime_item)
         meta_previews.append(meta)
     return respond_with({'metas': meta_previews})

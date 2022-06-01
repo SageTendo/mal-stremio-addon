@@ -1,11 +1,13 @@
-import imdb
+import requests
 from flask import Blueprint, abort
 from . import mal_client, MANIFEST
 from .utils import mal_to_meta, respond_with
+from ..db.db import map_db
 
 meta_bp = Blueprint('meta', __name__)
 
-imdb_client = imdb.Cinemagoer(accessSystem='http')
+# Where we fetch the kitsu id of an anime based on the IMDB id. episodes based on
+kitsu_API = "https://anime-kitsu.strem.fun/meta"
 
 
 @meta_bp.route('/<token>/meta/<meta_type>/<meta_id>.json')
@@ -21,12 +23,34 @@ def addon_meta(token: str, meta_type: str, meta_id: str):
 
     if anime_item:
         # Format the details to a meta format
-        anime_item = mal_to_meta(anime_item, meta_type)
+        anime_item = mal_to_meta(anime_item)
 
-        # Search for anime on IMDB
-        imdb_items = imdb_client.search_movie_advanced(title=anime_item['name'], adult=True, results=5)
+        # Fetch kitsu id from map db
+        anime_mapping = map_db.find_one({'mal_id': int(anime_id)})
 
         # Add IMDB id to meta item
-        if imdb_items:
-            anime_item['imdb_id'] = f"tt{imdb_items[0].getID()}"
+        if anime_mapping:
+            kitsu_id = None
+            if 'kitsu_id' in anime_mapping.keys():
+                kitsu_id = f"kitsu:{anime_mapping['kitsu_id']}"
+                print(kitsu_id)
+
+            # Call Kitsu Addon for Kitsu metadata
+            anime_media_type = anime_item['type'] or 'anime'
+            resp = requests.get(f'{kitsu_API}/{anime_media_type}/{kitsu_id}.json')
+
+            if 200 <= resp.status_code <= 299:
+                kitsu_meta = resp.json()['meta']
+
+                # Replace mal id with kitsu id
+                if 'imdb_id' in kitsu_meta.keys():
+                    anime_item['id'] = kitsu_meta['imdb_id']
+
+                # Check for logo and add it to meta
+                if 'logo' in kitsu_meta.keys():
+                    anime_item['logo'] = kitsu_meta['logo']
+
+                # Add videos to kitsu if they exist
+                if 'videos' in kitsu_meta.keys():
+                    anime_item['videos'] = kitsu_meta['videos']
     return respond_with({'meta': anime_item})  # Return with CORS to client
