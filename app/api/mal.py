@@ -114,22 +114,3 @@ class MyAnimeListAPI:
 
         resp.raise_for_status()
         return resp.json()
-
-
-if __name__ == '__main__':
-    load_dotenv()
-    mal = MyAnimeListAPI()
-    # print(mal.get_auth())
-    # auth_code = input('Enter Auth Code: ')
-    # mal.get_token(auth_code)
-    auth_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjIzYzNkNThkOTFkNWY1MjExZjI5MDc3NjgxZmNkYmI2' \
-                 'MWVhMjJmN2QxOTBlZjM2MTUyZmVjMzllZTczYzRkYTUzN2ViYjlhMzMwOTZmNDlhIn0.eyJhdWQiOiI3Yjk5ZTU4M' \
-                 'zkzNTlkNzc1MGI4NjllNjRiMWY0ZGFiMSIsImp0aSI6IjIzYzNkNThkOTFkNWY1MjExZjI5MDc3NjgxZmNkYmI2MW' \
-                 'VhMjJmN2QxOTBlZjM2MTUyZmVjMzllZTczYzRkYTUzN2ViYjlhMzMwOTZmNDlhIiwiaWF0IjoxNjUzNjEyOTY1LC' \
-                 'JuYmYiOjE2NTM2MTI5NjUsImV4cCI6MTY1NjI5MTM2NSwic3ViIjoiNzAwNTIxNSIsInNjb3BlcyI6W119.Rl_Ey' \
-                 '22x3jk9AOGbiCv0PA-dPUvGGUSF42EY5W07zWyniG7S5hv9UPNn044XIqHeSDGuO4AFq1wNrwb-Q-i5DH1NU8o6qE' \
-                 'oQSGvUUZQN7H3fMnOmFWdJX2BTmGLdIVu3DtuqoiUnGmvggVhVziAlS1fTA9z7mo75lHZV_mt3XpVLHoqFRsuFZuW' \
-                 'HU-hEvHQENkQps1frxxvlwjORlVjFngXAIoOCi9fYkgsQylNuDTakSDB8ACh8X0HiS6xRTbafqrKXT29FWfX-Mld' \
-                 '02xcjLJcBRBhTyteC_G7fKLNH7v1EeWK1EgEfPZXhQosJ-rtrvEYvE92tvpJdfeBmPyQd1A'
-
-    print(mal.get_anime_details(auth_token, 36793, fields='genres'))
