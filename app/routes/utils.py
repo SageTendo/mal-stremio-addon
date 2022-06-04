@@ -2,6 +2,8 @@ import random
 
 from flask import jsonify
 
+from app.routes import MAL_ID_PREFIX
+
 
 # Enable CORS
 def respond_with(data):
@@ -13,7 +15,7 @@ def respond_with(data):
 
 def mal_to_meta(anime_item: dict):
     # Metadata stuff
-    content_id = f"mal-{anime_item['id']}"  # Format id to mal addon format
+    content_id = f"{MAL_ID_PREFIX}{anime_item['id']}"  # Format id to mal addon format
 
     title = None
     if 'title' in anime_item.keys():

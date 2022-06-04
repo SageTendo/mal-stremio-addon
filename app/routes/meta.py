@@ -1,6 +1,7 @@
 import requests
 from flask import Blueprint, abort
-from . import mal_client, MANIFEST
+from . import mal_client, MAL_ID_PREFIX
+from .manifest import MANIFEST
 from .utils import mal_to_meta, respond_with
 from ..db.db import map_db
 
@@ -17,7 +18,7 @@ def addon_meta(token: str, meta_type: str, meta_id: str):
         abort(404)
 
     # Fetch anime details from MAL
-    anime_id = meta_id.replace('mal-', '')  # Extract anime id from addon meta id
+    anime_id = meta_id.replace(MAL_ID_PREFIX, '')  # Extract anime id from addon meta id
     field_params = 'media_type genres mean start_date end_date synopsis pictures'  # Additional fields to return
     anime_item = mal_client.get_anime_details(token, anime_id, fields=field_params)
 
@@ -33,7 +34,7 @@ def addon_meta(token: str, meta_type: str, meta_id: str):
             kitsu_id = None
             if 'kitsu_id' in anime_mapping.keys():
                 kitsu_id = f"kitsu:{anime_mapping['kitsu_id']}"
-                print(kitsu_id)
+                anime_item['kistu_id'] = kitsu_id
 
             # Call Kitsu Addon for Kitsu metadata
             anime_media_type = anime_item['type'] or 'anime'
@@ -44,7 +45,7 @@ def addon_meta(token: str, meta_type: str, meta_id: str):
 
                 # Replace mal id with kitsu id
                 if 'imdb_id' in kitsu_meta.keys():
-                    anime_item['id'] = kitsu_meta['imdb_id']
+                    anime_item['imdb_id'] = kitsu_meta['imdb_id']
 
                 # Check for logo and add it to meta
                 if 'logo' in kitsu_meta.keys():
