@@ -61,18 +61,6 @@ class MyAnimeListAPI:
         print('Token Generated')
         resp.close()
 
-    def refresh_token(self):
-        if self.refresh_tkn is None:
-            raise Exception('No refresh token')
-
-        data = {
-            'grant_type': 'refresh_token',
-            'refresh_token': self.refresh_tkn
-        }
-        resp = requests.post(f'{AUTH_URL}/oauth2/token', data=data)
-        # self.access_tkn =
-        #  TODO
-
     @staticmethod
     def get_anime_list(token: str, query: str, **kwargs):
         if token is None:
