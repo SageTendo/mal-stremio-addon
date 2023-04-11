@@ -18,6 +18,6 @@ def redirect_url():
     mal_client.get_token(code)
 
     # TODO: Return as https on live server
-    manifest_url = f"http://{Config.HOST}:{Config.PORT}/{mal_client.access_tkn}/manifest.json"
-    manifest_magnet = f'stremio://{Config.HOST}:{Config.PORT}/{mal_client.access_tkn}/manifest.json'
+    manifest_url = f"http://{Config.FLASK_HOST}:{Config.FLASK_PORT}/{mal_client.access_tkn}/manifest.json"
+    manifest_magnet = f'stremio://{Config.FLASK_HOST}:{Config.FLASK_PORT}/{mal_client.access_tkn}/manifest.json'
     return render_template('index.html', manifest_url=manifest_url, manifest_magnet=manifest_magnet)

@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 from app.api import N_BYTES, QUERY_LIMIT
 from app.api.utils import generate_verifier_challenger_pair, kwargs_to_dict, to_query_string
+from config import Config
 
 AUTH_URL = "https://myanimelist.net/v1"
 BASE_URL = "https://api.myanimelist.net/v1"
@@ -14,11 +15,10 @@ BASE_URL = "https://api.myanimelist.net/v1"
 class MyAnimeListAPI:
 
     def __init__(self):
-        flask_host = os.environ.get('FLASK_RUN_HOST')
-        flask_host = 'localhost' if flask_host == '127.0.0.1' else flask_host
-        flask_port = os.environ.get('FLASK_RUN_PORT')
-        self.redirect_url = f'http://{flask_host}:{flask_port}/callback'
+        flask_host = 'localhost' if Config.FLASK_HOST == "127.0.0.1" else Config.FLASK_HOST
+        flask_port = Config.FLASK_PORT
 
+        self.redirect_url = f'http://{flask_host}:{flask_port}/callback'
         self.client_id = os.environ.get('MAL_ID')
         self.client_secret = os.environ.get('MAL_SECRET')
 
