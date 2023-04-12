@@ -12,7 +12,7 @@ class Config:
 
     MONGO_URI = os.getenv('MONGO_URI')
     MONGO_DB = os.getenv('MONGO_DB')
-    MONGO_COLLECTION = os.getenv('MONGO_COLLECTION')
+    MONGO_ANIME_MAP = os.getenv('MONGO_ANIME_MAP_COLLECTION')
 
 
 class Prod(Config):

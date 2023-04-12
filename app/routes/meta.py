@@ -6,7 +6,7 @@ from flask import Blueprint, abort
 from . import mal_client, MAL_ID_PREFIX
 from .manifest import MANIFEST
 from .utils import mal_to_meta, respond_with
-from ..db.db import map_db
+from ..db.db import anime_map_collection
 
 meta = Blueprint('meta', __name__)
 
@@ -30,7 +30,7 @@ def addon_meta(token: str, meta_type: str, meta_id: str):
         anime_item = mal_to_meta(anime_item)
 
         # Fetch kitsu id from map db
-        anime_mapping = map_db.find_one({'mal_id': int(anime_id)})
+        anime_mapping = anime_map_collection.find_one({'mal_id': int(anime_id)})
 
         # Add IMDB id to meta item
         if anime_mapping:
