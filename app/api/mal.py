@@ -15,6 +15,9 @@ BASE_URL = "https://api.myanimelist.net/v1"
 class MyAnimeListAPI:
 
     def __init__(self):
+        """
+        Initialize the MyAnimeList API wrapper
+        """
         flask_host = 'localhost' if Config.FLASK_HOST == "127.0.0.1" else Config.FLASK_HOST
         flask_port = Config.FLASK_PORT
 
@@ -31,6 +34,10 @@ class MyAnimeListAPI:
         self.refresh_tkn = None
 
     def get_auth(self):
+        """
+        Get the authorization URL for MyAnimeList API
+        :return: Authorization URL
+        """
         state = secrets.token_urlsafe(N_BYTES)[:16]
         query_params = 'response_type=code' \
                        f'&client_id={self.client_id}' \
@@ -41,6 +48,11 @@ class MyAnimeListAPI:
         return f'{AUTH_URL}/oauth2/authorize?{query_params}'
 
     def get_token(self, authorization_code: str):
+        """
+        Get the access token for MyAnimeList
+        :param authorization_code: Authorization Code from MyAnimeList
+        :return: Access Token
+        """
         data = {
             'client_id': self.client_id,
             'client_secret': self.client_secret,
@@ -63,6 +75,13 @@ class MyAnimeListAPI:
 
     @staticmethod
     def get_anime_list(token: str, query: str, **kwargs):
+        """
+        Get a list of anime from MyAnimeList
+        :param token: The user's access token
+        :param query: The search query
+        :param kwargs: Additional query parameters
+        :return: JSON response
+        """
         if token is None:
             raise Exception("Auth Token Must Be Provided")
 
@@ -82,6 +101,13 @@ class MyAnimeListAPI:
 
     @staticmethod
     def get_user_anime_list(token, limit: int = QUERY_LIMIT, **kwargs):
+        """
+        Get a user's list of anime from MyAnimeList
+        :param token: The user's access token
+        :param limit: The number of results to return
+        :param kwargs: Additional query parameters
+        :return: JSON response
+        """
         if token is None:
             raise Exception("Auth Token Must Be Provided")
 
@@ -98,6 +124,13 @@ class MyAnimeListAPI:
 
     @staticmethod
     def get_anime_details(token, anime_id, **kwargs):
+        """
+        Get anime details from MyAnimeList
+        :param token: The user's access token
+        :param anime_id: The ID of the anime to get details for
+        :param kwargs: Additional query parameters
+        :return: JSON response
+        """
         if token is None:
             raise Exception("Auth Token Must Be Provided")
 

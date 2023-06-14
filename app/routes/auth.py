@@ -9,11 +9,19 @@ auth_blueprint = Blueprint('auth', __name__)
 
 @auth_blueprint.route('/authorization', methods=["GET", "POST"])
 def authorize_user():
+    """
+    Authorizes a user to access MyAnimeList's API
+    :return: redirects to MyAnimeList's auth page
+    """
     return redirect(mal_client.get_auth())
 
 
 @auth_blueprint.route('/callback')
 def redirect_url():
+    """
+    Callback URL from MyAnimeList
+    :return: A webpage with the manifest URL and Magnet URL
+    """
     code = request.args.get('code')
     mal_client.get_token(code)
 

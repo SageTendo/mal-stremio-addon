@@ -8,10 +8,8 @@ manifest_blueprint = Blueprint('manifest', __name__)
 MANIFEST = {
     'id': 'com.sagetendo.mal-stremio-addon',
     'version': '1.0.0',
-
     'name': 'MAL Addon',
     'description': 'MyAnimeList watchlist addon',
-
     'types': ['anime', 'series', 'movie'],
 
     'catalogs': [
@@ -31,11 +29,15 @@ MANIFEST = {
     ],
 
     'resources': ['catalog', 'meta', 'stream'],
-
     'idPrefixes': [MAL_ID_PREFIX, IMDB_ID_PREFIX]
 }
 
 
 @manifest_blueprint.route('/<token>/manifest.json')
 def addon_manifest(token: str):
+    """
+    Provides the manifest for the addon
+    :param token: The user's API token for MyAnimeList
+    :return: JSON response
+    """
     return respond_with(MANIFEST)

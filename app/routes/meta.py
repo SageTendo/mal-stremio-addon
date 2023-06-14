@@ -16,6 +16,13 @@ kitsu_API = "https://anime-kitsu.strem.fun/meta"
 
 @meta.route('/<token>/meta/<meta_type>/<meta_id>.json')
 def addon_meta(token: str, meta_type: str, meta_id: str):
+    """
+    Provides metadata for a specific content
+    :param token: The user's API token for MyAnimeList
+    :param meta_type: The type of metadata to return
+    :param meta_id: The ID of the content
+    :return: JSON response
+    """
     # Check if meta type exists in manifest
     if meta_type not in MANIFEST['types']:
         abort(404)

@@ -7,6 +7,11 @@ from app.routes import MAL_ID_PREFIX
 
 # Enable CORS
 def respond_with(data):
+    """
+    Respond with CORS headers
+    :param data:
+    :return:
+    """
     resp = jsonify(data)
     resp.headers['Access-Control-Allow-Origin'] = "*"
     resp.headers['Access-Control-Allow-Headers'] = '*'
@@ -14,6 +19,11 @@ def respond_with(data):
 
 
 def mal_to_meta(anime_item: dict):
+    """
+    Convert MAL anime item to a Stremio's meta format
+    :param anime_item: The MAL anime item to convert
+    :return: Stremio's meta format
+    """
     # Metadata stuff
     content_id = f"{MAL_ID_PREFIX}{anime_item.get('id')}"  # Format id to mal addon format
 

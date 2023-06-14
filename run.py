@@ -17,6 +17,9 @@ app.register_blueprint(stream_bp)
 
 @app.route('/')
 def index():
+    """
+    Render the index page
+    """
     return render_template('index.html')
 
 

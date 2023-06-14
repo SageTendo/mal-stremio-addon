@@ -6,6 +6,9 @@ load_dotenv()
 
 
 class Config:
+    """
+    Configuration class
+    """
     JSON_SORT_KEYS = False
     FLASK_HOST = os.getenv('FLASK_RUN_HOST')
     FLASK_PORT = os.getenv('FLASK_RUN_PORT')
@@ -16,8 +19,14 @@ class Config:
 
 
 class Prod(Config):
+    """
+    Production configuration
+    """
     DEBUG = False
 
 
 class Dev(Config):
+    """
+    Development configuration
+    """
     DEBUG = True
