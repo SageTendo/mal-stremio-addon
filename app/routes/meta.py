@@ -1,8 +1,6 @@
-import datetime
-import time
-
 import requests
 from flask import Blueprint, abort
+
 from . import mal_client, MAL_ID_PREFIX
 from .manifest import MANIFEST
 from .utils import mal_to_meta, respond_with
@@ -10,7 +8,7 @@ from ..db.db import anime_map_collection
 
 meta = Blueprint('meta', __name__)
 
-# Where we fetch the kitsu id of an anime based on the IMDB id. episodes based on
+# Kitsu API to get anime metadata
 kitsu_API = "https://anime-kitsu.strem.fun/meta"
 
 
