@@ -2,7 +2,6 @@ import os
 import secrets
 
 import requests
-from dotenv import load_dotenv
 
 from app.api import N_BYTES, QUERY_LIMIT
 from app.api.utils import generate_verifier_challenger_pair, kwargs_to_dict, to_query_string
@@ -26,12 +25,8 @@ class MyAnimeListAPI:
         self.client_secret = os.environ.get('MAL_SECRET')
 
         self.code_challenge_method = 'plain'
-        self.code_verifier, self.code_challenge = generate_verifier_challenger_pair(128,
-                                                                                    method=self.code_challenge_method)
-        self.token_type = None
-        self.token_expr = None
-        self.access_tkn = None
-        self.refresh_tkn = None
+        self.code_verifier, self.code_challenge = \
+            generate_verifier_challenger_pair(128, method=self.code_challenge_method)
 
     def get_auth(self):
         """
@@ -65,13 +60,15 @@ class MyAnimeListAPI:
         resp.raise_for_status()
 
         resp_json = resp.json()
-        self.token_type = resp_json['token_type']
-        self.token_expr = resp_json['expires_in']
-        self.access_tkn = resp_json['access_token']
-        self.refresh_tkn = resp_json['refresh_token']
+        resp.close()
 
         print('Token Generated')
-        resp.close()
+        return {
+            'token_type': resp_json['token_type'],
+            'expires_in': resp_json['expires_in'],
+            'access_token': resp_json['access_token'],
+            'refresh_token': resp_json['refresh_token']
+        }
 
     @staticmethod
     def get_anime_list(token: str, query: str, **kwargs):
@@ -100,7 +97,7 @@ class MyAnimeListAPI:
         return resp.json()
 
     @staticmethod
-    def get_user_anime_list(token, limit: int = QUERY_LIMIT, **kwargs):
+    def get_user_anime_list(token: str, limit: int = QUERY_LIMIT, **kwargs):
         """
         Get a user's list of anime from MyAnimeList
         :param token: The user's access token
@@ -123,7 +120,7 @@ class MyAnimeListAPI:
         return resp.json()
 
     @staticmethod
-    def get_anime_details(token, anime_id, **kwargs):
+    def get_anime_details(token: str, anime_id: str, **kwargs):
         """
         Get anime details from MyAnimeList
         :param token: The user's access token

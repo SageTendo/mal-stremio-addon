@@ -23,9 +23,10 @@ def redirect_url():
     :return: A webpage with the manifest URL and Magnet URL
     """
     code = request.args.get('code')
-    mal_client.get_token(code)
+    auth_data = mal_client.get_token(code)
+    access_token = auth_data['access_token']
 
     # TODO: Return as https on live server
-    manifest_url = f"http://{Config.FLASK_HOST}:{Config.FLASK_PORT}/{mal_client.access_tkn}/manifest.json"
-    manifest_magnet = f'stremio://{Config.FLASK_HOST}:{Config.FLASK_PORT}/{mal_client.access_tkn}/manifest.json'
+    manifest_url = f"http://{Config.FLASK_HOST}:{Config.FLASK_PORT}/{access_token}/manifest.json"
+    manifest_magnet = f'stremio://{Config.FLASK_HOST}:{Config.FLASK_PORT}/{access_token}/manifest.json'
     return render_template('index.html', manifest_url=manifest_url, manifest_magnet=manifest_magnet)
