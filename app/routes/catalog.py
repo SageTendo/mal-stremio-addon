@@ -11,6 +11,15 @@ catalog_bp = Blueprint('catalog', __name__)
 @catalog_bp.route('/<token>/catalog/<catalog_type>/<catalog_id>.json')
 @catalog_bp.route('/<token>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json')
 def addon_catalog(token: str, catalog_type: str, catalog_id: str, offset: str = None):
+    """
+    Provides a list of anime from MyAnimeList
+    :param token: The user's API token for MyAnimeList
+    :param catalog_type: The type of catalog to return
+    :param catalog_id: The ID of the catalog to return, MAL divides a user's anime list into different categories
+           (e.g. plan to watch, watching, completed, on hold, dropped)
+    :param offset: The number of items to skip
+    :return: JSON response
+    """
     if catalog_type not in MANIFEST['types']:
         abort(404)
 
@@ -38,6 +47,15 @@ def addon_catalog(token: str, catalog_type: str, catalog_id: str, offset: str = 
 
 @catalog_bp.route('/<token>/catalog/<catalog_type>/<catalog_id>/search=<search_query>.json')
 def search_metas(token: str, catalog_type: str, catalog_id: str, search_query: str):
+    """
+    Provides a list of anime from MyAnimeList based on a search query
+    :param token: The user's API token for MyAnimeList
+    :param catalog_type: The type of catalog to return
+    :param catalog_id: The ID of the catalog to return, MAL divides a user's anime list into different categories
+           (e.g. plan to watch, watching, completed, on hold, dropped)
+    :param search_query: The search query
+    :return: JSON response
+    """
     if catalog_type not in MANIFEST['types']:
         abort(404)
 

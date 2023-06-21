@@ -7,6 +7,11 @@ from app.routes import MAL_ID_PREFIX
 
 # Enable CORS
 def respond_with(data):
+    """
+    Respond with CORS headers
+    :param data:
+    :return:
+    """
     resp = jsonify(data)
     resp.headers['Access-Control-Allow-Origin'] = "*"
     resp.headers['Access-Control-Allow-Headers'] = '*'
@@ -14,56 +19,53 @@ def respond_with(data):
 
 
 def mal_to_meta(anime_item: dict):
+    """
+    Convert MAL anime item to a Stremio's meta format
+    :param anime_item: The MAL anime item to convert
+    :return: Stremio's meta format
+    """
     # Metadata stuff
-    content_id = f"{MAL_ID_PREFIX}{anime_item['id']}"  # Format id to mal addon format
+    content_id = f"{MAL_ID_PREFIX}{anime_item.get('id')}"  # Format id to mal addon format
 
-    title = None
-    if 'title' in anime_item.keys():
-        title = anime_item['title']
+    title = anime_item.get('title')
+    mean_score = anime_item.get('mean')
+    synopsis = anime_item.get('synopsis')
 
     poster = None
-    if 'main_picture' in anime_item.keys():
-        poster_objects = anime_item['main_picture']
-        poster = poster_objects['medium']
-        # poster = poster_objects['large']
+    poster_objects = anime_item.get('main_picture')
+    if poster_objects:
+        poster = poster_objects.get('medium')
+        # poster = poster_objects.get('large')
 
-    genres = None
-    if 'genres' in anime_item.keys():
-        genres = [genre['name'] for genre in anime_item['genres']]
+    genres = anime_item.get('genres')
+    if genres:
+        genres = [genre['name'] for genre in genres]
 
-    mean_score = None
-    if 'mean' in anime_item.keys():
-        mean_score = anime_item['mean']
-
-    synopsis = None
-    if 'synopsis' in anime_item.keys():
-        synopsis = anime_item['synopsis']
-
-    start_date = None
-    if 'start_date' in anime_item.keys():
-        start_date = anime_item['start_date'][:4]  # Get the year only or None
+    start_date = anime_item.get('start_date')
+    if start_date:
+        start_date = start_date[:4]  # Get the year only or None
 
         # Format start date if end_date of airing was not returned
-        if 'end_date' not in anime_item.keys():
+        end_date = anime_item.get('end_date')
+        if not end_date:
             start_date += '-'
 
     # Check for background key in anime_item
     background = None
-    if 'pictures' in anime_item.keys():
+    picture_objects = anime_item.get('pictures')
+    if picture_objects:
         # Get the first picture from the list of picture objects
         # index = 0
 
         # Get a random a picture from the list of picture objects
-        index = random.randint(0, len(anime_item['pictures']) - 1)
+        index = random.randint(0, len(picture_objects) - 1)
 
         # Get the randomly chosen picture object's largest size
-        background = anime_item['pictures'][index]['large']
+        background = picture_objects[index]['large']
 
     # Check for media type and filter out non series and movie types
-    media_type = None
-    if 'media_type' in anime_item.keys():
-        media_type = anime_item['media_type']
-
+    media_type = anime_item.get('media_type')
+    if media_type:
         if media_type in ['ona', 'ova', 'special', 'tv', 'unknown']:
             media_type = 'series'
         elif media_type != 'movie':
