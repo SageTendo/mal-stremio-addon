@@ -4,12 +4,7 @@ This Stremio addon enables users to access their anime list from MyAnimeList (MA
 With this addon, you can easily keep track of your watched anime, plan to watch, and more, all from the convenience of Stremio.
 
 <b><font color="#FFFF00">
-As of now, in order to get streams, the 'Torrentio' addon must be installed as well. 
-This feature will eventually be added to the addon.
-</b></font>
-
-<b><font color="orange">
-This addon is a community-driven project and is not officially affiliated with MyAnimeList or Stremio.
+As of now, in order to get streams, the 'Torrentio' addon must be installed as well.
 </b></font>
 
 
