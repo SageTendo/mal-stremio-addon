@@ -3,6 +3,7 @@ import secrets
 
 import requests
 
+from app import web_protocol
 from app.api import N_BYTES, QUERY_LIMIT
 from app.api.utils import generate_verifier_challenger_pair, kwargs_to_dict, to_query_string
 from config import Config
@@ -18,7 +19,7 @@ class MyAnimeListAPI:
         Initialize the MyAnimeList API wrapper
         """
 
-        self.redirect_uri = f'{Config.PROTOCOL}://{Config.FLASK_HOST}:{Config.FLASK_PORT}/callback'
+        self.redirect_uri = f'{web_protocol}://{Config.FLASK_HOST}:{Config.FLASK_PORT}/callback'
         self.client_id = os.environ.get('MAL_ID')
         self.client_secret = os.environ.get('MAL_SECRET')
 
@@ -37,7 +38,7 @@ class MyAnimeListAPI:
                        f'&state={state}' \
                        f'&code_challenge={self.code_challenge}' \
                        f'&code_challenge_method={self.code_challenge_method}' \
-            f'&redirect_uri={self.redirect_uri}'
+                       f'&redirect_uri={self.redirect_uri}'
         return f'{AUTH_URL}/oauth2/authorize?{query_params}'
 
     def get_token(self, authorization_code: str):
