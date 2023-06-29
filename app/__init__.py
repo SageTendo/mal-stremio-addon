@@ -1,3 +1,3 @@
 from config import Config
 
-web_protocol = "http" if Config.DEBUG else "https"
+web_protocol = "http" if Config.DEBUG == 1 else "https"
