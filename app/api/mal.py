@@ -17,10 +17,8 @@ class MyAnimeListAPI:
         """
         Initialize the MyAnimeList API wrapper
         """
-        flask_host = 'localhost' if Config.FLASK_HOST == "127.0.0.1" else Config.FLASK_HOST
-        flask_port = Config.FLASK_PORT
 
-        self.redirect_url = f'http://{flask_host}:{flask_port}/callback'
+        self.redirect_uri = f'{Config.PROTOCOL}://{Config.FLASK_HOST}:{Config.FLASK_PORT}/callback'
         self.client_id = os.environ.get('MAL_ID')
         self.client_secret = os.environ.get('MAL_SECRET')
 
@@ -39,7 +37,7 @@ class MyAnimeListAPI:
                        f'&state={state}' \
                        f'&code_challenge={self.code_challenge}' \
                        f'&code_challenge_method={self.code_challenge_method}' \
-            # f'&redirect_uri={self.redirect_url}'
+            f'&redirect_uri={self.redirect_uri}'
         return f'{AUTH_URL}/oauth2/authorize?{query_params}'
 
     def get_token(self, authorization_code: str):
@@ -54,7 +52,7 @@ class MyAnimeListAPI:
             'grant_type': 'authorization_code',
             'code': authorization_code,
             'code_verifier': self.code_verifier,
-            # 'redirect_url': self.redirect_url
+            'redirect_uri': self.redirect_uri
         }
         resp = requests.post(f'{AUTH_URL}/oauth2/token', data=data)
         resp.raise_for_status()

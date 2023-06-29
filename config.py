@@ -12,6 +12,7 @@ class Config:
     JSON_SORT_KEYS = False
     FLASK_HOST = os.getenv('FLASK_RUN_HOST')
     FLASK_PORT = os.getenv('FLASK_RUN_PORT')
+    PROTOCOL = "http" if os.getenv('FLASK_DEBUG') else "https"
 
     MONGO_URI = os.getenv('MONGO_URI')
     MONGO_DB = os.getenv('MONGO_DB')
