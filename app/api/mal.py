@@ -18,7 +18,7 @@ class MyAnimeListAPI:
         Initialize the MyAnimeList API wrapper
         """
 
-        self.redirect_uri = f'{Config.REDIRECT_URI}/callback'
+        self.redirect_uri = f'{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback'
         self.client_id = os.environ.get('MAL_ID')
         self.client_secret = os.environ.get('MAL_SECRET')
 
@@ -60,7 +60,6 @@ class MyAnimeListAPI:
         resp_json = resp.json()
         resp.close()
 
-        print('Token Generated')
         return {
             'token_type': resp_json['token_type'],
             'expires_in': resp_json['expires_in'],
@@ -68,6 +67,7 @@ class MyAnimeListAPI:
             'refresh_token': resp_json['refresh_token']
         }
 
+    # noinspection DuplicatedCode
     @staticmethod
     def get_anime_list(token: str, query: str, **kwargs):
         """
@@ -94,6 +94,7 @@ class MyAnimeListAPI:
         resp.raise_for_status()
         return resp.json()
 
+    # noinspection DuplicatedCode
     @staticmethod
     def get_user_anime_list(token: str, limit: int = QUERY_LIMIT, **kwargs):
         """
@@ -117,6 +118,7 @@ class MyAnimeListAPI:
         resp.raise_for_status()
         return resp.json()
 
+    # noinspection DuplicatedCode
     @staticmethod
     def get_anime_details(token: str, anime_id: str, **kwargs):
         """

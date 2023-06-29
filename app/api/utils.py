@@ -31,7 +31,7 @@ def generate_challenge(verifier, method):
     Generate a challenge string using the Secrets library
     :param verifier: The verifier string
     :param method: The method to use to generate the challenge
-    :return: challenge
+    :return: the generated challenge
     """
     if method == 'plain' or method is None:
         return verifier

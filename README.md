@@ -13,12 +13,12 @@ As of now, in order to get streams, the 'Torrentio' addon must be installed as w
 
 To install the MyAnimeList Anime List addon, please follow these steps:
 
-1. Visit [The Addon Website](https://mal-stremio.vercel.app/) and generate an API Key for MyAnimeList uring the "Generate Token" button. This will redirect you to the MyAnimeList authentication page.
-3. Login to your MyAnimeList account and authorize the addon to access your anime list.
-4. After authorization, a manifest URL will be generated. Copy the manifest URL.
-5. Open the Stremio media center and go to the addon search box.
-6. Paste the copied manifest URL into the addon search box and press Enter. Alternatively, you can click the magnet URL generated on the website to automatically add the addon to Stremio.
-7. The MyAnimeList Anime List addon will be added to your Stremio and ready for use.
+1. Visit [The Addon Website](https://mal-stremio.vercel.app/) and generate an API Key for MyAnimeList using the "Generate Token" button. This will redirect you to the MyAnimeList authentication page.
+2. Login to your MyAnimeList account and authorize the addon to access your anime list.
+3. After authorization, a manifest URL will be generated. Copy the manifest URL.
+4. Open the Stremio media center and go to the addon search box.
+5. Paste the copied manifest URL into the addon search box and press Enter. Alternatively, you can click the magnet URL generated on the website to automatically add the addon to Stremio.
+6. The MyAnimeList Anime List addon will be added to your Stremio and ready for use.
 
 
 

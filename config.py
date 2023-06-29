@@ -21,7 +21,9 @@ class Config:
     # redirect URI depending on environment
     if DEBUG in ["1", True, "True"]:
         # Local development
-        REDIRECT_URI = f"http://{FLASK_HOST}:{FLASK_PORT}"
+        PROTOCOL = "http"
+        REDIRECT_URL = f"{FLASK_HOST}:{FLASK_PORT}"
     else:
         # Production environment
-        REDIRECT_URI = f"https://{FLASK_HOST}"
+        PROTOCOL = "https"
+        REDIRECT_URL = f"{FLASK_HOST}"
