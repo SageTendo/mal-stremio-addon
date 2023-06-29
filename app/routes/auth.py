@@ -1,7 +1,6 @@
 from flask import Blueprint, request, render_template
 from werkzeug.utils import redirect
 
-from app import web_protocol
 from app.routes import mal_client
 from config import Config
 
@@ -27,6 +26,6 @@ def redirect_url():
     auth_data = mal_client.get_token(code)
     access_token = auth_data['access_token']
 
-    manifest_url = f"{web_protocol}://{Config.FLASK_HOST}:{Config.FLASK_PORT}/{access_token}/manifest.json"
+    manifest_url = f'{Config.REDIRECT_URI}/{access_token}/manifest.json'
     manifest_magnet = f'stremio://{Config.FLASK_HOST}:{Config.FLASK_PORT}/{access_token}/manifest.json'
     return render_template('index.html', manifest_url=manifest_url, manifest_magnet=manifest_magnet)
