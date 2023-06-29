@@ -27,5 +27,5 @@ def redirect_url():
     access_token = auth_data['access_token']
 
     manifest_url = f'{Config.REDIRECT_URI}/{access_token}/manifest.json'
-    manifest_magnet = f'stremio://{Config.FLASK_HOST}:{Config.FLASK_PORT}/{access_token}/manifest.json'
+    manifest_magnet = f'stremio://{Config.REDIRECT_URI}/{access_token}/manifest.json'
     return render_template('index.html', manifest_url=manifest_url, manifest_magnet=manifest_magnet)
