@@ -3,7 +3,6 @@ import secrets
 
 import requests
 
-from app import web_protocol
 from app.api import N_BYTES, QUERY_LIMIT
 from app.api.utils import generate_verifier_challenger_pair, kwargs_to_dict, to_query_string
 from config import Config
@@ -19,7 +18,7 @@ class MyAnimeListAPI:
         Initialize the MyAnimeList API wrapper
         """
 
-        self.redirect_uri = f'{web_protocol}://{Config.FLASK_HOST}:{Config.FLASK_PORT}/callback'
+        self.redirect_uri = f'{Config.REDIRECT_URI}/callback'
         self.client_id = os.environ.get('MAL_ID')
         self.client_secret = os.environ.get('MAL_SECRET')
 
