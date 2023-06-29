@@ -41,7 +41,7 @@ def addon_meta(token: str, meta_type: str, meta_id: str):
         if anime_mapping:
             kitsu_id = f'kitsu:{anime_mapping.get("kitsu_id")}'
             if kitsu_id:
-                anime_item['kistu_id'] = kitsu_id
+                anime_item['kitsu_id'] = kitsu_id
 
             # Call Kitsu Addon for Kitsu metadata
             anime_media_type = anime_item.get('type', 'anime')
