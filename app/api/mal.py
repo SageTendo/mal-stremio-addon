@@ -67,6 +67,34 @@ class MyAnimeListAPI:
             'refresh_token': resp_json['refresh_token']
         }
 
+    def refresh_token(self, refresh_token: str):
+        """
+        Refresh the access token for MyAnimeList
+        :param refresh_token: Refresh Token
+        :return: Access Token
+        """
+        data = {
+            'client_id': self.client_id,
+            'client_secret': self.client_secret,
+            'grant_type': 'refresh_token',
+            'refresh_token': refresh_token
+        }
+        resp = requests.post(f'{AUTH_URL}/oauth2/token', data=data)
+        resp.raise_for_status()
+        return resp.json()
+
+    @staticmethod
+    def get_current_user_info(token: str):
+        """
+        Get the current user's information from MyAnimeList
+        :param token: The user's access token
+        :return: JSON response
+        """
+        headers = kwargs_to_dict(Authorization=f'Bearer {token}')
+        resp = requests.get(f'{BASE_URL}/users/@me', headers=headers)
+        resp.raise_for_status()
+        return resp.json()
+
     # noinspection DuplicatedCode
     @staticmethod
     def get_anime_list(token: str, query: str, **kwargs):

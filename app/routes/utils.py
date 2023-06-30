@@ -20,9 +20,9 @@ def respond_with(data):
 
 def mal_to_meta(anime_item: dict):
     """
-    Convert MAL anime item to a Stremio's meta format
+    Convert MAL anime item to a valid Stremio meta format
     :param anime_item: The MAL anime item to convert
-    :return: Stremio's meta format
+    :return: Stremio meta format
     """
     # Metadata stuff
     content_id = f"{MAL_ID_PREFIX}{anime_item.get('id')}"  # Format id to mal addon format

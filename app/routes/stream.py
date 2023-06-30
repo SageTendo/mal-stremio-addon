@@ -8,6 +8,7 @@ stream_bp = Blueprint('stream', __name__)
 torrentio_API = "https://torrentio.strem.fun/stream/"
 torrentio_lite_API = "https://torrentio.strem.fun/lite/stream/"
 
+
 @stream_bp.route('/<token>/stream/<stream_type>/<content_id>.json')
 def addon_stream(token: str, stream_type: str, content_id: str):
     """

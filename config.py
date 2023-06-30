@@ -12,6 +12,7 @@ class Config:
     JSON_SORT_KEYS = False
     FLASK_HOST = os.getenv('FLASK_RUN_HOST', "localhost")
     FLASK_PORT = os.getenv('FLASK_RUN_PORT', "5000")
+    SECRET_KEY = os.getenv('SECRET_KEY', "this is not a secret key")
     DEBUG = os.getenv('FLASK_DEBUG', False)
 
     MONGO_URI = os.getenv('MONGO_URI', "")
