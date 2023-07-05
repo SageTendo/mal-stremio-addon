@@ -39,31 +39,6 @@ def addon_meta(token: str, meta_type: str, meta_id: str):
 
         # Add IMDB id to meta item
         if anime_mapping:
-            kitsu_id = f'kitsu:{anime_mapping.get("kitsu_id")}'
-            if kitsu_id:
-                anime_item['kitsu_id'] = kitsu_id
-
-            # Call Kitsu Addon for Kitsu metadata
-            anime_media_type = anime_item.get('type', 'anime')
-            resp = requests.get(f'{kitsu_API}/{anime_media_type}/{kitsu_id}.json')
-
-            if 200 <= resp.status_code <= 299:
-                kitsu_meta = resp.json().get('meta')
-
-                # Replace mal id with kitsu id
-                imdb_id = kitsu_meta.get('imdb_id')
-                if imdb_id:
-                    anime_item['imdb_id'] = imdb_id
-
-                # Check for logo and add it to meta
-                logo = kitsu_meta.get('logo')
-                if logo:
-                    anime_item['logo'] = logo
-
-                # Add videos to kitsu if they exist
-                videos = kitsu_meta.get('videos')
-                if videos:
-                    anime_item['videos'] = videos
-            else:
-                print("FETCH ERROR: Failed to call Kitsu API")
+            if kitsu_id := anime_mapping.get("kitsu_id") is not None:
+                anime_item['kitsu_id'] = f'kitsu:{kitsu_id}'
     return respond_with({'meta': anime_item})  # Return with CORS to client

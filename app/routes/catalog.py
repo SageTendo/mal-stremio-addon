@@ -23,6 +23,7 @@ def addon_catalog(token: str, catalog_type: str, catalog_id: str, offset: str = 
     if catalog_type not in MANIFEST['types']:
         abort(404)
 
+    # Check if catalog exists in manifest
     catalog_exists = False
     for catalog in MANIFEST['catalogs']:
         if catalog_id == catalog['id']:
@@ -59,6 +60,7 @@ def search_metas(token: str, catalog_type: str, catalog_id: str, search_query: s
     if catalog_type not in MANIFEST['types']:
         abort(404)
 
+    # Check if catalog exists in manifest
     catalog_exists = False
     for catalog in MANIFEST['catalogs']:
         if catalog_id == catalog['id']:

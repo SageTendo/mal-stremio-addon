@@ -9,15 +9,16 @@ MANIFEST = {
     'id': 'com.sagetendo.mal-stremio-addon',
     'version': '0.1.0',
     'name': 'MAL-Stremio Addon',
-    'description': 'MyAnimeList watchlist addon',
+    'description': 'MyAnimeList watchlist addon '
+                   '(Requires Anime Kitsu and Torrentio to be installed if you want to watch content)',
     'types': ['anime', 'series', 'movie'],
 
     'catalogs': [
-        {'type': 'anime', 'id': 'plan_to_watch', 'name': 'MAL Plan To Watch'},
-        {'type': 'anime', 'id': 'watching', 'name': 'MAL Watching'},
-        {'type': 'anime', 'id': 'completed', 'name': 'MAL Completed'},
-        {'type': 'anime', 'id': 'on_hold', 'name': 'MAL On Hold'},
-        {'type': 'anime', 'id': 'dropped', 'name': 'MAL Dropped'},
+        {'type': 'anime', 'id': 'plan_to_watch', 'name': 'MAL: Plan To Watch'},
+        {'type': 'anime', 'id': 'watching', 'name': 'MAL: Watching'},
+        {'type': 'anime', 'id': 'completed', 'name': 'MAL: Completed'},
+        {'type': 'anime', 'id': 'on_hold', 'name': 'MAL: On Hold'},
+        {'type': 'anime', 'id': 'dropped', 'name': 'MAL: Dropped'},
         {
             'type': 'anime',
             'id': 'search_list',
@@ -28,7 +29,7 @@ MANIFEST = {
         }
     ],
 
-    'resources': ['catalog', 'meta', 'stream'],
+    'resources': ['catalog'],
     'idPrefixes': [MAL_ID_PREFIX, IMDB_ID_PREFIX]
 }
 
