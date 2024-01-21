@@ -132,7 +132,7 @@ class MyAnimeListAPI:
             raise Exception("Auth Token Must Be Provided")
 
         if anime_id is None:
-            raise Exception("A Valid Query Must Be Provided")
+            raise Exception("A Valid Anime ID Must Be Provided")
 
         headers = kwargs_to_dict(Authorization=f'Bearer {token}')
         query_params = to_query_string(kwargs)
