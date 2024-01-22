@@ -1,9 +1,8 @@
-import requests
-from flask import Blueprint, abort
+from flask import Blueprint, abort, session
 
 from . import mal_client, MAL_ID_PREFIX
 from .manifest import MANIFEST
-from .utils import mal_to_meta, respond_with
+from .utils import mal_to_meta, respond_with, get_token
 from ..db.db import anime_map_collection
 
 meta = Blueprint('meta', __name__)
@@ -12,11 +11,11 @@ meta = Blueprint('meta', __name__)
 kitsu_API = "https://anime-kitsu.strem.fun/meta"
 
 
-@meta.route('/<token>/meta/<meta_type>/<meta_id>.json')
-def addon_meta(token: str, meta_type: str, meta_id: str):
+@meta.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
+def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     Provides metadata for a specific content
-    :param token: The user's API token for MyAnimeList
+    :param user_id: The user's API token for MyAnimeList
     :param meta_type: The type of metadata to return
     :param meta_id: The ID of the content
     :return: JSON response
@@ -24,6 +23,8 @@ def addon_meta(token: str, meta_type: str, meta_id: str):
     # Check if meta type exists in manifest
     if meta_type not in MANIFEST['types']:
         abort(404)
+
+    token = get_token(user_id)
 
     # Fetch anime details from MAL
     anime_id = meta_id.replace(MAL_ID_PREFIX, '')  # Extract anime id from addon meta id
