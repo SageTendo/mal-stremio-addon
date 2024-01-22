@@ -1,7 +1,8 @@
-from flask import Blueprint
+from flask import Blueprint, abort
 
 from . import MAL_ID_PREFIX, IMDB_ID_PREFIX
 from .utils import respond_with
+from ..db.db import UID_map_collection
 
 manifest_blueprint = Blueprint('manifest', __name__)
 
@@ -34,11 +35,16 @@ MANIFEST = {
 }
 
 
-@manifest_blueprint.route('/<token>/manifest.json')
-def addon_manifest(token: str):
+@manifest_blueprint.route('/<user_id>/manifest.json')
+def addon_manifest(user_id: str):
     """
     Provides the manifest for the addon
-    :param token: The user's API token for MyAnimeList
+    :param user_id: The user's MyAnimeList ID
     :return: JSON response
     """
+
+    user = UID_map_collection.find_one({'uid': user_id})
+    if not user:
+        return abort(404, f'User ID: {user_id} not found')
+
     return respond_with(MANIFEST)

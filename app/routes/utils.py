@@ -1,7 +1,8 @@
 import random
 
-from flask import jsonify
+from flask import jsonify, abort
 
+from app.db.db import UID_map_collection
 from app.routes import MAL_ID_PREFIX
 
 
@@ -71,3 +72,11 @@ def mal_to_meta(anime_item: dict):
         'releaseInfo': start_date,
         'description': synopsis
     }
+
+
+def get_token(user_id: str):
+    user = UID_map_collection.find_one({'uid': user_id})
+    if not user:
+        return abort(404, 'User not found')
+
+    return user['access_token']

@@ -18,6 +18,7 @@ class Config:
     MONGO_URI = os.getenv('MONGO_URI', "")
     MONGO_DB = os.getenv('MONGO_DB', "")
     MONGO_ANIME_MAP = os.getenv('MONGO_ANIME_MAP_COLLECTION', "")
+    MONGO_UID_MAP = os.getenv('MONGO_UID_MAP_COLLECTION', "")
 
     # Addon API
     # redirect URI depending on environment

@@ -67,6 +67,21 @@ class MyAnimeListAPI:
             'refresh_token': resp_json['refresh_token']
         }
 
+    @staticmethod
+    def get_user_details(token: str):
+        """
+        Get the user's details from MyAnimeList
+        :param token: The user's access token
+        :return: JSON response
+        """
+        if token is None:
+            raise Exception("Auth Token Must Be Provided")
+
+        headers = kwargs_to_dict(Authorization=f'Bearer {token}')
+        resp = requests.get(f'{BASE_URL}/users/@me', headers=headers)
+        resp.raise_for_status()
+        return resp.json()
+
     # noinspection DuplicatedCode
     @staticmethod
     def get_anime_list(token: str, query: str, **kwargs):
