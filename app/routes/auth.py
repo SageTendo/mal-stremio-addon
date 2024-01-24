@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, session
+from flask import Blueprint, request, render_template
 from werkzeug.utils import redirect
 
 from app.db.db import UID_map_collection

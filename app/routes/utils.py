@@ -14,6 +14,14 @@ def respond_with(data):
     return resp
 
 
+def get_token(user_id: str):
+    user = UID_map_collection.find_one({'uid': user_id})
+    if not user:
+        return abort(404, 'User not found')
+
+    return user['access_token']
+
+
 def mal_to_meta(anime_item: dict):
     """
     Convert MAL anime item to a Stremio's meta format
@@ -23,8 +31,7 @@ def mal_to_meta(anime_item: dict):
     # Metadata stuff
     formatted_content_id = None
     if content_id := anime_item.get('id', None):
-        # Format id to mal addon format
-        formatted_content_id = f"{MAL_ID_PREFIX}{content_id}"
+        formatted_content_id = f"{MAL_ID_PREFIX}_{content_id}"
 
     title = anime_item.get('title', None)
     mean_score = anime_item.get('mean', None)
@@ -72,11 +79,3 @@ def mal_to_meta(anime_item: dict):
         'releaseInfo': start_date,
         'description': synopsis
     }
-
-
-def get_token(user_id: str):
-    user = UID_map_collection.find_one({'uid': user_id})
-    if not user:
-        return abort(404, 'User not found')
-
-    return user['access_token']
