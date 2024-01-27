@@ -84,12 +84,15 @@ class MyAnimeListAPI:
         return resp.json()
 
     @staticmethod
-    def get_current_user_info(token: str):
+    def get_user_details(token: str):
         """
-        Get the current user's information from MyAnimeList
+        Get the user's details from MyAnimeList
         :param token: The user's access token
         :return: JSON response
         """
+        if token is None:
+            raise Exception("Auth Token Must Be Provided")
+
         headers = kwargs_to_dict(Authorization=f'Bearer {token}')
         resp = requests.get(f'{BASE_URL}/users/@me', headers=headers)
         resp.raise_for_status()
@@ -160,7 +163,7 @@ class MyAnimeListAPI:
             raise Exception("Auth Token Must Be Provided")
 
         if anime_id is None:
-            raise Exception("A Valid Query Must Be Provided")
+            raise Exception("A Valid Anime ID Must Be Provided")
 
         headers = kwargs_to_dict(Authorization=f'Bearer {token}')
         query_params = to_query_string(kwargs)

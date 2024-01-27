@@ -1,21 +1,25 @@
 import random
 
-from flask import jsonify
+from flask import jsonify, abort
 
+from app.db.db import UID_map_collection
 from app.routes import MAL_ID_PREFIX
 
 
 # Enable CORS
 def respond_with(data):
-    """
-    Respond with CORS headers
-    :param data:
-    :return:
-    """
     resp = jsonify(data)
     resp.headers['Access-Control-Allow-Origin'] = "*"
     resp.headers['Access-Control-Allow-Headers'] = '*'
     return resp
+
+
+def get_token(user_id: str):
+    user = UID_map_collection.find_one({'uid': user_id})
+    if not user:
+        return abort(404, 'User not found')
+
+    return user['access_token']
 
 
 def mal_to_meta(anime_item: dict):
@@ -25,54 +29,47 @@ def mal_to_meta(anime_item: dict):
     :return: Stremio meta format
     """
     # Metadata stuff
-    content_id = f"{MAL_ID_PREFIX}{anime_item.get('id')}"  # Format id to mal addon format
+    formatted_content_id = None
+    if content_id := anime_item.get('id', None):
+        formatted_content_id = f"{MAL_ID_PREFIX}_{content_id}"
 
-    title = anime_item.get('title')
-    mean_score = anime_item.get('mean')
-    synopsis = anime_item.get('synopsis')
+    title = anime_item.get('title', None)
+    mean_score = anime_item.get('mean', None)
+    synopsis = anime_item.get('synopsis', None)
 
     poster = None
-    poster_objects = anime_item.get('main_picture')
-    if poster_objects:
-        poster = poster_objects.get('medium')
-        # poster = poster_objects.get('large')
+    if poster_objects := anime_item.get('main_picture', {}):
+        if poster := poster_objects.get('large', None):
+            poster = poster_objects.get('medium')
 
-    genres = anime_item.get('genres')
-    if genres:
+    if genres := anime_item.get('genres', {}):
         genres = [genre['name'] for genre in genres]
 
-    start_date = anime_item.get('start_date')
-    if start_date:
-        start_date = start_date[:4]  # Get the year only or None
+    # Check for release info and format it if it exists
+    if start_date := anime_item.get('start_date', None):
+        start_date = start_date[:4]  # Get the year only
+        start_date += '-'
 
-        # Format start date if end_date of airing was not returned
-        end_date = anime_item.get('end_date')
-        if not end_date:
-            start_date += '-'
+        if end_date := anime_item.get('end_date', None):
+            start_date += end_date
 
     # Check for background key in anime_item
     background = None
-    picture_objects = anime_item.get('pictures')
-    if picture_objects:
-        # Get the first picture from the list of picture objects
-        # index = 0
-
-        # Get a random a picture from the list of picture objects
-        index = random.randint(0, len(picture_objects) - 1)
-
-        # Get the randomly chosen picture object's largest size
-        background = picture_objects[index]['large']
+    picture_objects = anime_item.get('pictures', [])
+    if len(picture_objects) > 0:
+        random_background_index = random.randint(0, len(picture_objects) - 1)
+        if background := picture_objects[random_background_index].get('large', None) is None:
+            background = picture_objects[random_background_index]['medium']
 
     # Check for media type and filter out non series and movie types
-    media_type = anime_item.get('media_type')
-    if media_type:
+    if media_type := anime_item.get('media_type', None):
         if media_type in ['ona', 'ova', 'special', 'tv', 'unknown']:
             media_type = 'series'
         elif media_type != 'movie':
             media_type = None
 
     return {
-        'id': content_id,
+        'id': formatted_content_id,
         'name': title,
         'type': media_type,
         'genres': genres,

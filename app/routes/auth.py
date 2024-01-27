@@ -4,6 +4,7 @@ from hashlib import sha256
 from flask import Blueprint, request, url_for, make_response, session, flash
 from werkzeug.utils import redirect
 
+from app.db.db import UID_map_collection
 from app.routes import mal_client
 from config import Config
 
@@ -48,6 +49,20 @@ def callback():
         return redirect(url_for('index'))
     access_token = auth_data['access_token']
 
+    # Get the user's username
+    user_details = mal_client.get_user_details(access_token)
+    user_id = str(user_details['id'])
+
+    # Add the user to the database
+    user = UID_map_collection.find_one({'uid': user_id})
+    if user:
+        UID_map_collection.update_one(user, {'$set': {'access_token': access_token}})
+    else:
+        UID_map_collection.insert_one({'uid': user_id, 'access_token': access_token})
+
+    manifest_url = f'{Config.PROTOCOL}://{Config.REDIRECT_URL}/{user_id}/manifest.json'
+    manifest_magnet = f'stremio://{Config.REDIRECT_URL}/{user_id}/manifest.json'
+    return render_template('index.html', manifest_url=manifest_url, manifest_magnet=manifest_magnet)
     # get user info and append the access and refresh token the info
     user_info = mal_client.get_current_user_info(access_token)
 
