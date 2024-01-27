@@ -40,7 +40,7 @@ class MyAnimeListAPI:
                        f'&redirect_uri={self.redirect_uri}'
         return f'{AUTH_URL}/oauth2/authorize?{query_params}'
 
-    def get_token(self, authorization_code: str):
+    def get_access_token(self, authorization_code: str):
         """
         Get the access token for MyAnimeList
         :param authorization_code: Authorization Code from MyAnimeList

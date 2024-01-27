@@ -21,7 +21,7 @@
 {% block content %}
     <div class="card border-0 text-center bg-dark text-white">
         {% if logged_in %}
-            Hi, {{ user_info['name'] }}
+            Signed in as {{ user['name'] }}
             <label for="manifest_url">
                 <input id="manifest_url" class="bg-dark text-warning form-control" type="text"
                        value="{{ manifest_url }}" readonly>
@@ -37,19 +37,25 @@
 
                 <div class="card-body bg-dark text-white">
                     <button class="btn btn-success" onclick="location.href='{{ url_for('auth.refresh_token') }}'">
-                        Generate New Manifest
+                        Refresh MyAnimeList Session
+                    </button>
+                </div>
+
+                <div class="card-body bg-dark text-white">
+                    <button class="btn btn-success" onclick="location.href='{{ url_for('auth.logout') }}'">
+                        Logout
                     </button>
                 </div>
             </div>
         {% else %}
             <label>
                 <input class="bg-dark form-control" type="text"
-                       placeholder="Log in to MyAnimeList to generate an addon Manifest URL"
+                       placeholder="Log in to MyAnimeList to generate the addon URL"
                        readonly>
             </label>
             <div class="card-body bg-dark text-white">
                 <button class="btn btn-success" onclick="location.href='{{ url_for('auth.authorize_user') }}'">
-                    Log in to MyAnimeList
+                    Sign in with MyAnimeList
                 </button>
             </div>
         {% endif %}

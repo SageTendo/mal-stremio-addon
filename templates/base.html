@@ -25,7 +25,7 @@
         {% for category, message in messages %}
             {% if messages %}
                 <div class="alert alert-{{ category }} alert-dismissible fade show" style="opacity: 75%">
-                    <strong>{{ category.upper() }}!</strong> {{ message }}
+                    {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             {% endif %}
