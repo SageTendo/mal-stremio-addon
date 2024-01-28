@@ -40,7 +40,7 @@ class MyAnimeListAPI:
                        f'&redirect_uri={self.redirect_uri}'
         return f'{AUTH_URL}/oauth2/authorize?{query_params}'
 
-    def get_token(self, authorization_code: str):
+    def get_access_token(self, authorization_code: str):
         """
         Get the access token for MyAnimeList
         :param authorization_code: Authorization Code from MyAnimeList
@@ -66,6 +66,22 @@ class MyAnimeListAPI:
             'access_token': resp_json['access_token'],
             'refresh_token': resp_json['refresh_token']
         }
+
+    def refresh_token(self, refresh_token: str):
+        """
+        Refresh the access token for MyAnimeList
+        :param refresh_token: Refresh Token
+        :return: Access Token
+        """
+        data = {
+            'client_id': self.client_id,
+            'client_secret': self.client_secret,
+            'grant_type': 'refresh_token',
+            'refresh_token': refresh_token
+        }
+        resp = requests.post(f'{AUTH_URL}/oauth2/token', data=data)
+        resp.raise_for_status()
+        return resp.json()
 
     @staticmethod
     def get_user_details(token: str):

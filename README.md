@@ -6,8 +6,8 @@ With this addon, you can easily keep track of your watched anime, plan to watch,
 Stremio.
 
 <b><font color="#FFFF00">
-NB: Currently, this addon only handles catalogs. To get details and streams on a catalog item (anime), Anime Kitsu
-and Torrentio addons addon must be installed alongside this addon.
+NB: Currently, this addon only handles catalogs and meta content. Syncing watched content with MyAnimeList will be added
+in the near future.
 </b></font>
 
 ## Installation
@@ -22,6 +22,15 @@ To install the MyAnimeList Anime List addon, please follow these steps:
 5. Paste the copied manifest URL into the addon search box and press Enter. Alternatively, you can click the magnet URL
    generated on the website to automatically add the addon to Stremio.
 6. The MyAnimeList Anime List addon will be added to your Stremio and ready for use.
+
+<h4 style="color: #FFFF00"> 
+NB: If no content is being displayed, it could be the result of your session expiring.
+to renew your session, return to the 
+<a href="https://mal-stremio.vercel.app/">Addon's website</a> to "Sign in with MyAnimelist" or 
+"Refresh MyAnimeList Session". 
+Afterwards, content should then show up in Stremio.
+</h4>
+
 
 ## Usage
 

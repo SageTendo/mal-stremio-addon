@@ -1,17 +1,17 @@
-from flask import Blueprint, abort, session
+import logging
 
-from . import mal_client, MAL_ID_PREFIX
+import requests
+from flask import Blueprint, abort
+
 from .manifest import MANIFEST
-from .utils import mal_to_meta, respond_with, get_token
-from ..db.db import anime_map_collection
+from .utils import respond_with
 
-meta = Blueprint('meta', __name__)
+meta_bp = Blueprint('meta', __name__)
 
-# Kitsu API to get anime metadata
 kitsu_API = "https://anime-kitsu.strem.fun/meta"
 
 
-@meta.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
+@meta_bp.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
 def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     Provides metadata for a specific content
@@ -24,22 +24,9 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     if meta_type not in MANIFEST['types']:
         abort(404)
 
-    token = get_token(user_id)
+    resp = requests.get(f"{kitsu_API}/{meta_type}/{meta_id.replace('_', ':')}.json")
+    if not resp.ok:
+        logging.error(resp.status_code, resp.reason)
+        abort(404, f"{resp.status_code}: {resp.reason}")
 
-    # Fetch anime details from MAL
-    anime_id = meta_id.replace(MAL_ID_PREFIX, '')  # Extract anime id from addon meta id
-    field_params = 'media_type genres mean start_date end_date synopsis pictures'  # Additional fields to return
-    anime_item = mal_client.get_anime_details(token, anime_id, fields=field_params)
-
-    if anime_item:
-        # Format the details to a meta format
-        anime_item = mal_to_meta(anime_item)
-
-        # Fetch kitsu id from map db
-        anime_mapping = anime_map_collection.find_one({'mal_id': int(anime_id)})
-
-        # Add IMDB id to meta item
-        if anime_mapping:
-            if kitsu_id := anime_mapping.get("kitsu_id") is not None:
-                anime_item['kitsu_id'] = f'kitsu:{kitsu_id}'
-    return respond_with({'meta': anime_item})  # Return with CORS to client
+    return respond_with(resp.json())  # Return with CORS to client

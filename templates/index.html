@@ -5,13 +5,23 @@
 {% endblock %}
 
 {% block header %}
-    MyAnimeList Stremio Addon
+    MAL-Stremio Addon
 {% endblock %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class=flashes>
+            {% for message in messages %}
+                <h2>{{ message }}</h2>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
 
 {% block content %}
     <div class="card border-0 text-center bg-dark text-white">
-
-        {% if manifest_url %}
+        {% if logged_in %}
+            Signed in as {{ user['name'] }}
             <label for="manifest_url">
                 <input id="manifest_url" class="bg-dark text-warning form-control" type="text"
                        value="{{ manifest_url }}" readonly>
@@ -24,19 +34,30 @@
                 <button class="btn btn-primary ml-2" onclick="location.href='{{ manifest_magnet }}'">
                     Open In Stremio
                 </button>
+
+                <div class="card-body bg-dark text-white">
+                    <button class="btn btn-success" onclick="location.href='{{ url_for('auth.refresh_token') }}'">
+                        Refresh MyAnimeList Session
+                    </button>
+                </div>
+
+                <div class="card-body bg-dark text-white">
+                    <button class="btn btn-success" onclick="location.href='{{ url_for('auth.logout') }}'">
+                        Logout
+                    </button>
+                </div>
             </div>
         {% else %}
             <label>
-                <input class="bg-dark form-control" type="text" placeholder="Generate MAL Token to get Manifest URL"
+                <input class="bg-dark form-control" type="text"
+                       placeholder="Log in to MyAnimeList to generate the addon URL"
                        readonly>
             </label>
+            <div class="card-body bg-dark text-white">
+                <button class="btn btn-success" onclick="location.href='{{ url_for('auth.authorize_user') }}'">
+                    Sign in with MyAnimeList
+                </button>
+            </div>
         {% endif %}
-
-
-        <div class="card-body bg-dark text-white">
-            <button class="btn btn-success" onclick="location.href='{{ url_for('auth.authorize_user') }}'">
-                Generate Token
-            </button>
-        </div>
     </div>
 {% endblock %}
