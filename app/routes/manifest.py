@@ -8,10 +8,10 @@ manifest_blueprint = Blueprint('manifest', __name__)
 
 MANIFEST = {
     'id': 'com.sagetendo.mal-stremio-addon',
-    'version': '1.1.0',
+    'version': '1.1.1',
     'name': 'MAL-Stremio Addon',
-    'description': 'MyAnimeList watchlist addon '
-                   '(Requires Anime Kitsu and Torrentio to be installed if you want to watch content)',
+    'description': 'Provides users with watchlist content from MyAnimeList within Stremio. '
+                   'This addon only provides catalogs, with the help of AnimeKitsu',
     'types': ['anime', 'series', 'movie'],
 
     'catalogs': [
