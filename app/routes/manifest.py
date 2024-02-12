@@ -1,6 +1,6 @@
 from flask import Blueprint, abort
 
-from . import MAL_ID_PREFIX, IMDB_ID_PREFIX
+from . import MAL_ID_PREFIX
 from .utils import respond_with
 from ..db.db import UID_map_collection
 
@@ -8,30 +8,32 @@ manifest_blueprint = Blueprint('manifest', __name__)
 
 MANIFEST = {
     'id': 'com.sagetendo.mal-stremio-addon',
-    'version': '1.1.1',
+    'version': '1.2.0',
     'name': 'MAL-Stremio Addon',
+    'logo': 'https://i.imgur.com/zVYdffr.png',
     'description': 'Provides users with watchlist content from MyAnimeList within Stremio. '
                    'This addon only provides catalogs, with the help of AnimeKitsu',
     'types': ['anime', 'series', 'movie'],
 
     'catalogs': [
-        {'type': 'anime', 'id': 'plan_to_watch', 'name': 'MAL: Plan To Watch'},
-        {'type': 'anime', 'id': 'watching', 'name': 'MAL: Watching'},
-        {'type': 'anime', 'id': 'completed', 'name': 'MAL: Completed'},
-        {'type': 'anime', 'id': 'on_hold', 'name': 'MAL: On Hold'},
-        {'type': 'anime', 'id': 'dropped', 'name': 'MAL: Dropped'},
+        {'type': 'anime', 'id': 'plan_to_watch', 'name': 'MAL: Plan To Watch', 'extra': [{'name': 'skip'}]},
+        {'type': 'anime', 'id': 'watching', 'name': 'MAL: Watching', 'extra': [{'name': 'skip'}]},
+        {'type': 'anime', 'id': 'completed', 'name': 'MAL: Completed', 'extra': [{'name': 'skip'}]},
+        {'type': 'anime', 'id': 'on_hold', 'name': 'MAL: On Hold', 'extra': [{'name': 'skip'}]},
+        {'type': 'anime', 'id': 'dropped', 'name': 'MAL: Dropped', 'extra': [{'name': 'skip'}]},
         {
             'type': 'anime',
             'id': 'search_list',
             'name': 'Search Results',
             'extra': [
-                {'name': 'search', 'isRequired': True}
+                {'name': 'search', 'isRequired': True},
+                {'name': 'skip'}
             ]
         }
     ],
 
     'resources': ['catalog', 'meta'],
-    'idPrefixes': [MAL_ID_PREFIX, IMDB_ID_PREFIX]
+    'idPrefixes': [MAL_ID_PREFIX]
 }
 
 

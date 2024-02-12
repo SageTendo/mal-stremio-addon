@@ -1,6 +1,7 @@
 import logging
 
 from flask import Flask, render_template, session
+from flask_compress import Compress
 from flask_session import Session
 
 from app.db.db import db
@@ -19,6 +20,8 @@ app.register_blueprint(meta_bp)
 
 app.config['SESSION_MONGODB'] = db
 Session(app)
+Compress(app)
+
 logging.basicConfig(format='%(asctime)s %(message)s')
 
 
@@ -34,6 +37,11 @@ def index():
         return render_template('index.html', logged_in=True, user=user,
                                manifest_url=manifest_url, manifest_magnet=manifest_magnet)
     return render_template('index.html')
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return app.send_static_file('favicon.ico')
 
 
 if __name__ == '__main__':
