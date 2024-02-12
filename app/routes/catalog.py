@@ -143,6 +143,9 @@ def mal_to_meta(anime_item: dict):
             media_type = None
 
     return {
+        'cacheMaxAge': 43200,
+        'staleRevalidate': 3600,
+        'staleError': 3600,
         'id': formatted_content_id,
         'name': title,
         'type': media_type,

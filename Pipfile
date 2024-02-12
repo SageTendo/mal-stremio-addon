@@ -18,7 +18,7 @@ cryptography = "*"
 distlib = "*"
 dnspython = "*"
 filelock = "*"
-flask = "*"
+flask = {extras = ["async"], version = "*"}
 greenlet = "*"
 html5lib = "*"
 idna = "*"
@@ -60,8 +60,10 @@ zipp = "*"
 pymongo = {extras = ["srv"], version = "*"}
 waitress = "*"
 flask-session = "*"
+flask-compress = "*"
 
 [dev-packages]
+uvicorn = "*"
 
 [requires]
 python_version = "3.9"
