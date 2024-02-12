@@ -125,7 +125,7 @@ def mal_to_meta(anime_item: dict):
         start_date += '-'
 
         if end_date := anime_item.get('end_date', None):
-            start_date += end_date
+            start_date += end_date[:4]
 
     # Check for background key in anime_item
     background = None

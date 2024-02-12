@@ -23,7 +23,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     # ignore imdb ids for older versions of mal-stremio
     if IMDB_ID_PREFIX in meta_id:
-        return {}
+        return respond_with({})
 
     # Check if meta type exists in manifest
     if meta_type not in MANIFEST['types']:
@@ -62,6 +62,7 @@ def kitsu_to_meta(kitsu_meta: dict):
     cacheMaxAge = meta.get('cacheMaxAge', None)
     runtime = meta.get('runtime', None)
     videos = meta.get('videos', [])
+    imdb_id = meta.get('imdb_id', None)
 
     return {
         'cacheMaxAge': cacheMaxAge,
@@ -79,5 +80,6 @@ def kitsu_to_meta(kitsu_meta: dict):
         'trailers': trailers,
         'links': links,
         'runtime': runtime,
-        'videos': videos
+        'videos': videos,
+        'imdb_id': imdb_id
     }
