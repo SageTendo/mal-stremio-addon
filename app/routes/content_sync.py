@@ -1,7 +1,7 @@
 import logging
 import urllib.parse
 
-import requests
+import httpx
 from flask import Blueprint, abort
 from requests import HTTPError
 
@@ -43,9 +43,9 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
         current_episode = int(current_episode)
 
     # Fetch myanimelist id from mapper
-    resp = requests.get(haglund_API, params={'source': 'kitsu', 'id': int(anime_id)}, timeout=(5, 30))
+    resp = httpx.get(haglund_API, params={'source': 'kitsu', 'id': int(anime_id)})
     if resp.status_code >= 400:
-        logging.error(resp.status_code, resp.reason)
+        logging.error(resp.status_code, resp.reason_phrase)
         abort(404)
 
     data = resp.json()
