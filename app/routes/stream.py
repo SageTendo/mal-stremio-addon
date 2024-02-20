@@ -1,6 +1,7 @@
 import logging
 import urllib.parse
 
+import httpx
 import requests
 from flask import Blueprint, abort
 
@@ -18,7 +19,7 @@ torrentio_api = f"https://torrentio.strem.fun/providers={providers}|qualityfilte
 
 
 @stream_bp.route('/<user_id>/stream/<content_type>/<content_id>.json')
-def addon_stream(user_id: str, content_type: str, content_id: str):
+async def addon_stream(user_id: str, content_type: str, content_id: str):
     if IMDB_ID_PREFIX in content_id:
         return respond_with({})
 
@@ -30,17 +31,20 @@ def addon_stream(user_id: str, content_type: str, content_id: str):
     content_id = content_id.replace(f"{MAL_ID_PREFIX}_", '')
     content_id = int(content_id)
 
-    resp = requests.get(haglund_API, params={'source': 'myanimelist', 'id': content_id}, timeout=(1, 30))
-    if resp.status_code >= 400:
-        logging.error(resp.status_code, resp.reason)
-        abort(404)
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(haglund_API, params={'source': 'myanimelist', 'id': content_id})
 
-    # Extract the kitsu id and fetch torrentio streams
-    kitsu_id = resp.json().get('kitsu', None)
-    if kitsu_id is None:
-        logging.warning("Stream => No id for Kitsu found")
-        abort(404)
+        if resp.status_code >= 400:
+            logging.error(resp.status_code, resp.reason_phrase)
+            abort(404)
 
-    kitsu_id = f"kitsu:{kitsu_id}"
-    resp = requests.get(f"{torrentio_api}/stream/{content_type}/{kitsu_id}.json")
-    return respond_with(resp.json())
+        # Extract the kitsu id and fetch torrentio streams
+        kitsu_id = resp.json().get('kitsu', None)
+        if kitsu_id is None:
+            logging.warning("Stream => No id for Kitsu found")
+            abort(404)
+
+        kitsu_id = f"kitsu:{kitsu_id}"
+
+        resp = await client.get(f"{torrentio_api}/stream/{content_type}/{kitsu_id}.json")
+        return respond_with(resp.json())
