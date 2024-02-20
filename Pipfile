@@ -61,6 +61,7 @@ pymongo = {extras = ["srv"], version = "*"}
 waitress = "*"
 flask-session = "*"
 flask-compress = "*"
+httpx = "*"
 
 [dev-packages]
 uvicorn = "*"
