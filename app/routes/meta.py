@@ -48,7 +48,7 @@ def kitsu_to_meta(kitsu_meta: dict):
     """
     meta = kitsu_meta.get('meta', {})
 
-    kitsu_id = meta.get('id', '')
+    kitsu_id = meta.get('id', '').replace('kitsu:', '')
     name = meta.get('name', '')
     genres = meta.get('genres', [])
     logo = meta.get('logo', None)
@@ -69,8 +69,8 @@ def kitsu_to_meta(kitsu_meta: dict):
         'cacheMaxAge': cacheMaxAge,
         'staleRevalidate': 43200,
         'staleError': 3600,
-        'id': kitsu_id,
-        'kitsu_id': kitsu_id.replace('kitsu:', ''),
+        'id': imdb_id,
+        'kitsu_id': kitsu_id,
         'name': name,
         'genres': genres,
         'logo': logo,
