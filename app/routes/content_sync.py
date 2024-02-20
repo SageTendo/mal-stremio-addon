@@ -1,4 +1,5 @@
 import logging
+import urllib.parse
 
 import requests
 from flask import Blueprint, abort
@@ -33,6 +34,7 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
         abort(404)
 
     # Extract the anime_id and episode from the content_id
+    content_id = urllib.parse.unquote(content_id)
     if content_id.count(':') == 1:
         anime_id = content_id.replace('kitsu:', '')
         current_episode = 1
@@ -41,7 +43,7 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
         current_episode = int(current_episode)
 
     # Fetch myanimelist id from mapper
-    resp = requests.get(haglund_API, params={'source': 'kitsu', 'id': int(anime_id)}, timeout=(10, 30))
+    resp = requests.get(haglund_API, params={'source': 'kitsu', 'id': int(anime_id)}, timeout=(5, 30))
     if resp.status_code >= 400:
         logging.error(resp.status_code, resp.reason)
         abort(404)
