@@ -8,7 +8,7 @@ manifest_blueprint = Blueprint('manifest', __name__)
 
 MANIFEST = {
     'id': 'com.sagetendo.mal-stremio-addon',
-    'version': '1.2.0',
+    'version': '2.0.0',
     'name': 'MAL-Stremio Addon',
     'logo': 'https://i.imgur.com/zVYdffr.png',
     'description': 'Provides users with watchlist content from MyAnimeList within Stremio. '
@@ -32,8 +32,8 @@ MANIFEST = {
         }
     ],
 
-    'resources': ['catalog', 'meta'],
-    'idPrefixes': [MAL_ID_PREFIX]
+    'resources': ['catalog', 'meta', 'subtitles'],
+    'idPrefixes': [MAL_ID_PREFIX, 'kitsu']
 }
 
 
