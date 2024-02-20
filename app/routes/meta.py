@@ -8,6 +8,7 @@ from .manifest import MANIFEST
 from .utils import respond_with
 
 meta_bp = Blueprint('meta', __name__)
+
 kitsu_API = "https://anime-kitsu.strem.fun/meta"
 
 
@@ -34,7 +35,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
         abort(404, f"{resp.status_code}: {resp.reason}")
 
     meta = kitsu_to_meta(resp.json())
-    # meta['id'] = meta_id
+    meta['id'] = meta_id
     meta['type'] = meta_type
     return respond_with({'meta': meta})  # Return with CORS to client
 
@@ -47,7 +48,7 @@ def kitsu_to_meta(kitsu_meta: dict):
     """
     meta = kitsu_meta.get('meta', {})
 
-    kitsu_id = meta.get('id', '')
+    kitsu_id = meta.get('id', '').replace('kitsu:', '')
     name = meta.get('name', '')
     genres = meta.get('genres', [])
     logo = meta.get('logo', None)
@@ -68,7 +69,7 @@ def kitsu_to_meta(kitsu_meta: dict):
         'cacheMaxAge': cacheMaxAge,
         'staleRevalidate': 43200,
         'staleError': 3600,
-        'id': kitsu_id,
+        'kitsu_id': kitsu_id,
         'name': name,
         'genres': genres,
         'logo': logo,
