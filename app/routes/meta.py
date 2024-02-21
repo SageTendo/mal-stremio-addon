@@ -37,7 +37,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     meta = kitsu_to_meta(resp.json())
     meta['id'] = meta_id
     meta['type'] = meta_type
-    return respond_with({'meta': meta})  # Return with CORS to client
+    return respond_with({'meta': meta})
 
 
 def kitsu_to_meta(kitsu_meta: dict):
@@ -48,6 +48,7 @@ def kitsu_to_meta(kitsu_meta: dict):
     """
     meta = kitsu_meta.get('meta', {})
 
+    kitsu_id = meta.get('id', '').replace('kitsu:', '')
     name = meta.get('name', '')
     genres = meta.get('genres', [])
     logo = meta.get('logo', None)
@@ -68,6 +69,8 @@ def kitsu_to_meta(kitsu_meta: dict):
         'cacheMaxAge': cacheMaxAge,
         'staleRevalidate': 43200,
         'staleError': 3600,
+
+        'kitsu_id': kitsu_id,
         'name': name,
         'genres': genres,
         'logo': logo,
