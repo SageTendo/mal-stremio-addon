@@ -2,7 +2,6 @@ import logging
 import urllib.parse
 
 import httpx
-import requests
 from flask import Blueprint, abort
 
 from app.routes import IMDB_ID_PREFIX, MAL_ID_PREFIX
