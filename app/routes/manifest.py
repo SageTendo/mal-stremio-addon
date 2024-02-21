@@ -33,7 +33,7 @@ MANIFEST = {
     ],
 
     'behaviorHints': {'configurable': True},
-    'resources': ['catalog', 'meta', 'subtitles'],
+    'resources': ['catalog', 'meta', 'subtitles', 'stream'],
     'idPrefixes': [MAL_ID_PREFIX, 'kitsu']
 }
 

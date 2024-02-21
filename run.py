@@ -7,9 +7,10 @@ from flask_session import Session
 from app.db.db import db
 from app.routes.auth import auth_blueprint
 from app.routes.catalog import catalog_bp
+from app.routes.content_sync import content_sync_bp
 from app.routes.manifest import manifest_blueprint
 from app.routes.meta import meta_bp
-from app.routes.content_sync import content_sync_bp
+from app.routes.stream import stream_bp
 from config import Config
 
 app = Flask(__name__, template_folder='./templates', static_folder='./static')
@@ -19,6 +20,7 @@ app.register_blueprint(manifest_blueprint)
 app.register_blueprint(catalog_bp)
 app.register_blueprint(meta_bp)
 app.register_blueprint(content_sync_bp)
+app.register_blueprint(stream_bp)
 
 app.config['SESSION_MONGODB'] = db
 Session(app)
