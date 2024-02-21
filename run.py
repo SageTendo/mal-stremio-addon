@@ -1,6 +1,6 @@
 import logging
 
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, url_for, redirect
 from flask_compress import Compress
 from flask_session import Session
 
@@ -26,6 +26,7 @@ logging.basicConfig(format='%(asctime)s %(message)s')
 
 
 @app.route('/')
+@app.route('/configure')
 def index():
     """
     Render the index page
@@ -37,6 +38,11 @@ def index():
         return render_template('index.html', logged_in=True, user=user,
                                manifest_url=manifest_url, manifest_magnet=manifest_magnet)
     return render_template('index.html')
+
+
+@app.route('/<user_id>/configure')
+def redirect_to_index(user_id: str):
+    return redirect(url_for('index'))
 
 
 @app.route('/favicon.ico')
