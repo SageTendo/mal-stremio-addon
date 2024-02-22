@@ -98,7 +98,6 @@ class MyAnimeListAPI:
         resp.raise_for_status()
         return resp.json()
 
-    # noinspection DuplicatedCode
     @staticmethod
     def get_anime_list(token: str, query: str, **kwargs):
         """
@@ -125,7 +124,6 @@ class MyAnimeListAPI:
         resp.raise_for_status()
         return resp.json()
 
-    # noinspection DuplicatedCode
     @staticmethod
     def get_user_anime_list(token: str, limit: int = QUERY_LIMIT, **kwargs):
         """
@@ -149,7 +147,6 @@ class MyAnimeListAPI:
         resp.raise_for_status()
         return resp.json()
 
-    # noinspection DuplicatedCode
     @staticmethod
     def get_anime_details(token: str, anime_id: str, **kwargs):
         """
@@ -172,6 +169,29 @@ class MyAnimeListAPI:
             resp = requests.get(f'{BASE_URL}/anime/{anime_id}?{query_params}', headers=headers)
         else:
             resp = requests.get(f'{BASE_URL}/anime/{anime_id}', headers=headers)
+
+        resp.raise_for_status()
+        return resp.json()
+
+    @staticmethod
+    def update_watched_status(token: str, anime_id: str, episode: int, status: str = 'watching'):
+        """
+        Update the watched status of an anime in a user's watchlist
+        :param token: The user's access token
+        :param anime_id: The ID of the anime
+        :param episode: The episode that is being watched
+        :param status: The status to update the anime to
+        :return: The details of the anime in the watchlist
+        """
+        if token is None:
+            raise Exception("Auth Token Must Be Provided")
+
+        if anime_id is None:
+            raise Exception("A Valid Anime ID Must Be Provided")
+
+        headers = kwargs_to_dict(Authorization=f'Bearer {token}')
+        body = {'status': status, 'num_watched_episodes': episode}
+        resp = requests.put(f'{BASE_URL}/anime/{anime_id}/my_list_status', headers=headers, data=body)
 
         resp.raise_for_status()
         return resp.json()

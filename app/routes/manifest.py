@@ -8,7 +8,7 @@ manifest_blueprint = Blueprint('manifest', __name__)
 
 MANIFEST = {
     'id': 'com.sagetendo.mal-stremio-addon',
-    'version': '1.2.0',
+    'version': '2.0.0',
     'name': 'MAL-Stremio Addon',
     'logo': 'https://i.imgur.com/zVYdffr.png',
     'description': 'Provides users with watchlist content from MyAnimeList within Stremio. '
@@ -32,21 +32,35 @@ MANIFEST = {
         }
     ],
 
-    'resources': ['catalog', 'meta'],
-    'idPrefixes': [MAL_ID_PREFIX]
+    'behaviorHints': {'configurable': True},
+    'resources': ['catalog', 'meta', 'subtitles', 'stream'],
+    'idPrefixes': [MAL_ID_PREFIX, 'kitsu']
 }
 
 
-@manifest_blueprint.route('/<user_id>/manifest.json')
-def addon_manifest(user_id: str):
+@manifest_blueprint.route('/manifest.json')
+def addon_unconfigured_manifest():
     """
-    Provides the manifest for the addon
+    Provides the initial manifest for the addon before the user has authenticated with MyAnimeList
+    The user is required to configure the addon before they can use it
+    :return: JSON response
+    """
+    unconfigured_manifest: dict = MANIFEST.copy()
+    unconfigured_manifest['behaviorHints'] = {
+        'configurable': True,
+        'configurationRequired': True
+    }
+    return respond_with(unconfigured_manifest)
+
+
+@manifest_blueprint.route('/<user_id>/manifest.json')
+def addon_configured_manifest(user_id: str):
+    """
+    Provides the manifest for the addon after the user has authenticated with MyAnimeList
     :param user_id: The user's MyAnimeList ID
     :return: JSON response
     """
-
     user = UID_map_collection.find_one({'uid': user_id})
     if not user:
         return abort(404, f'User ID: {user_id} not found')
-
     return respond_with(MANIFEST)
