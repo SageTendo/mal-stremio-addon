@@ -65,14 +65,14 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     # Update watched status in MyAnimeList
     status, episode = handle_current_status(current_status, current_episode, watched_episodes, total_episodes)
     if status is None:
-        return respond_with({'message': 'Nothing to update'})
+        return respond_with({'subtitles': [], 'message': 'Nothing to update'})
 
     try:
         mal_client.update_watched_status(token, mal_id, current_episode, status)
     except HTTPError as err:
         log_error(err)
-        return respond_with({'message': 'Failed to update watched status'})
-    return respond_with({'message': 'Updated watched status'})
+        return respond_with({'subtitles': [], 'message': 'Failed to update watched status'})
+    return respond_with({'subtitles': [], 'message': 'Updated watched status'})
 
 
 def handle_current_status(status, current_episode, watched_episodes, total_episodes):
@@ -87,17 +87,12 @@ def handle_current_status(status, current_episode, watched_episodes, total_episo
     if total_episodes == 0:  # Handle anime with no episode count
         if current_episode > watched_episodes:
             return "watching", current_episode
-        return "watched", watched_episodes
+        return "completed", watched_episodes
 
-    if status in {"plan_to_watch", "on_hold"}:
+    if status in {"watching", "plan_to_watch", "on_hold"}:
         if current_episode == total_episodes:
             return "completed", total_episodes
         if current_episode > watched_episodes:
             return "watching", current_episode
-
-    elif status == "watching":
-        if current_episode == total_episodes:
-            return "completed", total_episodes
-        return "watching", current_episode
 
     return None, -1
