@@ -19,7 +19,7 @@ torrentio_api = f"https://torrentio.strem.fun/providers={providers}|qualityfilte
 
 @stream_bp.route('/<user_id>/stream/<content_type>/<content_id>.json')
 async def addon_stream(user_id: str, content_type: str, content_id: str):
-    if IMDB_ID_PREFIX in content_id:
+    if MAL_ID_PREFIX not in content_id:
         return respond_with({})
 
     if content_type != 'movie':
