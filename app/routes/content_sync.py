@@ -5,7 +5,7 @@ import httpx
 from flask import Blueprint, abort
 from requests import HTTPError
 
-from app.routes import IMDB_ID_PREFIX, mal_client
+from app.routes import IMDB_ID_PREFIX, mal_client, MAL_ID_PREFIX
 from app.routes.catalog import get_token
 from app.routes.manifest import MANIFEST
 from app.routes.utils import respond_with, log_error
@@ -27,36 +27,38 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     :param video_hash: The hash of the video (ignored)
     :return: JSON response
     """
-    if IMDB_ID_PREFIX in content_id:
-        return respond_with({})
+    mal_id = ""
+    current_episode = 1
 
-    if content_type not in MANIFEST['types']:
-        abort(404)
-
-    # Extract the anime_id and episode from the content_id
     content_id = urllib.parse.unquote(content_id)
-    if content_id.count(':') == 1:
-        anime_id = content_id.replace('kitsu:', '')
-        current_episode = 1
-    else:
-        _, anime_id, current_episode = content_id.split(':')
-        current_episode = int(current_episode)
+    if (IMDB_ID_PREFIX in content_id) or (content_type not in MANIFEST['types']):
+        return respond_with({'subtitles': []})
 
-    # Fetch myanimelist id from mapper
-    resp = httpx.get(haglund_API, params={'source': 'kitsu', 'id': int(anime_id)})
-    if resp.status_code >= 400:
-        logging.error(resp.status_code, resp.reason_phrase)
-        abort(404)
+    if content_id.startswith('kitsu:'):
 
-    data = resp.json()
-    if data.get('myanimelist', None) is None:
-        logging.warning("No id for MyAnimeList found")
-        abort(404)
+        content_id = content_id.replace('kitsu:', '')
+        if content_id.count(':') == 0:  # Handle movie
+            anime_id = content_id
+        else:  # Handle episode
+            anime_id, current_episode = content_id.split(':')
+            current_episode = int(current_episode)
+
+        # Fetch MyAnimeList ID from mapper
+        resp = httpx.get(haglund_API, params={'source': 'kitsu', 'id': int(anime_id)})
+        if resp.status_code >= 400:
+            logging.error(resp.status_code, resp.reason_phrase)
+            abort(404)
+
+        mal_id = resp.json().get('myanimelist', None)
+        if mal_id is None:
+            logging.warning("No id for MyAnimeList found")
+            abort(404)
+
+    elif content_id.startswith(MAL_ID_PREFIX):
+        mal_id = content_id.replace(f"{MAL_ID_PREFIX}_", '')
 
     # Get anime details
     token = get_token(user_id)
-    mal_id = data.get('myanimelist')
-
     resp = mal_client.get_anime_details(token, mal_id, fields='num_episodes my_list_status')
     total_episodes = resp.get('num_episodes', 0)
     current_status = resp.get('my_list_status', {}).get('status', None)
