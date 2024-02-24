@@ -40,9 +40,10 @@ async def addon_content_sync(user_id: str, content_type: str, content_id: str, v
             anime_id, current_episode = content_id.split(':')
             current_episode = int(current_episode)
 
+        # Get mapped mal id
         mal_id = await kitsu_mapper.get_mal_id(int(anime_id))
         if mal_id is None:
-            return respond_with({'subtitles': []})
+            return respond_with({'subtitles': [], 'message': 'No mapped ID found'})
 
     elif content_id.startswith(MAL_ID_PREFIX):
         mal_id = content_id.replace(f"{MAL_ID_PREFIX}_", '')
