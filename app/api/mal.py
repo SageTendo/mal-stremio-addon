@@ -1,7 +1,7 @@
 import os
 import secrets
 
-import requests
+import httpx
 
 from app.api import N_BYTES, QUERY_LIMIT
 from app.api.utils import generate_verifier_challenger_pair, kwargs_to_dict, to_query_string
@@ -54,12 +54,10 @@ class MyAnimeListAPI:
             'code_verifier': self.code_verifier,
             'redirect_uri': self.redirect_uri
         }
-        resp = requests.post(f'{AUTH_URL}/oauth2/token', data=data)
+        resp = httpx.post(f'{AUTH_URL}/oauth2/token', data=data)
         resp.raise_for_status()
 
         resp_json = resp.json()
-        resp.close()
-
         return {
             'token_type': resp_json['token_type'],
             'expires_in': resp_json['expires_in'],
@@ -79,7 +77,7 @@ class MyAnimeListAPI:
             'grant_type': 'refresh_token',
             'refresh_token': refresh_token
         }
-        resp = requests.post(f'{AUTH_URL}/oauth2/token', data=data)
+        resp = httpx.post(f'{AUTH_URL}/oauth2/token', data=data)
         resp.raise_for_status()
         return resp.json()
 
@@ -94,12 +92,12 @@ class MyAnimeListAPI:
             raise Exception("Auth Token Must Be Provided")
 
         headers = kwargs_to_dict(Authorization=f'Bearer {token}')
-        resp = requests.get(f'{BASE_URL}/users/@me', headers=headers)
+        resp = httpx.get(f'{BASE_URL}/users/@me', headers=headers)
         resp.raise_for_status()
         return resp.json()
 
     @staticmethod
-    def get_anime_list(token: str, query: str, **kwargs):
+    async def get_anime_list(token: str, query: str, **kwargs):
         """
         Get a list of anime from MyAnimeList
         :param token: The user's access token
@@ -116,16 +114,17 @@ class MyAnimeListAPI:
         headers = kwargs_to_dict(Authorization=f'Bearer {token}')
         query_params = to_query_string(kwargs)
 
-        if query_params:
-            resp = requests.get(f'{BASE_URL}/anime?q={query}&{query_params}', headers=headers)
-        else:
-            resp = requests.get(f'{BASE_URL}/anime?q={query}', headers=headers)
+        async with httpx.AsyncClient() as client:
+            if query_params:
+                resp = await client.get(f'{BASE_URL}/anime?q={query}&{query_params}', headers=headers)
+            else:
+                resp = await client.get(f'{BASE_URL}/anime?q={query}', headers=headers)
 
         resp.raise_for_status()
         return resp.json()
 
     @staticmethod
-    def get_user_anime_list(token: str, limit: int = QUERY_LIMIT, **kwargs):
+    async def get_user_anime_list(token: str, limit: int = QUERY_LIMIT, **kwargs):
         """
         Get a user's list of anime from MyAnimeList
         :param token: The user's access token
@@ -139,16 +138,17 @@ class MyAnimeListAPI:
         headers = kwargs_to_dict(Authorization=f'Bearer {token}')
         query_params = to_query_string(kwargs)
 
-        if query_params:
-            resp = requests.get(f'{BASE_URL}/users/@me/animelist?limit={limit}&{query_params}', headers=headers)
-        else:
-            resp = requests.get(f'{BASE_URL}/users/@me/animelist?limit={limit}', headers=headers)
+        async with httpx.AsyncClient() as client:
+            if query_params:
+                resp = await client.get(f'{BASE_URL}/users/@me/animelist?limit={limit}&{query_params}', headers=headers)
+            else:
+                resp = await client.get(f'{BASE_URL}/users/@me/animelist?limit={limit}', headers=headers)
 
         resp.raise_for_status()
         return resp.json()
 
     @staticmethod
-    def get_anime_details(token: str, anime_id: str, **kwargs):
+    async def get_anime_details(token: str, anime_id: str, **kwargs):
         """
         Get anime details from MyAnimeList
         :param token: The user's access token
@@ -164,17 +164,17 @@ class MyAnimeListAPI:
 
         headers = kwargs_to_dict(Authorization=f'Bearer {token}')
         query_params = to_query_string(kwargs)
-
-        if query_params:
-            resp = requests.get(f'{BASE_URL}/anime/{anime_id}?{query_params}', headers=headers)
-        else:
-            resp = requests.get(f'{BASE_URL}/anime/{anime_id}', headers=headers)
+        async with httpx.AsyncClient() as client:
+            if query_params:
+                resp = await client.get(f'{BASE_URL}/anime/{anime_id}?{query_params}', headers=headers)
+            else:
+                resp = await client.get(f'{BASE_URL}/anime/{anime_id}', headers=headers)
 
         resp.raise_for_status()
         return resp.json()
 
     @staticmethod
-    def update_watched_status(token: str, anime_id: str, episode: int, status: str = 'watching'):
+    async def update_watched_status(token: str, anime_id: str, episode: int, status: str = 'watching'):
         """
         Update the watched status of an anime in a user's watchlist
         :param token: The user's access token
@@ -191,7 +191,8 @@ class MyAnimeListAPI:
 
         headers = kwargs_to_dict(Authorization=f'Bearer {token}')
         body = {'status': status, 'num_watched_episodes': episode}
-        resp = requests.put(f'{BASE_URL}/anime/{anime_id}/my_list_status', headers=headers, data=body)
+        async with httpx.AsyncClient() as client:
+            resp = await client.put(f'{BASE_URL}/anime/{anime_id}/my_list_status', headers=headers, data=body)
 
         resp.raise_for_status()
         return resp.json()

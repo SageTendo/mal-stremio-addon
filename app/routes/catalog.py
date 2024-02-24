@@ -19,7 +19,7 @@ def get_token(user_id: str):
 
 @catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>.json')
 @catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json')
-def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str = None):
+async def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str = None):
     """
     Provides a list of anime from MyAnimeList
     :param user_id: The user's MyAnimeList ID
@@ -44,7 +44,7 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str 
     token = get_token(user_id)
 
     field_params = 'media_type genres mean start_date end_date synopsis'  # Additional fields to return
-    response_data = mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=field_params)
+    response_data = await mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=field_params)
     response_data = response_data['data']  # Get array of node objects
 
     meta_previews = []
@@ -58,7 +58,7 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str 
 
 
 @catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/search=<search_query>.json')
-def search_metas(user_id: str, catalog_type: str, catalog_id: str, search_query: str):
+async def search_metas(user_id: str, catalog_type: str, catalog_id: str, search_query: str):
     """
     Provides a list of anime from MyAnimeList based on a search query
     :param user_id: The user's MyAnimeList ID
@@ -83,7 +83,7 @@ def search_metas(user_id: str, catalog_type: str, catalog_id: str, search_query:
     token = get_token(user_id)
 
     field_params = 'media_type alternative_titles'  # Additional fields to return
-    response = mal_client.get_anime_list(token, query=search_query, fields=field_params)
+    response = await mal_client.get_anime_list(token, query=search_query, fields=field_params)
     response_data: list = response['data']  # Get array of node objects
 
     meta_previews = []

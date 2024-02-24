@@ -47,4 +47,4 @@ async def addon_stream(user_id: str, content_type: str, content_id: str):
 
         kitsu_id = f"kitsu:{kitsu_id}"
         resp = await client.get(f"{torrentio_api}/stream/{content_type}/{kitsu_id}.json")
-        return respond_with(resp.json())
+    return respond_with(resp.json())

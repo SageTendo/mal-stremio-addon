@@ -3,12 +3,11 @@ import urllib.parse
 
 import httpx
 from flask import Blueprint, abort
-from requests import HTTPError
 
 from app.routes import IMDB_ID_PREFIX, mal_client, MAL_ID_PREFIX
 from app.routes.catalog import get_token
 from app.routes.manifest import MANIFEST
-from app.routes.utils import respond_with, log_error
+from app.routes.utils import respond_with, handle_error
 
 content_sync_bp = Blueprint('content_sync', __name__)
 haglund_API = "https://arm.haglund.dev/api/v2/ids"
@@ -16,7 +15,7 @@ haglund_API = "https://arm.haglund.dev/api/v2/ids"
 
 @content_sync_bp.route('/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json')
 @content_sync_bp.route('/<user_id>/subtitles/<content_type>/<content_id>.json')
-def addon_content_sync(user_id: str, content_type: str, content_id: str, video_hash: str = None):
+async def addon_content_sync(user_id: str, content_type: str, content_id: str, video_hash: str = None):
     """
     Synchronize watched status for a specific content with MyAnimeList.
     Stremio will call this endpoint when a user watches a video, requesting a subtitle for it.
@@ -44,8 +43,10 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
             current_episode = int(current_episode)
 
         # Fetch MyAnimeList ID from mapper
-        resp = httpx.get(haglund_API, params={'source': 'kitsu', 'id': int(anime_id)})
-        if resp.status_code >= 400:
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(haglund_API, params={'source': 'kitsu', 'id': int(anime_id)})
+
+        if not resp.is_success:
             logging.error(resp.status_code, resp.reason_phrase)
             abort(404)
 
@@ -59,7 +60,7 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
 
     # Get anime details
     token = get_token(user_id)
-    resp = mal_client.get_anime_details(token, mal_id, fields='num_episodes my_list_status')
+    resp = await mal_client.get_anime_details(token, mal_id, fields='num_episodes my_list_status')
     total_episodes = resp.get('num_episodes', 0)
     current_status = resp.get('my_list_status', {}).get('status', None)
     watched_episodes = resp.get('my_list_status', {}).get('num_episodes_watched', 0)
@@ -70,9 +71,9 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
         return respond_with({'subtitles': [], 'message': 'Nothing to update'})
 
     try:
-        mal_client.update_watched_status(token, mal_id, current_episode, status)
-    except HTTPError as err:
-        log_error(err)
+        await mal_client.update_watched_status(token, mal_id, current_episode, status)
+    except httpx.HTTPStatusError as err:
+        handle_error(err)
         return respond_with({'subtitles': [], 'message': 'Failed to update watched status'})
     return respond_with({'subtitles': [], 'message': 'Updated watched status'})
 

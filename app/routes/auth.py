@@ -1,4 +1,4 @@
-import requests
+import httpx
 from flask import Blueprint, request, url_for, session, flash
 from werkzeug.utils import redirect
 
@@ -53,7 +53,7 @@ def callback():
         session['user'] = user_details
         flash("You are now logged in.", "success")
         return redirect(url_for('index'))
-    except requests.HTTPError as e:
+    except httpx.HTTPStatusError as e:
         return handle_error(e)
 
 
@@ -77,7 +77,7 @@ def refresh_token():
         session['user'] = user_details
         flash("MyAnimeList session refreshed.", "success")
         return redirect(url_for('index'))
-    except requests.HTTPError as e:
+    except httpx.HTTPStatusError as e:
         return handle_error(e)
 
 

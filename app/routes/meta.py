@@ -1,6 +1,6 @@
 import logging
 
-import requests
+import httpx
 from flask import Blueprint, abort
 
 from . import IMDB_ID_PREFIX
@@ -13,7 +13,7 @@ kitsu_API = "https://anime-kitsu.strem.fun/meta"
 
 
 @meta_bp.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
-def addon_meta(user_id: str, meta_type: str, meta_id: str):
+async def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     Provides metadata for a specific content
     :param user_id: The user's API token for MyAnimeList
@@ -29,10 +29,12 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     if meta_type not in MANIFEST['types']:
         abort(404)
 
-    resp = requests.get(f"{kitsu_API}/{meta_type}/{meta_id.replace('_', ':')}.json")
-    if not resp.ok:
-        logging.error(resp.status_code, resp.reason)
-        abort(404, f"{resp.status_code}: {resp.reason}")
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(f"{kitsu_API}/{meta_type}/{meta_id.replace('_', ':')}.json")
+
+    if not resp.is_success:
+        logging.error(resp.status_code, resp.reason_phrase)
+        abort(404, f"{resp.status_code}: {resp.reason_phrase}")
 
     meta = kitsu_to_meta(resp.json())
     meta['id'] = meta_id
