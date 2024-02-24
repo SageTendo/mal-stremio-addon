@@ -1,22 +1,19 @@
-import logging
 import urllib.parse
 
-import httpx
-from flask import Blueprint, abort
+from flask import Blueprint
 from requests import HTTPError
 
-from app.routes import IMDB_ID_PREFIX, mal_client, MAL_ID_PREFIX
+from app.routes import IMDB_ID_PREFIX, mal_client, MAL_ID_PREFIX, kitsu_mapper
 from app.routes.catalog import get_token
 from app.routes.manifest import MANIFEST
 from app.routes.utils import respond_with, log_error
 
 content_sync_bp = Blueprint('content_sync', __name__)
-haglund_API = "https://arm.haglund.dev/api/v2/ids"
 
 
 @content_sync_bp.route('/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json')
 @content_sync_bp.route('/<user_id>/subtitles/<content_type>/<content_id>.json')
-def addon_content_sync(user_id: str, content_type: str, content_id: str, video_hash: str = None):
+async def addon_content_sync(user_id: str, content_type: str, content_id: str, video_hash: str = None):
     """
     Synchronize watched status for a specific content with MyAnimeList.
     Stremio will call this endpoint when a user watches a video, requesting a subtitle for it.
@@ -43,16 +40,9 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
             anime_id, current_episode = content_id.split(':')
             current_episode = int(current_episode)
 
-        # Fetch MyAnimeList ID from mapper
-        resp = httpx.get(haglund_API, params={'source': 'kitsu', 'id': int(anime_id)})
-        if resp.status_code >= 400:
-            logging.error(resp.status_code, resp.reason_phrase)
-            abort(404)
-
-        mal_id = resp.json().get('myanimelist', None)
+        mal_id = await kitsu_mapper.get_mal_id(int(anime_id))
         if mal_id is None:
-            logging.warning("No id for MyAnimeList found")
-            abort(404)
+            return respond_with({'subtitles': []})
 
     elif content_id.startswith(MAL_ID_PREFIX):
         mal_id = content_id.replace(f"{MAL_ID_PREFIX}_", '')

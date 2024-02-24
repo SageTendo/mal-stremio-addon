@@ -5,7 +5,6 @@ import httpx
 from flask import Blueprint, abort
 
 from app.routes import MAL_ID_PREFIX
-from app.routes.content_sync import haglund_API
 from app.routes.utils import respond_with
 
 stream_bp = Blueprint('stream', __name__)
@@ -14,7 +13,9 @@ limit = 5
 providers = ("yts,eztv,rarbg,1337x,thepiratebay,kickasstorrents,"
              "torrentgalaxy,magnetdl,horriblesubs,nyaasi,tokyotosho,anidex")
 quality_filters = "brremux,hdrall,dolbyvision"
+
 torrentio_api = f"https://torrentio.strem.fun/providers={providers}|qualityfilter={quality_filters}|limit={limit}"
+haglund_API = "https://arm.haglund.dev/api/v2/ids"
 
 
 @stream_bp.route('/<user_id>/stream/<content_type>/<content_id>.json')
@@ -35,7 +36,7 @@ async def addon_stream(user_id: str, content_type: str, content_id: str):
     async with httpx.AsyncClient() as client:
 
         resp = await client.get(haglund_API, params={'source': 'myanimelist', 'id': content_id})
-        if resp.status_code >= 400:
+        if not resp.is_success:
             logging.error(resp.status_code, resp.reason_phrase)
             abort(404)
 
