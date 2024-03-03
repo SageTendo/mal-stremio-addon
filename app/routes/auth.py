@@ -1,5 +1,5 @@
-import httpx
 from flask import Blueprint, request, url_for, session, flash, make_response, abort
+from httpx import HTTPStatusError
 from werkzeug.utils import redirect
 
 from app.db.db import store_user, UID_map_collection
@@ -79,7 +79,7 @@ def callback():
         session['user'] = user_details
         flash("You are now logged in.", "success")
         return redirect(url_for('index'))
-    except httpx.HTTPStatusError as e:
+    except HTTPStatusError as e:
         return handle_auth_error(e)
 
 
@@ -104,8 +104,9 @@ def refresh_token():
         flash("MyAnimeList session refreshed.", "success")
         return redirect(url_for('index'))
 
-    except httpx.HTTPStatusError as e:
+    except HTTPStatusError as e:
         return handle_auth_error(e)
+
 
 @auth_blueprint.route('/logout')
 def logout():
