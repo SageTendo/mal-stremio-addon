@@ -1,12 +1,38 @@
 import requests
-from flask import Blueprint, request, url_for, session, flash
+from flask import Blueprint, request, url_for, session, flash, make_response, redirect, abort
 from werkzeug.utils import redirect
 
-from app.db.db import store_user
+from app.db.db import store_user, UID_map_collection
 from app.routes import mal_client
-from app.routes.utils import handle_error
+from app.routes.utils import log_response_error
 
 auth_blueprint = Blueprint('auth', __name__)
+
+
+def handle_auth_error(err):
+    """
+    Handles errors thrown from the addon's configuration related routes and informs the user.
+    :param err: The exception raised to be handled.
+    :return: A redirect response to the addon's index route
+    """
+    if 400 >= err.response.status_code < 500:
+        flash(err, "danger")
+        return make_response(redirect(url_for('index')))
+    elif err.response.status_code >= 500:
+        log_response_error(err)
+        flash(err, "danger")
+        return make_response(redirect(url_for('index')))
+
+
+def get_token(user_id: str):
+    """
+    Queries the database and returns the user's MAL access token
+    :param user_id: The ID of the user
+    :return: The user's MAL access token
+    """
+    if not (user := UID_map_collection.find_one({'uid': user_id})):
+        abort(404, 'User not found')
+    return user['access_token']
 
 
 @auth_blueprint.route('/authorization', methods=["GET", "POST"])
@@ -54,7 +80,7 @@ def callback():
         flash("You are now logged in.", "success")
         return redirect(url_for('index'))
     except requests.HTTPError as e:
-        return handle_error(e)
+        return handle_auth_error(e)
 
 
 @auth_blueprint.route('/refresh')
@@ -78,7 +104,7 @@ def refresh_token():
         flash("MyAnimeList session refreshed.", "success")
         return redirect(url_for('index'))
     except requests.HTTPError as e:
-        return handle_error(e)
+        return handle_auth_error(e)
 
 
 @auth_blueprint.route('/logout')

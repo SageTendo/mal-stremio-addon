@@ -1,20 +1,15 @@
 import random
 
 from flask import Blueprint, abort
+from requests import HTTPError
 from werkzeug.exceptions import abort
 
 from . import mal_client, MAL_ID_PREFIX
+from .auth import get_token
 from .manifest import MANIFEST
-from .utils import respond_with
-from ..db.db import UID_map_collection
+from .utils import respond_with, log_response_error
 
 catalog_bp = Blueprint('catalog', __name__)
-
-
-def get_token(user_id: str):
-    if not (user := UID_map_collection.find_one({'uid': user_id})):
-        return abort(404, 'User not found')
-    return user['access_token']
 
 
 @catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>.json')
@@ -42,19 +37,22 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str 
         abort(404)
 
     token = get_token(user_id)
+    try:
+        field_params = 'media_type genres mean start_date end_date synopsis'  # Additional fields to return
+        response_data = mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=field_params)
+        response_data = response_data['data']  # Get array of node objects
 
-    field_params = 'media_type genres mean start_date end_date synopsis'  # Additional fields to return
-    response_data = mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=field_params)
-    response_data = response_data['data']  # Get array of node objects
+        meta_previews = []
+        for data_item in response_data:
+            anime_item = data_item['node']
 
-    meta_previews = []
-    for data_item in response_data:
-        anime_item = data_item['node']
-
-        # Convert to Stremio compatible JSON
-        meta = mal_to_meta(anime_item)
-        meta_previews.append(meta)
-    return respond_with({'metas': meta_previews})
+            # Convert to Stremio compatible JSON
+            meta = mal_to_meta(anime_item)
+            meta_previews.append(meta)
+        return respond_with({'metas': meta_previews})
+    except HTTPError as e:
+        log_response_error(e)
+        return respond_with({'metas': []})
 
 
 @catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/search=<search_query>.json')
@@ -82,18 +80,22 @@ def search_metas(user_id: str, catalog_type: str, catalog_id: str, search_query:
 
     token = get_token(user_id)
 
-    field_params = 'media_type alternative_titles'  # Additional fields to return
-    response = mal_client.get_anime_list(token, query=search_query, fields=field_params)
-    response_data: list = response['data']  # Get array of node objects
+    try:
+        field_params = 'media_type alternative_titles'  # Additional fields to return
+        response = mal_client.get_anime_list(token, query=search_query, fields=field_params)
+        response_data: list = response['data']  # Get array of node objects
 
-    meta_previews = []
-    for data_item in response_data:
-        anime_item = data_item['node']
+        meta_previews = []
+        for data_item in response_data:
+            anime_item = data_item['node']
 
-        # Convert to Stremio compatible JSON
-        meta = mal_to_meta(anime_item)
-        meta_previews.append(meta)
-    return respond_with({'metas': meta_previews})
+            # Convert to Stremio compatible JSON
+            meta = mal_to_meta(anime_item)
+            meta_previews.append(meta)
+        return respond_with({'metas': meta_previews})
+    except HTTPError as e:
+        log_response_error(e)
+        return respond_with({'metas': []})
 
 
 def mal_to_meta(anime_item: dict):
