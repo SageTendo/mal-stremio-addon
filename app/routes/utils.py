@@ -1,19 +1,9 @@
 import logging
 
-from flask import jsonify, flash, make_response, url_for, redirect
+from flask import jsonify
 
 
-def handle_error(err):
-    if 400 >= err.response.status_code < 500:
-        flash(err, "danger")
-        return make_response(redirect(url_for('index')))
-    elif err.response.status_code >= 500:
-        log_error(err)
-        flash(err, "danger")
-        return make_response(redirect(url_for('index')))
-
-
-def log_error(err):
+def log_response_error(err):
     response = err.response.json()
     error_label = response.get('error', 'No error label in response').capitalize()
     message = response.get('message', 'No message field in response')

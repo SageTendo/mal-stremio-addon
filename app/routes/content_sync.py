@@ -6,7 +6,7 @@ from requests import HTTPError
 from app.routes import IMDB_ID_PREFIX, mal_client, MAL_ID_PREFIX, kitsu_mapper
 from app.routes.catalog import get_token
 from app.routes.manifest import MANIFEST
-from app.routes.utils import respond_with, log_error
+from app.routes.utils import respond_with, log_response_error
 
 content_sync_bp = Blueprint('content_sync', __name__)
 
@@ -31,6 +31,7 @@ async def addon_content_sync(user_id: str, content_type: str, content_id: str, v
     if (IMDB_ID_PREFIX in content_id) or (content_type not in MANIFEST['types']):
         return respond_with({'subtitles': []})
 
+    # Handle content ID
     if content_id.startswith('kitsu:'):
 
         content_id = content_id.replace('kitsu:', '')
@@ -50,10 +51,14 @@ async def addon_content_sync(user_id: str, content_type: str, content_id: str, v
 
     # Get anime details
     token = get_token(user_id)
-    resp = mal_client.get_anime_details(token, mal_id, fields='num_episodes my_list_status')
-    total_episodes = resp.get('num_episodes', 0)
-    current_status = resp.get('my_list_status', {}).get('status', None)
-    watched_episodes = resp.get('my_list_status', {}).get('num_episodes_watched', 0)
+    try:
+        resp = mal_client.get_anime_details(token, mal_id, fields='num_episodes my_list_status')
+        total_episodes = resp.get('num_episodes', 0)
+        current_status = resp.get('my_list_status', {}).get('status', None)
+        watched_episodes = resp.get('my_list_status', {}).get('num_episodes_watched', 0)
+    except HTTPError as err:
+        log_response_error(err)
+        return respond_with({'subtitles': [], 'message': 'Failed to get anime details'})
 
     # Update watched status in MyAnimeList
     status, episode = handle_current_status(current_status, current_episode, watched_episodes, total_episodes)
@@ -63,7 +68,7 @@ async def addon_content_sync(user_id: str, content_type: str, content_id: str, v
     try:
         mal_client.update_watched_status(token, mal_id, current_episode, status)
     except HTTPError as err:
-        log_error(err)
+        log_response_error(err)
         return respond_with({'subtitles': [], 'message': 'Failed to update watched status'})
     return respond_with({'subtitles': [], 'message': 'Updated watched status'})
 

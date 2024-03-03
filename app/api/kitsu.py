@@ -1,6 +1,6 @@
 import httpx
 
-from app.routes.utils import handle_error
+from app.routes.utils import log_response_error
 
 BASE_URL = "https://kitsu.io/api/edge/anime/"
 
@@ -34,5 +34,5 @@ class Kitsu_Mapper:
         try:
             return await Kitsu_Mapper.__extract_id(kitsu_id)
         except httpx.HTTPStatusError as err:
-            handle_error(err)
+            log_response_error(err)
             return None
