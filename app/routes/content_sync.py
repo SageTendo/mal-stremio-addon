@@ -86,11 +86,6 @@ def handle_current_status(status, current_episode, watched_episodes, total_episo
     :param total_episodes: The total number of episodes the anime has
     :return: A tuple of (status, episode)
     """
-    if total_episodes == 0:  # Handle anime with no episode count
-        if current_episode > watched_episodes:
-            return "watching", current_episode
-        return "completed", watched_episodes
-
     if status in {"watching", "plan_to_watch", "on_hold"}:
         if current_episode == total_episodes:
             return "completed", total_episodes
