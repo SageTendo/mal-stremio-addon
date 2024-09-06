@@ -2,7 +2,6 @@ import logging
 
 from flask import Flask, render_template, session, url_for, redirect
 from flask_compress import Compress
-from flask_session import Session
 
 from app.db.db import db
 from app.routes.auth import auth_blueprint
@@ -22,8 +21,6 @@ app.register_blueprint(meta_bp)
 app.register_blueprint(content_sync_bp)
 app.register_blueprint(stream_bp)
 
-app.config['SESSION_MONGODB'] = db
-Session(app)
 Compress(app)
 
 logging.basicConfig(format='%(asctime)s %(message)s')

@@ -57,14 +57,14 @@ virtualenv-clone = "*"
 webencodings = "*"
 werkzeug = "*"
 zipp = "*"
-pymongo = {extras = ["srv"], version = "*"}
 waitress = "*"
 flask-session = "*"
 flask-compress = "*"
 httpx = "*"
+pymongo = {extras = ["srv"], version = "*"}
 
 [dev-packages]
-uvicorn = "*"
+pytest="*"
 
 [requires]
-python_version = "3.9"
+python_version = "3.12"
