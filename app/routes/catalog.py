@@ -1,6 +1,6 @@
 import random
 
-from flask import Blueprint, abort
+from flask import Blueprint, abort, url_for, request, Request
 from werkzeug.exceptions import abort
 
 from . import mal_client, MAL_ID_PREFIX
@@ -17,9 +17,24 @@ def get_token(user_id: str):
     return user['access_token']
 
 
+def _get_transport_url(req: Request):
+    return req.root_url + url_for('manifest.addon_unconfigured_manifest')
+
+
+def has_genre_tag(meta: dict, genre: str = None):
+    if not genre:
+        return True
+
+    for meta_genre in meta.get('genres', []):
+        if meta_genre['name'].lower() == genre.lower():
+            return True
+    return False
+
+
 @catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>.json')
 @catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json')
-def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str = None):
+@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/genre=<genre>.json')
+def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str = None, genre: str = None):
     """
     Provides a list of anime from MyAnimeList
     :param user_id: The user's MyAnimeList ID
@@ -43,7 +58,7 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str 
 
     token = get_token(user_id)
 
-    field_params = 'media_type genres mean start_date end_date synopsis'  # Additional fields to return
+    field_params = 'media_type genres mean start_date end_date synopsis'
     response_data = mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=field_params)
     response_data = response_data['data']  # Get array of node objects
 
@@ -51,8 +66,12 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str 
     for data_item in response_data:
         anime_item = data_item['node']
 
+        if not has_genre_tag(anime_item, genre):
+            continue
+
         # Convert to Stremio compatible JSON
-        meta = mal_to_meta(anime_item)
+        meta = mal_to_meta(anime_item, catalog_type=catalog_type, catalog_id=catalog_id,
+                           transport_url=_get_transport_url(request))
         meta_previews.append(meta)
     return respond_with({'metas': meta_previews})
 
@@ -82,7 +101,7 @@ def search_metas(user_id: str, catalog_type: str, catalog_id: str, search_query:
 
     token = get_token(user_id)
 
-    field_params = 'media_type alternative_titles'  # Additional fields to return
+    field_params = 'media_type alternative_titles genres mean start_date end_date synopsis'
     response = mal_client.get_anime_list(token, query=search_query, fields=field_params)
     response_data: list = response['data']  # Get array of node objects
 
@@ -91,15 +110,19 @@ def search_metas(user_id: str, catalog_type: str, catalog_id: str, search_query:
         anime_item = data_item['node']
 
         # Convert to Stremio compatible JSON
-        meta = mal_to_meta(anime_item)
+        meta = mal_to_meta(anime_item, catalog_type=catalog_type, catalog_id=catalog_id,
+                           transport_url=_get_transport_url(request))
         meta_previews.append(meta)
     return respond_with({'metas': meta_previews})
 
 
-def mal_to_meta(anime_item: dict):
+def mal_to_meta(anime_item: dict, catalog_type: str, catalog_id: str, transport_url: str):
     """
     Convert MAL anime item to a valid Stremio meta format
     :param anime_item: The MAL anime item to convert
+    :param catalog_type: The type of catalog being referenced in the link meta object
+    :param catalog_id: The id of catalog being referenced in the link meta object
+    :param transport_url: The url to the addon's manifest.json
     :return: Stremio meta format
     """
     # Metadata stuff
@@ -116,8 +139,15 @@ def mal_to_meta(anime_item: dict):
         if poster := poster_objects.get('large', None):
             poster = poster_objects.get('medium')
 
+    links = []
+    format_genres = []
     if genres := anime_item.get('genres', {}):
-        genres = [genre['name'] for genre in genres]
+        for genre in genres:
+            format_genres.append(genre['name'])
+            link = {'name': genre['name'],
+                    'category': 'Genres',
+                    'url': f"stremio:///discover/{transport_url}/{catalog_type}/{catalog_id}?genre={genre['name']}"}
+            links.append(link)
 
     # Check for release info and format it if it exists
     if start_date := anime_item.get('start_date', None):
@@ -149,7 +179,8 @@ def mal_to_meta(anime_item: dict):
         'id': formatted_content_id,
         'name': title,
         'type': media_type,
-        'genres': genres,
+        'genres': format_genres,
+        'links': links,
         'poster': poster,
         'background': background,
         'imdbRating': mean_score,
