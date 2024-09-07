@@ -1,4 +1,5 @@
 import random
+import urllib
 
 from flask import Blueprint, abort, url_for, request, Request
 from werkzeug.exceptions import abort
@@ -18,7 +19,7 @@ def get_token(user_id: str):
 
 
 def _get_transport_url(req: Request):
-    return req.root_url + url_for('manifest.addon_unconfigured_manifest')
+    return urllib.parse.quote_plus(req.root_url[:-1] + url_for('manifest.addon_unconfigured_manifest'))
 
 
 def has_genre_tag(meta: dict, genre: str = None):
