@@ -54,8 +54,10 @@ MANIFEST = {
             'name': 'MAL',
             'extra': [
                 {'name': 'search', 'isRequired': True},
-                {'name': 'skip'}
-            ]
+                {'name': 'skip'},
+                {'name': 'genre', 'options': genres, 'isRequired': False}
+            ],
+            'genre': genres
         }
     ],
 
