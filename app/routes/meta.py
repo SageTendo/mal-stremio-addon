@@ -1,4 +1,5 @@
 import logging
+from functools import lru_cache
 
 import requests
 from flask import Blueprint, abort
@@ -14,6 +15,7 @@ kitsu_API = "https://anime-kitsu.strem.fun/meta"
 
 
 @meta_bp.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
+@lru_cache(maxsize=1000)
 def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     Provides metadata for a specific content

@@ -1,4 +1,5 @@
 import re
+from functools import lru_cache
 
 from pymongo import MongoClient
 
@@ -32,6 +33,7 @@ def store_user(user_details):
             {'uid': user_id, 'access_token': access_token, 'refresh_token': refresh_tkn, 'expires_in': expires_in})
 
 
+@lru_cache(maxsize=10000)
 def get_kitsu_id_from_mal_id(mal_id):
     """
     Get kitsu_id from mal_id from db
@@ -48,6 +50,7 @@ def get_kitsu_id_from_mal_id(mal_id):
     return False, None
 
 
+@lru_cache(maxsize=10000)
 def get_mal_id_from_kitsu_id(kitsu_id):
     """
     Get mal_id from kitsu_id from db
