@@ -1,17 +1,15 @@
-import logging
 import urllib.parse
 
-import httpx
-from flask import Blueprint, abort
+from flask import Blueprint
 from requests import HTTPError
 
+from app.db.db import get_mal_id_from_kitsu_id
 from app.routes import IMDB_ID_PREFIX, mal_client, MAL_ID_PREFIX
 from app.routes.catalog import get_token
 from app.routes.manifest import MANIFEST
 from app.routes.utils import respond_with, log_error
 
 content_sync_bp = Blueprint('content_sync', __name__)
-haglund_API = "https://arm.haglund.dev/api/v2/ids"
 
 
 @content_sync_bp.route('/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json')
@@ -28,14 +26,13 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     :return: JSON response
     """
     mal_id = ""
-    current_episode = 1
+    current_episode = -1
 
     content_id = urllib.parse.unquote(content_id)
     if (IMDB_ID_PREFIX in content_id) or (content_type not in MANIFEST['types']):
         return respond_with({'subtitles': []})
 
     if content_id.startswith('kitsu:'):
-
         content_id = content_id.replace('kitsu:', '')
         if content_id.count(':') == 0:  # Handle movie
             anime_id = content_id
@@ -43,33 +40,24 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
             anime_id, current_episode = content_id.split(':')
             current_episode = int(current_episode)
 
-        # Fetch MyAnimeList ID from mapper
-        resp = httpx.get(haglund_API, params={'source': 'kitsu', 'id': int(anime_id)})
-        if resp.status_code >= 400:
-            logging.error(resp.status_code, resp.reason_phrase)
-            abort(404)
-
-        mal_id = resp.json().get('myanimelist', None)
-        if mal_id is None:
-            logging.warning("No id for MyAnimeList found")
-            abort(404)
+        exists, mal_id = get_mal_id_from_kitsu_id(anime_id)
+        if not exists:
+            return respond_with({'subtitles': [], 'message': 'No id for MyAnimeList found'})
 
     elif content_id.startswith(MAL_ID_PREFIX):
         mal_id = content_id.replace(f"{MAL_ID_PREFIX}_", '')
 
-    # Get anime details
     token = get_token(user_id)
     resp = mal_client.get_anime_details(token, mal_id, fields='num_episodes my_list_status')
     total_episodes = resp.get('num_episodes', 0)
     current_status = resp.get('my_list_status', {}).get('status', None)
     watched_episodes = resp.get('my_list_status', {}).get('num_episodes_watched', 0)
 
-    # Update watched status in MyAnimeList
-    status, episode = handle_current_status(current_status, current_episode, watched_episodes, total_episodes)
-    if status is None:
-        return respond_with({'subtitles': [], 'message': 'Nothing to update'})
-
     try:
+        status, episode = handle_current_status(current_status, current_episode, watched_episodes, total_episodes)
+        if status is None:
+            return respond_with({'subtitles': [], 'message': 'Nothing to update'})
+
         mal_client.update_watched_status(token, mal_id, current_episode, status)
     except HTTPError as err:
         log_error(err)
@@ -89,7 +77,7 @@ def handle_current_status(status, current_episode, watched_episodes, total_episo
     if status in {"watching", "plan_to_watch", "on_hold"}:
         if current_episode == total_episodes:
             return "completed", total_episodes
-        if current_episode > watched_episodes:
+        elif current_episode > watched_episodes:
             return "watching", current_episode
 
     return None, -1

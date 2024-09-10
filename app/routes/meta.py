@@ -3,9 +3,10 @@ import logging
 import requests
 from flask import Blueprint, abort
 
-from . import IMDB_ID_PREFIX
+from . import IMDB_ID_PREFIX, MAL_ID_PREFIX
 from .manifest import MANIFEST
 from .utils import respond_with
+from ..db.db import get_kitsu_id_from_mal_id
 
 meta_bp = Blueprint('meta', __name__)
 
@@ -25,11 +26,16 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     if IMDB_ID_PREFIX in meta_id:
         return respond_with({})
 
-    # Check if meta type exists in manifest
     if meta_type not in MANIFEST['types']:
         abort(404)
 
-    resp = requests.get(f"{kitsu_API}/{meta_type}/{meta_id.replace('_', ':')}.json")
+    exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
+    if exists:
+        resp = requests.get(f"{kitsu_API}/{meta_type}/kitsu:{kitsu_id}.json")
+    else:  # if no kitsu id, try with mal id
+        mal_id = meta_id.replace(f"{MAL_ID_PREFIX}_", '')
+        resp = requests.get(f"{kitsu_API}/{meta_type}/mal:{mal_id}.json")
+
     if not resp.ok:
         logging.error(resp.status_code, resp.reason)
         abort(404, f"{resp.status_code}: {resp.reason}")
