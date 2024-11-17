@@ -1,5 +1,6 @@
 import re
 from functools import lru_cache
+from typing import Dict
 
 from pymongo import MongoClient
 
@@ -14,7 +15,7 @@ UID_map_collection = db.get_collection(Config.MONGO_UID_MAP)
 anime_mapping = anime_db.get_collection(Config.MONGO_ANIME_MAP)
 
 
-def store_user(user_details):
+def store_user(user_details: Dict):
     """
     Store user details in db
     :param user_details: The user details to store
@@ -34,7 +35,7 @@ def store_user(user_details):
 
 
 @lru_cache(maxsize=10000)
-def get_kitsu_id_from_mal_id(mal_id):
+def get_kitsu_id_from_mal_id(mal_id) -> (bool, str):
     """
     Get kitsu_id from mal_id from db
     :param mal_id: The MyAnimeList id of the anime
@@ -51,7 +52,7 @@ def get_kitsu_id_from_mal_id(mal_id):
 
 
 @lru_cache(maxsize=10000)
-def get_mal_id_from_kitsu_id(kitsu_id):
+def get_mal_id_from_kitsu_id(kitsu_id) -> (bool, str):
     """
     Get mal_id from kitsu_id from db
     :param kitsu_id: The kitsu id of the anime

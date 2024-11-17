@@ -14,17 +14,35 @@ catalog_bp = Blueprint('catalog', __name__)
 
 
 def get_token(user_id: str):
+    """
+    Get the access token for the user 'user_id' from the database
+    :param user_id: The user's MyAnimeList ID
+    :return: The user's access token
+    """
     if not (user := UID_map_collection.find_one({'uid': user_id})):
         return abort(404, 'User not found')
     return user['access_token']
 
 
 def _get_transport_url(req: Request, user_id: str):
+    """
+    Get the transport URL for the user 'user_id'
+    :param req: The request object
+    :param user_id: The user's MyAnimeList ID
+    :return: The transport URL
+    """
     return urllib.parse.quote_plus(
         req.root_url[:-1] + url_for('manifest.addon_configured_manifest', user_id=user_id))
 
 
 def _is_valid_catalog(catalog_type: str, catalog_id: str):
+    """
+    Check if the catalog type and id are valid
+    :param catalog_type: The type of catalog to return
+    :param catalog_id: The ID of the catalog to return, MAL divides a user's anime list into different categories
+           (e.g. plan to watch, watching, completed, on hold, dropped)
+    :return: True if the catalog type and id are valid, False otherwise
+    """
     if catalog_type in MANIFEST['types']:
         for catalog in MANIFEST['catalogs']:
             if catalog['id'] == catalog_id:
@@ -33,6 +51,12 @@ def _is_valid_catalog(catalog_type: str, catalog_id: str):
 
 
 def _has_genre_tag(meta: dict, genre: str = None):
+    """
+    Check if the meta has a genre tag
+    :param meta: The meta object to check
+    :param genre: The genre to filter by
+    :return: True if the meta has a genre tag, False otherwise
+    """
     if not genre:
         return True
 

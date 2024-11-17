@@ -48,7 +48,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     return respond_with({'meta': meta})
 
 
-def kitsu_to_meta(kitsu_meta: dict):
+def kitsu_to_meta(kitsu_meta: dict) -> dict:
     """
     Convert kitsu item to a valid Stremio meta format
     :param kitsu_meta: The kitsu item to convert

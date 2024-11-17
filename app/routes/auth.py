@@ -1,5 +1,5 @@
 import requests
-from flask import Blueprint, request, url_for, session, flash
+from flask import Blueprint, request, url_for, session, flash, Response
 from werkzeug.utils import redirect
 
 from app.db.db import store_user
@@ -22,7 +22,7 @@ def _store_user_session(user_details: dict):
 def authorize_user():
     """
     Authorizes a user to access MyAnimeList's API
-    :return: redirects to MyAnimeList's auth page
+    :return: redirect response to MyAnimeList's auth page
     """
     if 'user' in session:
         flash("You are already logged in.", "warning")
@@ -34,7 +34,7 @@ def authorize_user():
 def callback():
     """
     Callback URL from MyAnimeList
-    :return: A webpage with the manifest URL and Magnet URL
+    :return: A webpage response with the manifest URL and Magnet URL
     """
     # check if error occurred from MyAnimeList
     if request.args.get('error'):
@@ -70,7 +70,7 @@ def callback():
 def refresh_token():
     """
     Refreshes the access token for MyAnimeList
-    :return: redirects to the index page of the app
+    :return: redirect response to the index page of the app
     """
     if not (user_details := session.get('user', None)):
         flash("Session expired! Please log in to MyAnimeList again.", "danger")
@@ -94,7 +94,7 @@ def refresh_token():
 def logout():
     """
     Logs the user out and clears the session
-    :return: redirects to the index page of the app
+    :return: redirect response to the index page of the app
     """
     if 'user' not in session:
         flash("You are not logged in.", "warning")

@@ -12,6 +12,9 @@ BASE_URL = "https://api.myanimelist.net/v1"
 
 
 class MyAnimeListAPI:
+    """
+    MyAnimeList API wrapper
+    """
 
     def __init__(self):
         """

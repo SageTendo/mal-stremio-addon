@@ -42,11 +42,17 @@ def index():
 
 @app.route('/<user_id>/configure')
 def redirect_to_index(user_id: str):
+    """
+    Redirect to the index page
+    """
     return redirect(url_for('index'))
 
 
 @app.route('/favicon.ico')
 def favicon():
+    """
+    Render the favicon for the app
+    """
     return app.send_static_file('favicon.ico')
 
 

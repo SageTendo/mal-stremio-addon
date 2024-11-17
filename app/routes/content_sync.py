@@ -65,7 +65,7 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     return respond_with({'subtitles': [], 'message': 'Updated watched status'})
 
 
-def handle_current_status(status, current_episode, watched_episodes, total_episodes):
+def handle_current_status(status, current_episode, watched_episodes, total_episodes) -> (str, int):
     """
     Handle the current status of the anime in user's watchlists.
     :param status: The current watchlist status that the anime is in
