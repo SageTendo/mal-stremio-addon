@@ -67,4 +67,4 @@ pymongo = {extras = ["srv"], version = "*"}
 pytest="*"
 
 [requires]
-python_version = "3.12"
+python_version = "3.9"
