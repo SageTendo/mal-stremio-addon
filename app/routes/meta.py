@@ -10,6 +10,11 @@ from .utils import respond_with
 meta_bp = Blueprint('meta', __name__)
 
 kitsu_API = "https://anime-kitsu.strem.fun/meta"
+HEADERS = {
+    'User-Agent': "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0",
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+}
 
 
 @meta_bp.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
@@ -29,7 +34,9 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     if meta_type not in MANIFEST['types']:
         abort(404)
 
-    resp = requests.get(f"{kitsu_API}/{meta_type}/{meta_id.replace('_', ':')}.json")
+    kitsu_id = meta_id.replace('_', ':')
+    resp = requests.get(headers=HEADERS,
+                        url=f"{kitsu_API}/{meta_type}/{kitsu_id}.json")
     if not resp.ok:
         logging.error(resp.status_code, resp.reason)
         abort(404, f"{resp.status_code}: {resp.reason}")
