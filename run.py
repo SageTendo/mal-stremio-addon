@@ -3,7 +3,6 @@ import logging
 from flask import Flask, render_template, session, url_for, redirect
 from flask_compress import Compress
 
-from app.db.db import db
 from app.routes.auth import auth_blueprint
 from app.routes.catalog import catalog_bp
 from app.routes.content_sync import content_sync_bp
@@ -21,7 +20,7 @@ app.register_blueprint(meta_bp)
 app.register_blueprint(content_sync_bp)
 app.register_blueprint(stream_bp)
 
-# Compress(app)
+Compress(app)
 
 logging.basicConfig(format='%(asctime)s %(message)s')
 
