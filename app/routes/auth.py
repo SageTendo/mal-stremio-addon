@@ -9,6 +9,15 @@ from app.routes.utils import handle_error
 auth_blueprint = Blueprint('auth', __name__)
 
 
+def _store_user_session(user_details: dict):
+    """
+    Stores the user's details in the form of a web session
+    :param user_details: The user details
+    """
+    session['user'] = user_details
+    session.permanent = True
+
+
 @auth_blueprint.route('/authorization', methods=["GET", "POST"])
 def authorize_user():
     """
@@ -50,7 +59,7 @@ def callback():
         user_details['expires_in'] = resp['expires_in']
 
         store_user(user_details)
-        session['user'] = user_details
+        _store_user_session(user_details)
         flash("You are now logged in.", "success")
         return redirect(url_for('index'))
     except requests.HTTPError as e:
@@ -74,7 +83,7 @@ def refresh_token():
         user_details['expires_in'] = resp['expires_in']
 
         store_user(user_details)
-        session['user'] = user_details
+        _store_user_session(user_details)
         flash("MyAnimeList session refreshed.", "success")
         return redirect(url_for('index'))
     except requests.HTTPError as e:
@@ -87,5 +96,9 @@ def logout():
     Logs the user out and clears the session
     :return: redirects to the index page of the app
     """
+    if 'user' not in session:
+        flash("You are not logged in.", "warning")
+        return redirect(url_for('index'))
+
     session.pop('user')
     return redirect(url_for('index'))
