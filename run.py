@@ -21,7 +21,7 @@ app.register_blueprint(meta_bp)
 app.register_blueprint(content_sync_bp)
 app.register_blueprint(stream_bp)
 
-Compress(app)
+# Compress(app)
 
 logging.basicConfig(format='%(asctime)s %(message)s')
 
