@@ -10,7 +10,7 @@ lxml = "*"
 pipenv = "*"
 python-dotenv = "*"
 waitress = "*"
-flask-compress = "1.16"
+flask-compress = "1.14"
 httpx = "*"
 pymongo = {extras = ["srv"], version = "*"}
 requests = "*"

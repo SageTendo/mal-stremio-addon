@@ -21,11 +21,6 @@ app.register_blueprint(content_sync_bp)
 app.register_blueprint(stream_bp)
 
 Compress(app)
-app.config['COMPRESS_MIMETYPES'] = [
-    'text/html',
-    'application/json'
-]
-app.config['COMPRESS_ALGORITHM'] = 'gzip'
 
 logging.basicConfig(format='%(asctime)s %(message)s')
 
