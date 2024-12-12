@@ -12,6 +12,11 @@ from ..db.db import get_kitsu_id_from_mal_id
 meta_bp = Blueprint('meta', __name__)
 
 kitsu_API = "https://anime-kitsu.strem.fun/meta"
+HEADERS = {
+    'User-Agent': "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0",
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+}
 
 
 @meta_bp.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
@@ -33,10 +38,12 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
 
     exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
     if exists:
-        resp = requests.get(f"{kitsu_API}/{meta_type}/kitsu:{kitsu_id}.json")
+        resp = requests.get(headers=HEADERS,
+                            url=f"{kitsu_API}/{meta_type}/kitsu:{kitsu_id}.json")
     else:  # if no kitsu id, try with mal id
         mal_id = meta_id.replace(f"{MAL_ID_PREFIX}_", '')
-        resp = requests.get(f"{kitsu_API}/{meta_type}/mal:{mal_id}.json")
+        resp = requests.get(headers=HEADERS,
+                            url=f"{kitsu_API}/{meta_type}/mal:{mal_id}.json")
 
     if not resp.ok:
         logging.error(resp.status_code, resp.reason)
