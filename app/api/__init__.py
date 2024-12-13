@@ -1,2 +1,0 @@
-N_BYTES = 96
-QUERY_LIMIT = 30
