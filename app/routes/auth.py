@@ -1,5 +1,5 @@
 import requests
-from flask import Blueprint, request, url_for, session, flash, Response
+from flask import Blueprint, request, url_for, session, flash
 from werkzeug.utils import redirect
 
 from app.db.db import store_user
