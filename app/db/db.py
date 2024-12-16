@@ -27,11 +27,13 @@ def store_user(user_details: Dict):
 
     user = UID_map_collection.find_one({'uid': user_id})
     if user:
-        UID_map_collection.update_one(user, {'$set': {'access_token': access_token, 'refresh_token': refresh_tkn,
-                                                      'expires_in': expires_in}})
+        result = UID_map_collection.update_one(user, {'$set': {'access_token': access_token,
+                                                               'refresh_token': refresh_tkn,
+                                                               'expires_in': expires_in}})
     else:
-        UID_map_collection.insert_one(
+        result = UID_map_collection.insert_one(
             {'uid': user_id, 'access_token': access_token, 'refresh_token': refresh_tkn, 'expires_in': expires_in})
+    return result.acknowledged
 
 
 @lru_cache(maxsize=10000)

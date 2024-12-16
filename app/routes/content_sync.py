@@ -5,11 +5,25 @@ from requests import HTTPError
 
 from app.db.db import get_mal_id_from_kitsu_id
 from app.routes import IMDB_ID_PREFIX, mal_client, MAL_ID_PREFIX
-from app.routes.catalog import get_token
+from app.routes.auth import get_token
 from app.routes.manifest import MANIFEST
 from app.routes.utils import respond_with, log_error
 
 content_sync_bp = Blueprint('content_sync', __name__)
+
+
+def _handle_content_id(content_id):
+    # TODO: Integrate
+    if content_id.startswith(MAL_ID_PREFIX):
+        return content_id.replace(f"{MAL_ID_PREFIX}_", ''), -1
+
+    if content_id.startswith('kitsu:'):
+        content_id = content_id.replace('kitsu:', '')
+        if content_id.count(':') != 0:  # Handle episode
+            content_id, current_episode = content_id.split(':')[0]
+            return content_id, int(current_episode)
+        return content_id, -1  # Handle movie
+    return None, -1
 
 
 @content_sync_bp.route('/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json')

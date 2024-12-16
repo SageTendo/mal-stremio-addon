@@ -1,4 +1,3 @@
-import logging
 from functools import lru_cache
 
 import requests
@@ -6,7 +5,7 @@ from flask import Blueprint, abort
 
 from . import IMDB_ID_PREFIX, MAL_ID_PREFIX
 from .manifest import MANIFEST
-from .utils import respond_with
+from .utils import respond_with, log_error
 from ..db.db import get_kitsu_id_from_mal_id
 
 meta_bp = Blueprint('meta', __name__)
@@ -36,18 +35,19 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     if meta_type not in MANIFEST['types']:
         abort(404)
 
-    exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
-    if exists:
-        resp = requests.get(headers=HEADERS,
-                            url=f"{kitsu_API}/{meta_type}/kitsu:{kitsu_id}.json")
-    else:  # if no kitsu id, try with mal id
-        mal_id = meta_id.replace(f"{MAL_ID_PREFIX}_", '')
-        resp = requests.get(headers=HEADERS,
-                            url=f"{kitsu_API}/{meta_type}/mal:{mal_id}.json")
+    url = f"{kitsu_API}/{meta_type}/"
+    try:
+        exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
+        if not exists:  # if no kitsu id, try with mal id
+            mal_id = meta_id.replace(f"{MAL_ID_PREFIX}_", '')
+            url += f"mal:{mal_id}.json"
+        else:
+            url += f"kitsu:{kitsu_id}.json"
 
-    if not resp.ok:
-        logging.error(resp.status_code, resp.reason)
-        abort(404, f"{resp.status_code}: {resp.reason}")
+        resp = requests.get(url=url, headers=HEADERS)
+    except requests.HTTPError as e:
+        log_error(e)
+        return respond_with({'meta': {}, 'message': str(e)}), e.response.status_code
 
     meta = kitsu_to_meta(resp.json())
     meta['id'] = meta_id

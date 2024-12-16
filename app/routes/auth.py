@@ -1,8 +1,8 @@
 import requests
-from flask import Blueprint, request, url_for, session, flash
+from flask import Blueprint, request, url_for, session, flash, abort
 from werkzeug.utils import redirect
 
-from app.db.db import store_user
+from app.db.db import store_user, UID_map_collection
 from app.routes import mal_client
 from app.routes.utils import handle_error
 
@@ -16,6 +16,17 @@ def _store_user_session(user_details: dict):
     """
     session['user'] = user_details
     session.permanent = True
+
+
+def get_token(user_id: str):
+    """
+    Get the access token for the user 'user_id' from the database
+    :param user_id: The user's MyAnimeList ID
+    :return: The user's access token
+    """
+    if not (user := UID_map_collection.find_one({'uid': user_id})):
+        return abort(404, 'User not found')
+    return user['access_token']
 
 
 @auth_blueprint.route('/authorization', methods=["GET", "POST"])
@@ -58,7 +69,10 @@ def callback():
         user_details['refresh_token'] = resp['refresh_token']
         user_details['expires_in'] = resp['expires_in']
 
-        store_user(user_details)
+        if not store_user(user_details):
+            flash("Failed to store user details.", "danger")
+            return redirect(url_for('index'))
+
         _store_user_session(user_details)
         flash("You are now logged in.", "success")
         return redirect(url_for('index'))
@@ -82,7 +96,10 @@ def refresh_token():
         user_details['refresh_token'] = resp['refresh_token']
         user_details['expires_in'] = resp['expires_in']
 
-        store_user(user_details)
+        if not store_user(user_details):
+            flash("Failed to update user details.", "danger")
+            return redirect(url_for('index'))
+
         _store_user_session(user_details)
         flash("MyAnimeList session refreshed.", "success")
         return redirect(url_for('index'))
