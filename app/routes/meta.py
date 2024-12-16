@@ -75,13 +75,12 @@ def kitsu_to_meta(kitsu_meta: dict) -> dict:
     imdbRating = meta.get('imdbRating', None)
     trailers = meta.get('trailers', [])
     links = meta.get('links', [])
-    cacheMaxAge = meta.get('cacheMaxAge', None)
     runtime = meta.get('runtime', None)
     videos = meta.get('videos', [])
     imdb_id = meta.get('imdb_id', None)
 
     return {
-        'cacheMaxAge': cacheMaxAge,
+        'cacheMaxAge': 43200,
         'staleRevalidate': 43200,
         'staleError': 3600,
 

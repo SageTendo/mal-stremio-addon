@@ -29,7 +29,11 @@ async def addon_stream(user_id: str, content_type: str, content_id: str):
     if (MAL_ID_PREFIX not in content_id) or (content_type != 'movie'):
         return respond_with({})
 
+    exists, kitsu_id = get_kitsu_id_from_mal_id(content_id)
+    if not exists:
+        return respond_with({})
+
+    url = f"{torrentio_api}/stream/{content_type}/kitsu:{kitsu_id}.json"
     async with httpx.AsyncClient() as client:
-        kitsu_id = get_kitsu_id_from_mal_id(content_id)
-        resp = await client.get(f"{torrentio_api}/stream/{content_type}/kitsu:{kitsu_id}.json")
+        resp = await client.get(url)
         return respond_with(resp.json())

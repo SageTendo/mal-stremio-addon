@@ -161,6 +161,12 @@ class TestCatalog(unittest.TestCase):
         assert len(response_data['metas']) > 0
         self._meta_asserts(response_data)
 
+        response = self.client.get('/123/catalog/anime/watching/genre=Boys Love.json')
+        self.assertEqual(response.status_code, 200)
+        response_data = response.json
+        assert len(response_data['metas']) == 0
+        self._meta_asserts(response_data)
+
         response = self.client.get("/123/catalog/anime/watching/genre={'id':%201,%20'name':%20'Action'}.json")
         self.assertEqual(response.status_code, 200)
         response_data = response.json

@@ -1,3 +1,4 @@
+import re
 import ast
 import random
 import urllib.parse
@@ -53,7 +54,7 @@ def _has_genre_tag(meta: dict, genre: str = None):
 
     # Handle stremio link object
     decoded_string = urllib.parse.unquote(genre)
-    if not decoded_string.isalpha():
+    if re.search(r'\{.*}', decoded_string):
         decoded_string = ast.literal_eval(decoded_string)
         formatted_genre = decoded_string['name']
     else:
