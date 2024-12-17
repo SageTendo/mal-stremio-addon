@@ -13,16 +13,24 @@ content_sync_bp = Blueprint('content_sync', __name__)
 
 
 def _handle_content_id(content_id):
-    # TODO: Integrate
+    """
+    Extract the ID of the content and the current episode.
+    If ID is a Kitsu ID, get the relevant MAL ID from the database.
+    :param content_id: The content ID
+    :return: The ID of the content and the current episode
+    """
     if content_id.startswith(MAL_ID_PREFIX):
-        return content_id.replace(f"{MAL_ID_PREFIX}_", ''), -1
-
-    if content_id.startswith('kitsu:'):
+        return content_id.replace(f"{MAL_ID_PREFIX}_", ''), 1  # Assume episode
+    elif content_id.startswith('kitsu:'):
         content_id = content_id.replace('kitsu:', '')
-        if content_id.count(':') != 0:  # Handle episode
-            content_id, current_episode = content_id.split(':')[0]
-            return content_id, int(current_episode)
-        return content_id, -1  # Handle movie
+        current_episode = 1
+
+        if content_id.count(':') == 1:  # Handle series
+            content_id, current_episode = content_id.split(':')
+
+        exists, mal_id = get_mal_id_from_kitsu_id(content_id)
+        if exists:
+            return mal_id, int(current_episode)
     return None, -1
 
 
@@ -39,39 +47,29 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     :param video_hash: The hash of the video (ignored)
     :return: JSON response
     """
-    mal_id = ""
-    current_episode = -1
-
     content_id = urllib.parse.unquote(content_id)
     if (IMDB_ID_PREFIX in content_id) or (content_type not in MANIFEST['types']):
         return respond_with({'subtitles': []})
 
-    if content_id.startswith('kitsu:'):
-        content_id = content_id.replace('kitsu:', '')
-        if content_id.count(':') == 0:  # Handle movie
-            anime_id = content_id
-        else:  # Handle episode
-            anime_id, current_episode = content_id.split(':')
-            current_episode = int(current_episode)
-
-        exists, mal_id = get_mal_id_from_kitsu_id(anime_id)
-        if not exists:
-            return respond_with({'subtitles': [], 'message': 'No id for MyAnimeList found'})
-
-    elif content_id.startswith(MAL_ID_PREFIX):
-        mal_id = content_id.replace(f"{MAL_ID_PREFIX}_", '')
+    mal_id, current_episode = _handle_content_id(content_id)
+    if not mal_id:
+        return respond_with({'subtitles': [], 'message': 'Invalid content ID'})
 
     token = get_token(user_id)
     resp = mal_client.get_anime_details(token, mal_id, fields='num_episodes my_list_status')
     total_episodes = resp.get('num_episodes', 0)
-    current_status = resp.get('my_list_status', {}).get('status', None)
-    watched_episodes = resp.get('my_list_status', {}).get('num_episodes_watched', 0)
+
+    list_status = resp.get('my_list_status', None)
+    if not list_status:
+        return respond_with({'subtitles': [], 'message': 'Nothing to update'})
 
     try:
+        current_status = list_status.get('status', None)
+        watched_episodes = list_status.get('num_episodes_watched', 0)
+
         status, episode = handle_current_status(current_status, current_episode, watched_episodes, total_episodes)
         if status is None:
             return respond_with({'subtitles': [], 'message': 'Nothing to update'})
-
         mal_client.update_watched_status(token, mal_id, current_episode, status)
     except HTTPError as err:
         log_error(err)
