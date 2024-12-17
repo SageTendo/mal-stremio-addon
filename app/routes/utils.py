@@ -1,9 +1,12 @@
 import logging
 
-from flask import jsonify, flash, make_response, url_for, redirect
+from flask import jsonify, flash, make_response, url_for, redirect, Response
 
 
-def handle_error(err):
+def handle_error(err) -> Response:
+    """
+    Handles errors from MyAnimeList's API
+    """
     if 400 >= err.response.status_code < 500:
         flash(err, "danger")
         return make_response(redirect(url_for('index')))
@@ -14,6 +17,9 @@ def handle_error(err):
 
 
 def log_error(err):
+    """
+    Logs errors from MyAnimeList's API
+    """
     response = err.response.json()
     error_label = response.get('error', 'No error label in response').capitalize()
     message = response.get('message', 'No message field in response')
@@ -22,7 +28,10 @@ def log_error(err):
 
 
 # Enable CORS
-def respond_with(data):
+def respond_with(data) -> Response:
+    """
+    Respond with CORS headers to the client
+    """
     resp = jsonify(data)
     resp.headers['Access-Control-Allow-Origin'] = "*"
     resp.headers['Access-Control-Allow-Headers'] = '*'

@@ -133,3 +133,4 @@ dmypy.json
 
 # VSCode
 .vscode
+.vercel
