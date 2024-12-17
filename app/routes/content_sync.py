@@ -12,13 +12,13 @@ from app.routes.utils import respond_with, log_error
 content_sync_bp = Blueprint('content_sync', __name__)
 
 
-class UpdateStatus:
+class Status:
     """Enumeration for update status"""
     OK = "MAL=OK"
-    NO_UPDATE = "MAL=NO_UPDATE"
+    NULL = "MAL=NO_UPDATE"
     SKIP = "MAL=SKIPPED"
     INVALID_ID = "MAL=INVALID_ID"
-    NOT_IN_LIST = "MAL=NOT_LISTED"
+    NOT_LIST = "MAL=NOT_LISTED"
     FAIL = "MAL=FAIL"
 
 
@@ -44,6 +44,19 @@ def _handle_content_id(content_id):
     return None, -1
 
 
+def _get_anime_status(token, mal_id):
+    """
+    Get the total number of episodes and the watched status of an anime from MyAnimeList.
+    :param token: The user's access token
+    :param mal_id: The ID of the anime
+    :return: A tuple of (total_episodes, list_status)
+    """
+    resp = mal_client.get_anime_details(token, mal_id, fields='num_episodes my_list_status')
+    total_episodes = resp.get('num_episodes', 0)
+    list_status = resp.get('my_list_status', None)
+    return total_episodes, list_status
+
+
 @content_sync_bp.route('/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json')
 @content_sync_bp.route('/<user_id>/subtitles/<content_type>/<content_id>.json')
 def addon_content_sync(user_id: str, content_type: str, content_id: str, video_hash: str = None):
@@ -59,38 +72,35 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     """
     content_id = urllib.parse.unquote(content_id)
     if (IMDB_ID_PREFIX in content_id) or (content_type not in MANIFEST['types']):
-        return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.SKIP}]})
+        return respond_with(
+            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.SKIP}], 'message': 'Content not supported'})
 
     mal_id, current_episode = _handle_content_id(content_id)
     if not mal_id:
-        return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.INVALID_ID}],
-                             'message': 'Invalid content ID'})
-
-    token = get_token(user_id)
-    resp = mal_client.get_anime_details(token, mal_id, fields='num_episodes my_list_status')
-    total_episodes = resp.get('num_episodes', 0)
-
-    list_status = resp.get('my_list_status', None)
-    if not list_status:
         return respond_with(
-            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.NOT_IN_LIST}],
-             'message': 'Nothing to update'})
+            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.INVALID_ID}], 'message': 'Invalid ID'})
 
     try:
+        token = get_token(user_id)
+        total_episodes, list_status = _get_anime_status(token, mal_id)
+        if not list_status:
+            return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.NOT_LIST}],
+                                 'message': 'Content not in a watchlist'})
+
         current_status = list_status.get('status', None)
         watched_episodes = list_status.get('num_episodes_watched', 0)
-
         status, episode = handle_current_status(current_status, current_episode, watched_episodes, total_episodes)
         if status is None:
-            return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.NO_UPDATE}],
-                                 'message': 'Nothing to update'})
+            return respond_with(
+                {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.NULL}], 'message': 'No update required'})
+
         mal_client.update_watched_status(token, mal_id, current_episode, status)
+        return respond_with(
+            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.OK}], 'message': 'Content updated'})
     except HTTPError as err:
         log_error(err)
-        return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.FAIL}],
-                             'message': 'Failed to update watched status'})
-    return respond_with(
-        {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.OK}], 'message': 'Updated watched status'})
+        return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.FAIL}],
+                             'message': 'Failed to update content'})
 
 
 def handle_current_status(status, current_episode, watched_episodes, total_episodes) -> (str, int):
