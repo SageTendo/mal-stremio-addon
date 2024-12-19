@@ -1,11 +1,12 @@
-import logging
+from functools import lru_cache
 
 import requests
 from flask import Blueprint, abort
 
-from . import IMDB_ID_PREFIX
+from . import IMDB_ID_PREFIX, MAL_ID_PREFIX
 from .manifest import MANIFEST
-from .utils import respond_with
+from .utils import respond_with, log_error
+from ..db.db import get_kitsu_id_from_mal_id
 
 meta_bp = Blueprint('meta', __name__)
 
@@ -18,6 +19,7 @@ HEADERS = {
 
 
 @meta_bp.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
+@lru_cache(maxsize=1000)
 def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     Provides metadata for a specific content
@@ -30,16 +32,22 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     if IMDB_ID_PREFIX in meta_id:
         return respond_with({})
 
-    # Check if meta type exists in manifest
     if meta_type not in MANIFEST['types']:
         abort(404)
 
-    kitsu_id = meta_id.replace('_', ':')
-    resp = requests.get(headers=HEADERS,
-                        url=f"{kitsu_API}/{meta_type}/{kitsu_id}.json")
-    if not resp.ok:
-        logging.error(resp.status_code, resp.reason)
-        abort(404, f"{resp.status_code}: {resp.reason}")
+    url = f"{kitsu_API}/{meta_type}/"
+    try:
+        exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
+        if not exists:  # if no kitsu id, try with mal id
+            mal_id = meta_id.replace(f"{MAL_ID_PREFIX}_", '')
+            url += f"mal:{mal_id}.json"
+        else:
+            url += f"kitsu:{kitsu_id}.json"
+
+        resp = requests.get(url=url, headers=HEADERS)
+    except requests.HTTPError as e:
+        log_error(e)
+        return respond_with({'meta': {}, 'message': str(e)}), e.response.status_code
 
     meta = kitsu_to_meta(resp.json())
     meta['id'] = meta_id
@@ -47,7 +55,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     return respond_with({'meta': meta})
 
 
-def kitsu_to_meta(kitsu_meta: dict):
+def kitsu_to_meta(kitsu_meta: dict) -> dict:
     """
     Convert kitsu item to a valid Stremio meta format
     :param kitsu_meta: The kitsu item to convert
@@ -67,13 +75,12 @@ def kitsu_to_meta(kitsu_meta: dict):
     imdbRating = meta.get('imdbRating', None)
     trailers = meta.get('trailers', [])
     links = meta.get('links', [])
-    cacheMaxAge = meta.get('cacheMaxAge', None)
     runtime = meta.get('runtime', None)
     videos = meta.get('videos', [])
     imdb_id = meta.get('imdb_id', None)
 
     return {
-        'cacheMaxAge': cacheMaxAge,
+        'cacheMaxAge': 43200,
         'staleRevalidate': 43200,
         'staleError': 3600,
 

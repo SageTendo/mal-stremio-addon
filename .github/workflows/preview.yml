@@ -3,17 +3,15 @@ on:
   push:
     branches-ignore:
       - main
+
 env:
-  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
   MONGO_URI: ${{ secrets.MONGO_URI }}
   MAL_ID: ${{ secrets.MAL_ID }}
   MAL_SECRET: ${{ secrets.MAL_SECRET }}
-      
+
 jobs:
-  Test-Preview:
+  Test:
     environment: Preview
     runs-on: ubuntu-latest
     steps:
@@ -26,28 +24,13 @@ jobs:
         run:  pip install pipenv
       - name: Run tests
         run: |
-          export MONGO_URI="${{ secrets.MONGO_URI }}"
-          export SECRET_KEY="${{ secrets.SECRET_KEY }}"
-          export MAL_ID="${{ secrets.MAL_ID }}"
-          export MAL_SECRET="${{ secrets.MAL_SECRET }}"
+          export MONGO_URI="${{ env.MONGO_URI }}"
+          export SECRET_KEY="${{ env.SECRET_KEY }}"
+          export MAL_ID="${{ env.MAL_ID }}"
+          export MAL_SECRET="${{ env.MAL_SECRET }}"
           export MONGO_DB="${{ vars.MONGO_DB }}"
           export MONGO_UID_MAP_COLLECTION="${{ vars.MONGO_UID_MAP_COLLECTION }}"
           export MONGO_ANIME_MAP_COLLECTION="${{ vars.MONGO_ANIME_MAP_COLLECTION }}"
           export MONGO_ANIME_DATABASE="${{ vars.MONGO_ANIME_DATABASE }}"
           pipenv install --dev
           pipenv run pytest
-
-#  Deploy-Preview:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Install pipenv
-#        run: pip install pipenv
-#      - name: Install Vercel CLI
-#        run: npm install --global vercel@latest
-#      - name: Pull Vercel Environment Information
-#        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-#      - name: Build Project Artifacts
-#        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-#      - name: Deploy Project Artifacts to Vercel
-#        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}

@@ -2,14 +2,10 @@
 
 This Stremio addon allows users to access their anime lists from MyAnimeList (MAL) directly within the Stremio media center. With this addon, you can easily keep track of your watched anime, plan to watch, and more, all from the convenience of Stremio.
 
-> [!IMPORTANT]  
-> Please be aware that the Stremio addon is currently experiencing issues with content tracking and syncing with MyAnimeList (MAL). This problem stems from the anime database that maps anime IDs to other IDs, which is not currently compatible with Kitsu IDs. Unfortunately, this issue is out of my control as I am not the developer responsible for that service. I am actively monitoring the situation and waiting for them to resolve the problem.
-> 
-> Additionally, please note that it might take some time to fully resolve this issue, as I am currently occupied with university work. In the meantime, I am working on setting up my own database to bypass this problem in the future and ensure seamless content tracking and syncing. Thank you for your understanding and patience.
-
 ## Usage 🧑‍💻
 
 - **User's Anime Lists**: View your personal anime list from MyAnimeList, including the titles you have watched, plan to watch, and any other categories you have set up.
+- **Genre Filtering**: Filter the content based on genres, such as Action, Adventure, Comedy, Drama, etc.
 - **Content Tracking and Syncing from within Stremio**:
   - Currently, only Kitsu catalogs are supported.
   - When users watch content in their "plan to watch" list:
@@ -54,3 +50,4 @@ Please refer to these API references for detailed information on how to interact
 ## Acknowledgements
 
 - **Animeo**: Inspiration for the content syncing functionality. [More info here](https://github.com/Jenrykster/animeo).
+=

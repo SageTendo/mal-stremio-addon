@@ -6,9 +6,16 @@ from ..db.db import UID_map_collection
 
 manifest_blueprint = Blueprint('manifest', __name__)
 
+genres = ['Action', 'Adventure', 'Avant Garde',
+          'Award Winning', 'Boys Love', 'Comedy',
+          'Drama', 'Fantasy', 'Girls Love', 'Gourmet',
+          'Horror', 'Mystery', 'Romance', 'Sci-Fi',
+          'Slice of Life', 'Sports', 'Supernatural',
+          'Ecchi', 'Hentai', 'Erotica']
+
 MANIFEST = {
     'id': 'com.sagetendo.mal-stremio-addon',
-    'version': '2.0.4',
+    'version': '3.0.0',
     'name': 'MAL-Stremio Addon',
     'logo': 'https://i.imgur.com/zVYdffr.png',
     'description': 'Provides users with watchlist content from MyAnimeList within Stremio. '
@@ -16,19 +23,41 @@ MANIFEST = {
     'types': ['anime', 'series', 'movie'],
 
     'catalogs': [
-        {'type': 'anime', 'id': 'plan_to_watch', 'name': 'MAL: Plan To Watch', 'extra': [{'name': 'skip'}]},
-        {'type': 'anime', 'id': 'watching', 'name': 'MAL: Watching', 'extra': [{'name': 'skip'}]},
-        {'type': 'anime', 'id': 'completed', 'name': 'MAL: Completed', 'extra': [{'name': 'skip'}]},
-        {'type': 'anime', 'id': 'on_hold', 'name': 'MAL: On Hold', 'extra': [{'name': 'skip'}]},
-        {'type': 'anime', 'id': 'dropped', 'name': 'MAL: Dropped', 'extra': [{'name': 'skip'}]},
+        {'type': 'anime', 'id': 'plan_to_watch', 'name': 'MAL: Plan To Watch',
+         'extra': [{'name': 'skip'},
+                   {'name': 'genre', 'options': genres}],
+         'genre': genres},
+        {
+            'type': 'anime', 'id': 'watching', 'name': 'MAL: Watching',
+            'extra': [{'name': 'skip'},
+                      {'name': 'genre', 'options': genres}],
+            'genre': genres
+        },
+        {'type': 'anime', 'id': 'completed', 'name': 'MAL: Completed',
+         'extra': [{'name': 'skip'},
+                   {'name': 'genre', 'options': genres}],
+         'genre': genres
+         },
+        {'type': 'anime', 'id': 'on_hold', 'name': 'MAL: On Hold',
+         'extra': [{'name': 'skip'},
+                   {'name': 'genre', 'options': genres}],
+         'genre': genres
+         },
+        {'type': 'anime', 'id': 'dropped', 'name': 'MAL: Dropped',
+         'extra': [{'name': 'skip'},
+                   {'name': 'genre', 'options': genres}],
+         'genre': genres
+         },
         {
             'type': 'anime',
             'id': 'search_list',
-            'name': 'Search Results',
+            'name': 'MAL',
             'extra': [
                 {'name': 'search', 'isRequired': True},
-                {'name': 'skip'}
-            ]
+                {'name': 'skip'},
+                {'name': 'genre', 'options': genres, 'isRequired': False}
+            ],
+            'genre': genres
         }
     ],
 
