@@ -240,3 +240,4 @@ class MyAnimeListAPI:
         """
         if method == 'plain' or method is None:
             return verifier
+
