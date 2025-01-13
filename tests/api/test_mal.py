@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 
-from app.api.mal import MyAnimeListAPI, TIMEOUT, QUERY_LIMIT
+from app.api.mal import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, MyAnimeListAPI, TIMEOUT, QUERY_LIMIT
 
 
 class TestMyAnimeListAPI(unittest.TestCase):
@@ -22,16 +22,17 @@ class TestMyAnimeListAPI(unittest.TestCase):
         """
         Test that the MyAnimeListAPI class is initialized correctly
         """
-        self.assertIsNotNone(self.mal_api.redirect_uri)
-        self.assertIsNotNone(self.mal_api.client_id)
-        self.assertIsNotNone(self.mal_api.client_secret)
+        self.assertIsNotNone(REDIRECT_URI)
+        self.assertIsNotNone(CLIENT_ID)
+        self.assertIsNotNone(CLIENT_SECRET)
 
     def test_get_auth(self):
         """
         Test that the get_auth function returns a valid auth URL
         """
-        auth_url = self.mal_api.get_auth()
+        auth_url, code_verifier = self.mal_api.get_auth()
         self.assertIsNotNone(auth_url)
+        self.assertIsNotNone(code_verifier)
 
     @patch('requests.post')
     def test_get_access_token(self, mock_post):
@@ -50,18 +51,19 @@ class TestMyAnimeListAPI(unittest.TestCase):
         mock_post.return_value = mock_response
 
         authorization_code = "auth_code_from_redirect"
-        token_details = self.mal_api.get_access_token(authorization_code)
+        code_verifier = "code_verifier"
+        token_details = self.mal_api.get_access_token(authorization_code, code_verifier=code_verifier)
 
         # Assert that the access token details are correct
         self.assertEqual(token_details['access_token'], 'new_access_token')
         self.assertEqual(token_details['refresh_token'], 'refresh_token_value')
         mock_post.assert_called_once_with(url='https://myanimelist.net/v1/oauth2/token',
-                                          data={'client_id': self.mal_api.client_id,
-                                                'client_secret': self.mal_api.client_secret,
+                                          data={'client_id': CLIENT_ID,
+                                                'client_secret': CLIENT_SECRET,
                                                 'grant_type': 'authorization_code',
                                                 'code': authorization_code,
-                                                'code_verifier': self.mal_api.code_verifier,
-                                                'redirect_uri': self.mal_api.redirect_uri},
+                                                'code_verifier': code_verifier,
+                                                'redirect_uri': REDIRECT_URI},
                                           timeout=TIMEOUT)
 
     @patch('requests.post')
@@ -85,8 +87,8 @@ class TestMyAnimeListAPI(unittest.TestCase):
         self.assertEqual(token_details['access_token'], 'new_access_token')
         self.assertEqual(token_details['refresh_token'], 'refresh_token_value')
         mock_post.assert_called_once_with(url='https://myanimelist.net/v1/oauth2/token',
-                                          data={'client_id': self.mal_api.client_id,
-                                                'client_secret': self.mal_api.client_secret,
+                                          data={'client_id': CLIENT_ID,
+                                                'client_secret': CLIENT_SECRET,
                                                 'grant_type': 'refresh_token',
                                                 'refresh_token': refresh_token},
                                           timeout=TIMEOUT)
