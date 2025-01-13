@@ -38,10 +38,7 @@ def authorize_user():
     if 'user' in session:
         flash("You are already logged in.", "warning")
         return redirect(url_for('index'))
-    
-    auth_url, code_verifier = mal_client.get_auth()
-    session['code_verifier'] = code_verifier
-    return redirect(auth_url)
+    return redirect(mal_client.get_auth())
 
 
 @auth_blueprint.route('/callback')
@@ -63,13 +60,7 @@ def callback():
         # exchange auth code for access token
         if not (auth_code := request.args.get('code', None)):
             return redirect(url_for('index'))
-
-        if 'code_verifier' not in session:
-            flash("Invalid callback request. First log in.", "warning")
-            return redirect(url_for('index'))
-            
-        code_verifier = session['code_verifier']
-        resp = mal_client.get_access_token(auth_code, code_verifier)
+        resp = mal_client.get_access_token(auth_code)
 
         # get user details and append the access and refresh token the info
         user_details = mal_client.get_user_details(token=resp['access_token'])
