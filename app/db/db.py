@@ -1,6 +1,6 @@
 import re
 from functools import lru_cache
-from typing import Dict
+from typing import Dict, Tuple
 
 from pymongo import MongoClient
 
@@ -37,7 +37,7 @@ def store_user(user_details: Dict):
 
 
 @lru_cache(maxsize=10000)
-def get_kitsu_id_from_mal_id(mal_id) -> (bool, str):
+def get_kitsu_id_from_mal_id(mal_id) -> Tuple[bool, str]:
     """
     Get kitsu_id from mal_id from db
     :param mal_id: The MyAnimeList id of the anime
@@ -48,13 +48,15 @@ def get_kitsu_id_from_mal_id(mal_id) -> (bool, str):
         mal_id = int(mal_id)
         if res := anime_mapping.find_one({'mal_id': mal_id}):
             return True, res['kitsu_id']
+    except KeyError:
+        log_error(f"No Kitsu ID for: MAL:{mal_id}")
     except ValueError:
         log_error(f"Invalid MyAnimeList ID: {mal_id}")
     return False, None
 
 
 @lru_cache(maxsize=10000)
-def get_mal_id_from_kitsu_id(kitsu_id) -> (bool, str):
+def get_mal_id_from_kitsu_id(kitsu_id) -> Tuple[bool, str]:
     """
     Get mal_id from kitsu_id from db
     :param kitsu_id: The kitsu id of the anime
@@ -66,6 +68,8 @@ def get_mal_id_from_kitsu_id(kitsu_id) -> (bool, str):
         res = anime_mapping.find_one({'kitsu_id': kitsu_id})
         if res:
             return True, res['mal_id']
+    except KeyError:
+        log_error(f"No MAL ID for KITSU:{kitsu_id}")
     except ValueError:
         log_error(f"Invalid kitsu ID: {kitsu_id}")
     return False, None
