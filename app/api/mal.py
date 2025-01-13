@@ -17,10 +17,12 @@ REDIRECT_URI = f'{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback'
 CLIENT_ID = os.environ.get('MAL_ID')
 CLIENT_SECRET = os.environ.get('MAL_SECRET')
 
+
 class MyAnimeListAPI:
     """
     MyAnimeList API wrapper
     """
+
     @staticmethod
     def get_auth() -> Tuple[str, str]:
         """
