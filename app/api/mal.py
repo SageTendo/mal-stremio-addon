@@ -1,6 +1,5 @@
 import os
 import secrets
-from typing import Tuple
 import requests
 
 from urllib.parse import urlencode
@@ -11,49 +10,54 @@ BASE_URL = "https://api.myanimelist.net/v1"
 N_BYTES = 96
 QUERY_LIMIT = 30
 TIMEOUT = 30
-CODE_CHALLENGE_METHOD = 'plain'
 
-REDIRECT_URI = f'{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback'
-CLIENT_ID = os.environ.get('MAL_ID')
-CLIENT_SECRET = os.environ.get('MAL_SECRET')
 
 class MyAnimeListAPI:
     """
     MyAnimeList API wrapper
     """
-    @staticmethod
-    def get_auth() -> Tuple[str, str]:
+
+    def __init__(self):
+        """
+        Initialize the MyAnimeList API wrapper
+        """
+
+        self.redirect_uri = f'{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback'
+        self.client_id = os.environ.get('MAL_ID')
+        self.client_secret = os.environ.get('MAL_SECRET')
+
+        self.code_challenge_method = 'plain'
+        self.code_verifier, self.code_challenge = (
+            MyAnimeListAPI.__generate_verifier_challenger_pair(128, method=self.code_challenge_method))
+
+    def get_auth(self):
         """
         Get the authorization URL for MyAnimeList API
         :return: Authorization URL
         """
         state = secrets.token_urlsafe(N_BYTES)[:16]
-        code_verifier, code_challenge = (
-            MyAnimeListAPI.__generate_verifier_challenger_pair(128, method=CODE_CHALLENGE_METHOD))
-
         query_params = (f'response_type=code'
-                        f'&client_id={CLIENT_ID}'
+                        f'&client_id={self.client_id}'
                         f'&state={state}'
-                        f'&code_challenge={code_challenge}'
-                        f'&code_challenge_method={CODE_CHALLENGE_METHOD}'
-                        f'&redirect_uri={REDIRECT_URI}')
+                        f'&code_challenge={self.code_challenge}'
+                        f'&code_challenge_method={self.code_challenge_method}'
+                        f'&redirect_uri={self.redirect_uri}')
 
-        return f'{AUTH_URL}/oauth2/authorize?{query_params}', code_verifier
+        return f'{AUTH_URL}/oauth2/authorize?{query_params}'
 
-    @staticmethod
-    def get_access_token(authorization_code: str, code_verifier: str):
+    def get_access_token(self, authorization_code: str):
         """
         Get the access token for MyAnimeList
         :param authorization_code: Authorization Code from MyAnimeList
         :return: Access Token
         """
         url = f'{AUTH_URL}/oauth2/token'
-        data = {'client_id': CLIENT_ID,
-                'client_secret': CLIENT_SECRET,
+        data = {'client_id': self.client_id,
+                'client_secret': self.client_secret,
                 'grant_type': 'authorization_code',
                 'code': authorization_code,
-                'code_verifier': code_verifier,
-                'redirect_uri': REDIRECT_URI}
+                'code_verifier': self.code_verifier,
+                'redirect_uri': self.redirect_uri}
 
         resp = requests.post(url=url, data=data, timeout=TIMEOUT)
         resp.raise_for_status()
@@ -65,16 +69,15 @@ class MyAnimeListAPI:
                 'access_token': resp_json['access_token'],
                 'refresh_token': resp_json['refresh_token']}
 
-    @staticmethod
-    def refresh_token(refresh_token: str):
+    def refresh_token(self, refresh_token: str):
         """
         Refresh the access token for MyAnimeList
         :param refresh_token: Refresh Token
         :return: Access Token
         """
         url = f'{AUTH_URL}/oauth2/token'
-        data = {'client_id': CLIENT_ID,
-                'client_secret': CLIENT_SECRET,
+        data = {'client_id': self.client_id,
+                'client_secret': self.client_secret,
                 'grant_type': 'refresh_token',
                 'refresh_token': refresh_token}
 
