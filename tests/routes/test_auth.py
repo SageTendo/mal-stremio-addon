@@ -14,9 +14,8 @@ class TestAuthBlueprint(unittest.TestCase):
         """
         Set up the test class
         """
-        app.config['SECRET'] = "Testing Secret"
-        app.config['TESTING'] = True
         self.client = app.test_client()
+        app.config['TESTING'] = True
 
     def test_get_token(self):
         """
@@ -71,9 +70,8 @@ class TestAuthBlueprint(unittest.TestCase):
         mock_store_user.return_value = None
 
         # Simulate the callback with a successful authorization code
-        with self.client.session_transaction() as sess:
-            sess['code_verifier'] = 'mocked_verifier'
-        response = self.client.get('/callback?code=mocked_auth_code')
+        with self.client:
+            response = self.client.get('/callback?code=mocked_auth_code')
 
         # Assert that the user is redirected to the home page with a success message
         self.assertEqual(response.status_code, 302)
