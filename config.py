@@ -15,6 +15,7 @@ class Config:
     FLASK_PORT = os.getenv('FLASK_RUN_PORT', "5000")
     SECRET_KEY = os.getenv('SECRET_KEY', "this is not a secret key")
     SESSION_TYPE = os.getenv('SESSION_TYPE', "filesystem")
+    SEND_FILE_MAX_AGE_DEFAULT = timedelta(days=7)
     PERMANENT_SESSION_LIFETIME = timedelta(days=30)
     DEBUG = os.getenv('FLASK_DEBUG', False)
 

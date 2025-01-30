@@ -1,9 +1,10 @@
-from functools import lru_cache
+import functools
 
 import requests
 from flask import Blueprint, abort
 
 from . import IMDB_ID_PREFIX, MAL_ID_PREFIX
+from .auth import get_token
 from .manifest import MANIFEST
 from .utils import respond_with, log_error
 from ..db.db import get_kitsu_id_from_mal_id
@@ -19,7 +20,6 @@ HEADERS = {
 
 
 @meta_bp.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
-@lru_cache(maxsize=1000)
 def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     Provides metadata for a specific content
@@ -30,13 +30,14 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     # ignore imdb ids for older versions of mal-stremio
     if IMDB_ID_PREFIX in meta_id:
-        return respond_with({})
+        return respond_with({'meta': {}, 'message': 'Content not supported'}, ttl=120)
 
     if meta_type not in MANIFEST['types']:
         abort(404)
 
-    url = f"{kitsu_API}/{meta_type}/"
+    get_token(user_id)
     try:
+        url = f"{kitsu_API}/{meta_type}/"
         exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
         if not exists:  # if no kitsu id, try with mal id
             mal_id = meta_id.replace(f"{MAL_ID_PREFIX}_", '')
@@ -44,7 +45,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
         else:
             url += f"kitsu:{kitsu_id}.json"
 
-        resp = requests.get(url=url, headers=HEADERS)
+        resp = fetch_from_kitsu_api(url)
     except requests.HTTPError as e:
         log_error(e)
         return respond_with({'meta': {}, 'message': str(e)}), e.response.status_code
@@ -52,7 +53,13 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     meta = kitsu_to_meta(resp.json())
     meta['id'] = meta_id
     meta['type'] = meta_type
-    return respond_with({'meta': meta})
+    return respond_with({'meta': meta}, ttl=43200)
+
+
+@functools.lru_cache(maxsize=1000)
+def fetch_from_kitsu_api(url: str):
+    """Fetch metadata from kitsu API and cache the response"""
+    return requests.get(url=url, headers=HEADERS)
 
 
 def kitsu_to_meta(kitsu_meta: dict) -> dict:
@@ -80,10 +87,6 @@ def kitsu_to_meta(kitsu_meta: dict) -> dict:
     imdb_id = meta.get('imdb_id', None)
 
     return {
-        'cacheMaxAge': 43200,
-        'staleRevalidate': 43200,
-        'staleError': 3600,
-
         'kitsu_id': kitsu_id,
         'name': name,
         'genres': genres,
