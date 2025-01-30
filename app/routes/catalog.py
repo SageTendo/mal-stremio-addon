@@ -6,7 +6,6 @@ from typing import Optional
 
 import requests
 from flask import Blueprint, abort, url_for, request, Request
-from werkzeug.exceptions import abort
 
 from . import mal_client, MAL_ID_PREFIX
 from .auth import get_token
