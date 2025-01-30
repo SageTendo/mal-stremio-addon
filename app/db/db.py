@@ -4,6 +4,7 @@ from typing import Dict, Tuple
 
 from pymongo import MongoClient
 
+import config
 from app.routes.utils import log_error
 from config import Config
 
@@ -36,7 +37,7 @@ def store_user(user_details: Dict):
     return result.acknowledged
 
 
-@lru_cache(maxsize=10000)
+@lru_cache(maxsize=config.ID_CACHE_SIZE)
 def get_kitsu_id_from_mal_id(mal_id) -> Tuple[bool, str]:
     """
     Get kitsu_id from mal_id from db
@@ -57,7 +58,7 @@ def get_kitsu_id_from_mal_id(mal_id) -> Tuple[bool, str]:
     return False, ''
 
 
-@lru_cache(maxsize=10000)
+@lru_cache(maxsize=config.ID_CACHE_SIZE)
 def get_mal_id_from_kitsu_id(kitsu_id) -> Tuple[bool, str]:
     """
     Get mal_id from kitsu_id from db

@@ -33,3 +33,9 @@ class Config:
     else:  # Production environment
         PROTOCOL = "https"
         REDIRECT_URL = f"{FLASK_HOST}"
+
+
+# Cache configurations
+META_CACHE_SIZE = 25000
+ID_CACHE_SIZE = 50000
+STREAM_CACHE_SIZE = 20000

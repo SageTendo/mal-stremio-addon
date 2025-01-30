@@ -3,6 +3,7 @@ import functools
 import requests
 from flask import Blueprint, abort
 
+import config
 from . import IMDB_ID_PREFIX, MAL_ID_PREFIX
 from .auth import get_token
 from .manifest import MANIFEST
@@ -56,7 +57,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     return respond_with({'meta': meta}, ttl=43200)
 
 
-@functools.lru_cache(maxsize=1000)
+@functools.lru_cache(maxsize=config.META_CACHE_SIZE)
 def fetch_from_kitsu_api(url: str):
     """Fetch metadata from kitsu API and cache the response"""
     return requests.get(url=url, headers=HEADERS)
