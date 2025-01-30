@@ -5,7 +5,7 @@ from flask import Blueprint
 from requests import HTTPError
 
 from app.db.db import get_mal_id_from_kitsu_id
-from app.routes import IMDB_ID_PREFIX, mal_client, MAL_ID_PREFIX
+from app.routes import mal_client, MAL_ID_PREFIX
 from app.routes.auth import get_token
 from app.routes.manifest import MANIFEST
 from app.routes.utils import respond_with, log_error
@@ -72,7 +72,7 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     :return: JSON response
     """
     content_id = urllib.parse.unquote(content_id)
-    if (IMDB_ID_PREFIX in content_id) or (content_type not in MANIFEST['types']):
+    if content_type not in MANIFEST['types']:
         return respond_with(
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.SKIP}], 'message': 'Content not supported'})
 

@@ -1,12 +1,11 @@
-import re
 import ast
 import random
+import re
 import urllib.parse
 from typing import Optional
 
 import requests
 from flask import Blueprint, abort, url_for, request, Request
-from werkzeug.exceptions import abort
 
 from . import mal_client, MAL_ID_PREFIX
 from .auth import get_token
@@ -119,7 +118,7 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str 
             meta = _mal_to_meta(anime_item, catalog_type=catalog_type, catalog_id=catalog_id,
                                 transport_url=_get_transport_url(request, user_id))
             meta_previews.append(meta)
-        return respond_with({'metas': meta_previews})
+        return respond_with({'metas': meta_previews}, ttl=30)
     except ValueError as e:
         return respond_with({'metas': [], 'message': str(e)}), 400
     except requests.HTTPError as e:
@@ -168,9 +167,6 @@ def _mal_to_meta(anime_item: dict, catalog_type: str, catalog_id: str, transport
             media_type = None
 
     return {
-        'cacheMaxAge': 43200,
-        'staleRevalidate': 3600,
-        'staleError': 3600,
         'id': formatted_content_id,
         'name': title,
         'type': media_type,
