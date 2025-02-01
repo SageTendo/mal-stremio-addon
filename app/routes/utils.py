@@ -38,4 +38,6 @@ def respond_with(data, ttl: int = 0) -> Response:
     if ttl > 0:
         resp.cache_control.public = True
         resp.cache_control.max_age = ttl
+        resp.cache_control.s_maxage = ttl
+
     return resp
