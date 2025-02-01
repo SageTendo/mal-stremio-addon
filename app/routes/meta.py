@@ -54,7 +54,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     meta = kitsu_to_meta(resp.json())
     meta['id'] = meta_id
     meta['type'] = meta_type
-    return respond_with({'meta': meta}, ttl=config.META_CACHE_EXPIRE)
+    return respond_with({'meta': meta}, ttl=config.META_CACHE_EXPIRE, immutable=True)
 
 
 @functools.lru_cache(maxsize=config.META_CACHE_SIZE)

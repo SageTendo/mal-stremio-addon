@@ -27,7 +27,7 @@ def log_error(err):
     logging.error(f"{error_label} [{err.response.status_code}] -> {message}\n HINT: {hint}\n")
 
 
-def respond_with(data, ttl: int = 0) -> Response:
+def respond_with(data, ttl: int = 0, immutable: bool = False) -> Response:
     """
     Respond with CORS headers to the client
     """
@@ -38,5 +38,7 @@ def respond_with(data, ttl: int = 0) -> Response:
     if ttl > 0:
         resp.cache_control.public = True
         resp.cache_control.max_age = ttl
+        resp.cache_control.s_maxage = ttl
+        resp.cache_control.immutable = immutable
 
     return resp

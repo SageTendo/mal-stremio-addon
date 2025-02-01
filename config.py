@@ -17,6 +17,8 @@ class Config:
     SESSION_TYPE = os.getenv('SESSION_TYPE', "filesystem")
     SEND_FILE_MAX_AGE_DEFAULT = timedelta(days=7)
     PERMANENT_SESSION_LIFETIME = timedelta(days=30)
+    COMPRESS_ALGORITHM = ['br']
+    COMPRESS_BR_LEVEL = 11
     DEBUG = os.getenv('FLASK_DEBUG', False)
 
     # MongoDB
@@ -39,6 +41,6 @@ class Config:
 META_CACHE_SIZE = 25000
 ID_CACHE_SIZE = 50000
 STREAM_CACHE_SIZE = 20000
-META_CACHE_EXPIRE = 3 * 24 * 60 * 60
+META_CACHE_EXPIRE = 7 * 24 * 60 * 60
 STREAM_CACHE_EXPIRE = 3 * 60 * 60
 CATALOG_CACHE_EXPIRE = 60

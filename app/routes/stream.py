@@ -52,7 +52,7 @@ def addon_stream(user_id: str, content_type: str, content_id: str):
     resp = fetch_streams(url)
     if resp.is_error:
         return respond_with({'streams': [], 'message': 'No streams found'}, ttl=180)
-    return respond_with(resp.json(), ttl=config.STREAM_CACHE_EXPIRE)
+    return respond_with(resp.json(), ttl=config.STREAM_CACHE_EXPIRE, immutable=True)
 
 
 @functools.lru_cache(maxsize=config.STREAM_CACHE_SIZE)
