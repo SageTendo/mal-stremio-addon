@@ -31,7 +31,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     # ignore imdb ids for older versions of mal-stremio
     if IMDB_ID_PREFIX in meta_id:
-        return respond_with({'meta': {}, 'message': 'Content not supported'}, ttl=120)
+        return respond_with({'meta': {}, 'message': 'Content not supported'}, ttl=config.META_CACHE_EXPIRE)
 
     if meta_type not in MANIFEST['types']:
         abort(404)
@@ -54,7 +54,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     meta = kitsu_to_meta(resp.json())
     meta['id'] = meta_id
     meta['type'] = meta_type
-    return respond_with({'meta': meta}, ttl=43200)
+    return respond_with({'meta': meta}, ttl=config.META_CACHE_EXPIRE)
 
 
 @functools.lru_cache(maxsize=config.META_CACHE_SIZE)

@@ -35,7 +35,7 @@ def addon_stream(user_id: str, content_type: str, content_id: str):
 
     content_id = urllib.parse.unquote(content_id)
     if content_type not in MANIFEST['types']:
-        return respond_with({'streams': [], 'message': 'Content not supported'}, ttl=60)
+        return respond_with({'streams': [], 'message': 'Content not supported'}, ttl=config.STREAM_CACHE_EXPIRE)
 
     get_token(user_id)
     if content_id.startswith(MAL_ID_PREFIX):
@@ -43,16 +43,16 @@ def addon_stream(user_id: str, content_type: str, content_id: str):
     elif content_id.startswith('kitsu:'):
         exists, kitsu_id = True, content_id.replace('kitsu:', '')
     else:
-        return respond_with({'streams': [], 'message': 'Invalid content ID'}, ttl=60)
+        return respond_with({'streams': [], 'message': 'Invalid content ID'}, ttl=360)
 
     if not exists:
-        return respond_with({'streams': [], 'message': 'No Kitsu ID in mapping database'}, ttl=60)
+        return respond_with({'streams': [], 'message': 'No Kitsu ID in mapping database'}, ttl=360)
 
     url = f"{torrentio_api}/stream/{content_type}/kitsu:{kitsu_id}.json"
     resp = fetch_streams(url)
     if resp.is_error:
-        return respond_with({'streams': [], 'message': 'No streams found'}, ttl=60)
-    return respond_with(resp.json(), ttl=360)
+        return respond_with({'streams': [], 'message': 'No streams found'}, ttl=180)
+    return respond_with(resp.json(), ttl=config.STREAM_CACHE_EXPIRE)
 
 
 @functools.lru_cache(maxsize=config.STREAM_CACHE_SIZE)
