@@ -7,6 +7,7 @@ from typing import Optional
 import requests
 from flask import Blueprint, abort, url_for, request, Request
 
+import config
 from . import mal_client, MAL_ID_PREFIX
 from .auth import get_token
 from .manifest import MANIFEST
@@ -118,7 +119,7 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str 
             meta = _mal_to_meta(anime_item, catalog_type=catalog_type, catalog_id=catalog_id,
                                 transport_url=_get_transport_url(request, user_id))
             meta_previews.append(meta)
-        return respond_with({'metas': meta_previews}, ttl=30)
+        return respond_with({'metas': meta_previews}, ttl=config.CATALOG_CACHE_EXPIRE)
     except ValueError as e:
         return respond_with({'metas': [], 'message': str(e)}), 400
     except requests.HTTPError as e:
