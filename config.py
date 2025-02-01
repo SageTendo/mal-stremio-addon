@@ -17,8 +17,8 @@ class Config:
     SESSION_TYPE = os.getenv('SESSION_TYPE', "filesystem")
     SEND_FILE_MAX_AGE_DEFAULT = timedelta(days=7)
     PERMANENT_SESSION_LIFETIME = timedelta(days=30)
-    COMPRESS_ALGORITHM = ['br']
-    COMPRESS_BR_LEVEL = 11
+    COMPRESS_ALGORITHM = ['gzip']
+    COMPRESS_BR_LEVEL = 4
     DEBUG = os.getenv('FLASK_DEBUG', False)
 
     # MongoDB
