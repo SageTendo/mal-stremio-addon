@@ -1,3 +1,4 @@
+import datetime
 import re
 from functools import lru_cache
 from typing import Dict, Tuple
@@ -22,18 +23,14 @@ def store_user(user_details: Dict):
     :param user_details: The user details to store
     """
     user_id = user_details['id']
-    access_token = user_details['access_token']
-    refresh_tkn = user_details['refresh_token']
-    expires_in = user_details['expires_in']
+    user_details['last_updated'] = datetime.datetime.utcnow()
+    data = user_details.copy()
 
-    user = UID_map_collection.find_one({'uid': user_id})
-    if user:
-        result = UID_map_collection.update_one(user, {'$set': {'access_token': access_token,
-                                                               'refresh_token': refresh_tkn,
-                                                               'expires_in': expires_in}})
+    if user := UID_map_collection.find_one({'uid': user_id}):
+        result = UID_map_collection.update_one(user, {'$set': data})
     else:
-        result = UID_map_collection.insert_one(
-            {'uid': user_id, 'access_token': access_token, 'refresh_token': refresh_tkn, 'expires_in': expires_in})
+        user_details['uid'] = user_id
+        result = UID_map_collection.insert_one(data)
     return result.acknowledged
 
 
