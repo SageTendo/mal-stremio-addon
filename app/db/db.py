@@ -23,13 +23,13 @@ def store_user(user_details: Dict):
     :param user_details: The user details to store
     """
     user_id = user_details['id']
+    user_details['uid'] = user_id
     user_details['last_updated'] = datetime.datetime.utcnow()
     data = user_details.copy()
 
     if user := UID_map_collection.find_one({'uid': user_id}):
         result = UID_map_collection.update_one(user, {'$set': data})
     else:
-        user_details['uid'] = user_id
         result = UID_map_collection.insert_one(data)
     return result.acknowledged
 
