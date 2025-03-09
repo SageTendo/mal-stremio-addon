@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import patch
 
 import pytest
-from flask import session, url_for
 
 from app.routes.auth import get_token
 from run import app
@@ -34,7 +33,8 @@ class TestAuthBlueprint(unittest.TestCase):
         with self.client:
             # Simulate user already logged in
             with self.client.session_transaction() as sess:
-                sess['user'] = {'id': '123',
+                sess['user'] = {'uid': '123',
+                                'id': '123',
                                 'name': 'Test User',
                                 'access_token': 'test_access_token',
                                 'refresh_token': 'test_refresh_token',
@@ -55,7 +55,7 @@ class TestAuthBlueprint(unittest.TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertIn('/callback', response.location)
 
-    @pytest.mark.tryfirst()
+    @pytest.mark.order('first')
     @patch('app.routes.mal_client.get_access_token')
     @patch('app.routes.mal_client.get_user_details')
     @patch('app.db.db.store_user')
@@ -83,6 +83,7 @@ class TestAuthBlueprint(unittest.TestCase):
 
         # Check that the user was stored in the session
         with self.client.session_transaction() as sess:
+            self.assertEqual(sess['user']['uid'], '123')
             self.assertEqual(sess['user']['id'], '123')
             self.assertEqual(sess['user']['name'], 'Test User')
             self.assertEqual(sess['user']['access_token'], 'test_access_token')
@@ -106,7 +107,8 @@ class TestAuthBlueprint(unittest.TestCase):
         # Simulate a logged-in user session
         with self.client:
             with self.client.session_transaction() as sess:
-                sess['user'] = {'id': '123',
+                sess['user'] = {'uid': '123',
+                                'id': '123',
                                 'name': 'Test User',
                                 'access_token': 'old_access_token',
                                 'refresh_token': 'old_refresh_token',
@@ -146,17 +148,29 @@ class TestAuthBlueprint(unittest.TestCase):
         response = self.client.get(redirect_response.location)
         self.assertIn('You are not logged in.', response.data.decode())
 
-    @pytest.mark.trylast()
+    @pytest.mark.order('last')
     def test_logout(self):
         """
         Test that the user is logged out and redirected to the index page
         """
-        with self.client:
-            with self.client.session_transaction() as sess:
-                sess['user'] = {'id': '123', 'name': 'Test User'}
-                self.assertIn('user', sess)
+        with self.client.session_transaction() as sess:
+            sess['user'] = {'uid': '123',
+                            'id': '123',
+                            'name': 'Test User',
+                            'access_token': 'test_access_token',
+                            'refresh_token': 'test_refresh_token',
+                            'expires_in': 3600}
 
-                response = self.client.get('/logout')
-                self.assertEqual(response.status_code, 302)
-                self.assertEqual(response.location, url_for('index'))
-                self.assertNotIn('user', session)
+            self.assertEqual(sess['user']['uid'], '123')
+            self.assertEqual(sess['user']['id'], '123')
+            self.assertEqual(sess['user']['name'], 'Test User')
+            self.assertEqual(sess['user']['access_token'], 'test_access_token')
+            self.assertEqual(sess['user']['refresh_token'], 'test_refresh_token')
+            self.assertEqual(sess['user']['expires_in'], 3600)
+
+        # Call the logout route
+        response = self.client.get('/logout')
+        with self.client.session_transaction() as sess:
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(response.location, '/configure')
+            self.assertNotIn('user', sess)
