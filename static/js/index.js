@@ -7,6 +7,9 @@ function copy_to_clipboard() {
 
     /* Copy the text inside the text field */
     try {
+        if (copyText.value === "")
+            return
+
         navigator.clipboard.writeText(copyText.value).then(() => alert("Copied Manifest URL to clipboard"));
     } catch (Exception) {
         try {

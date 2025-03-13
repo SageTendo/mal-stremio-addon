@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <span class="navbar-brand">MAL-Stremio Addon</span>
+
+            <div class="d-flex align-items-center">
+                <!-- Profile dropdown (works on all screens) -->
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center text-info" href="#" role="button"
+                       id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- Show username on desktop, hide on mobile -->
+                        <img src="{{ user['picture'] }}" alt="Profile" class="rounded-circle me-2" width="32"
+                             height="32">
+                        <span class="me-2 d-none d-md-inline">
+                            {{ user['name'] if user['name'].__len__() < 15 else user['name'][:15] + '...' }}
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end bg-dark" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item text-white" href="{{ url_for('auth.refresh_token') }}">Refresh
+                            MAL</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+    {# Description #}
+    <div class="card text-left bg-dark text-white">
+        <h5 class="card-title">Configure MAL-Stremio Addon</h5>
+        <p class="card-text">
+            Configure the addon to generate the addon URL for your MAL account. If you wish to change these options
+            in future, you must re-configure and re-install the addon.
+        <p>
+            Description of configuration options:
+        <ul>
+            <li>
+                <b>Sort watchlists by</b>: The order to display your watchlists.
+                <ul>
+                    <li>
+                        <b>Last Updated:</b> Sorts the watchlist by order of the most recently updated anime entries.
+                    </li>
+                    <li><b>Title:</b> Sorts the watchlist by anime title (Ascending).</li>
+                    <li><b>Release Date:</b> Sorts the watchlist by order of anime release dates (Descending)</li>
+                    <li><b>Score:</b> Sorts the watchlist by order of user's rating (Descending).</li>
+                </ul>
+            </li>
+            <li><b>Fetch torrent streams:</b>
+                If enabled, the addon will fetch torrent streams from Torrentio. If you already have the Torrentio
+                addon installed, or don't want to enable torrents, keep this disabled.
+            </li>
+        </ul>
+    </div>
+
+    {# Configuration form #}
+    <form class="d-col pt-3 mb-3" action="/configure">
+        <label for="sort_watchlist">Sort watchlists by:</label>
+        <select id="sort_watchlist" name="sort_watchlist" class="form-control-plaintext bg-dark text-white"
+                aria-label="Default select example">
+            {% for option in sort_options %}
+                <option value="{{ sort_options[option] }}">{{ option }}</option>
+            {% endfor %}
+        </select>
+
+        <br>
+        <label for="disable_streams">Fetch torrent streams:</label>
+        <select id="disable_streams" name="disable_streams" class="form-control-plaintext bg-dark text-white"
+                aria-label="Default
+                select example">
+            <option selected value="false">Disabled</option>
+            <option value="true">Enabled</option>
+        </select>
+
+        <button class="btn btn-success mt-3" type="submit" value="Submit">
+            Configure Addon
+        </button>
+    </form>
+
+    {# Addon URL and install button #}
+    <div class="flex-md-row mb-3">
+        <div class="input-group mb-1">
+            <input id="manifest_url" type="text" class="form-control bg-dark text-warning"
+                   aria-describedby="button-addon2"
+                   placeholder="Addon URL" value="{{ manifest_url }}" readonly>
+
+            <button class="btn btn-outline-success text-white" type="button" id="button-addon2"
+                    onclick="copy_to_clipboard()">
+                <i class="fa-regular fa-copy"></i> Copy Link
+            </button>
+            <Button class="btn btn-success text-white" onclick="location.href='{{ manifest_magnet }}'">
+                Open in Stremio
+            </Button>
+        </div>
+    </div>
+{% endblock %}
