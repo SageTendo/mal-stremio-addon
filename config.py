@@ -44,3 +44,9 @@ STREAM_CACHE_SIZE = 20000
 META_CACHE_EXPIRE = 7 * 24 * 60 * 60
 STREAM_CACHE_EXPIRE = 3 * 60 * 60
 CATALOG_CACHE_EXPIRE = 60
+
+# Catalog sort options
+SORT_OPTIONS = {'Last Updated': 'list_updated_at',
+                'Title': 'anime_title',
+                'Release Date': 'anime_start_date',
+                'Score': 'list_score'}
