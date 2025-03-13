@@ -1,8 +1,9 @@
 import logging
 
-from flask import Flask, render_template, session, url_for, redirect
+from flask import Flask, render_template, session, url_for, redirect, request
 from flask_compress import Compress
 
+import config
 from app.routes.auth import auth_blueprint
 from app.routes.catalog import catalog_bp
 from app.routes.content_sync import content_sync_bp
@@ -26,26 +27,38 @@ logging.basicConfig(format='%(asctime)s %(message)s')
 
 
 @app.route('/')
-@app.route('/configure')
 def index():
     """
     Render the index page
     """
-    if user := session.get('user', None):
-        user_id = user['id']
-        manifest_url = f'{Config.PROTOCOL}://{Config.REDIRECT_URL}/{user_id}/manifest.json'
-        manifest_magnet = f'stremio://{Config.REDIRECT_URL}/{user_id}/manifest.json'
-        return render_template('index.html', logged_in=True, user=user,
-                               manifest_url=manifest_url, manifest_magnet=manifest_magnet)
+    if session.get('user', None):
+        return redirect(url_for('configure'))
     return render_template('index.html')
 
 
-@app.route('/<user_id>/configure')
-def redirect_to_index(user_id: str):
+@app.route('/configure')
+@app.route('/<userID>/<parameters>/configure')
+def configure(userID: str = None, parameters: str = None):
     """
-    Redirect to the index page
+    Render the configure page
+    :param userID: The user's MyAnimeList ID (ignored, as this is sent by Stremio when redirecting to the configure
+    page)
+    :param parameters: A query string containing the user's addon configuration options (ignored, same as above)
     """
-    return redirect(url_for('index'))
+    if not (user := session.get('user', None)):
+        return redirect(url_for('index'))
+
+    user_id = user['uid']
+    sort_watchlist = request.args.get('sort_watchlist', config.SORT_OPTIONS['Last Updated'])
+    disable_streams = request.args.get('disable_streams', 'true')
+    addon_options = f"sort={sort_watchlist}&disable_streams={disable_streams}"
+
+    uri = f'{Config.REDIRECT_URL}/{user_id}/{addon_options}/manifest.json'
+    manifest_url = f'{Config.PROTOCOL}://{uri}'
+    manifest_magnet = f'stremio://{uri}'
+    return render_template('configure.html', user=user,
+                           sort_options=config.SORT_OPTIONS, manifest_url=manifest_url,
+                           manifest_magnet=manifest_magnet)
 
 
 @app.route('/favicon.ico')
