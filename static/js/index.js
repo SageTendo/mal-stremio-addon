@@ -20,9 +20,3 @@ function copy_to_clipboard() {
         }
     }
 }
-
-function toast() {
-    /* Get the snackbar DIV */
-    let x = document.getElementById("toast");
-    x.show();
-}
