@@ -4,6 +4,13 @@ import logging
 from flask import jsonify, flash, make_response, url_for, redirect, Response
 
 
+def querystring_as_dict(querystring: str) -> dict:
+    """
+    Converts a querystring into a dictionary
+    """
+    return {k: v for k, v in [qs.split('=') for qs in querystring.split('&')]}
+
+
 def handle_error(err) -> Response:
     """
     Handles errors from MyAnimeList's API

@@ -82,12 +82,12 @@ def addon_unconfigured_manifest():
     return respond_with(unconfigured_manifest)
 
 
-@manifest_blueprint.route('/<user_id>/<parameters>/manifest.json')
-def addon_configured_manifest(user_id: str, parameters: str):
+@manifest_blueprint.route('/<user_id>/<options>/manifest.json', defaults={'options': ''})
+def addon_configured_manifest(user_id: str, options: str):
     """
     Provides the manifest for the addon after the user has authenticated with MyAnimeList
     :param user_id: The user's MyAnimeList ID
-    :param parameters: A query string containing the user's addon configuration options
+    :param options: A query string containing the user's addon configuration options
     :return: JSON response
     """
     user = UID_map_collection.find_one({'uid': user_id})
