@@ -53,9 +53,10 @@
                     <li><b>Score:</b> Sorts the watchlist by order of user's rating (Descending).</li>
                 </ul>
             </li>
-            <li><b>Fetch torrent streams:</b>
-                If enabled, the addon will fetch torrent streams from Torrentio. If you already have the Torrentio
-                addon installed, or don't want to enable torrents, keep this disabled.
+            <li><b>Fetch with torrent streams:</b>
+                If this option is enabled, MAL-Stremio will fetch torrent streams from Torrentio.
+                If you already have the Torrentio addon installed, or don't want streams from torrents, keep this
+                disabled.
             </li>
         </ul>
 
@@ -78,8 +79,8 @@
         </select>
 
         <br>
-        <label for="disable_streams">Fetch torrent streams:</label>
-        <select id="disable_streams" name="disable_streams" class="form-control-plaintext bg-dark text-white"
+        <label for="fetch_streams">Fetch with torrent streams:</label>
+        <select id="fetch_streams" name="fetch_streams" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default
                 select example">
             <option selected value="false">Disabled</option>

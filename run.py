@@ -50,8 +50,8 @@ def configure(userID: str = None, parameters: str = None):
 
     user_id = user['uid']
     sort_watchlist = request.args.get('sort_watchlist', config.SORT_OPTIONS['Last Updated'])
-    disable_streams = request.args.get('disable_streams', 'true')
-    addon_options = f"sort={sort_watchlist}&disable_streams={disable_streams}"
+    fetch_streams = request.args.get('fetch_streams', 'false')
+    addon_options = f"sort={sort_watchlist}&fetch_streams={fetch_streams}"
 
     uri = f'{Config.REDIRECT_URL}/{user_id}/{addon_options}/manifest.json'
     manifest_url = f'{Config.PROTOCOL}://{uri}'
