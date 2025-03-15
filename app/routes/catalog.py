@@ -11,20 +11,21 @@ import config
 from . import mal_client, MAL_ID_PREFIX
 from .auth import get_token
 from .manifest import MANIFEST
-from .utils import respond_with, log_error
+from .utils import respond_with, log_error, querystring_as_dict
 
 catalog_bp = Blueprint('catalog', __name__)
 
 
-def _get_transport_url(req: Request, user_id: str):
+def _get_transport_url(req: Request, user_id: str, parameters: str = None):
     """
     Get the transport URL for the user 'user_id'
     :param req: The request object
     :param user_id: The user's MyAnimeList ID
     :return: The transport URL
     """
-    return urllib.parse.quote_plus(
-        req.root_url[:-1] + url_for('manifest.addon_configured_manifest', user_id=user_id))
+    url = (req.url[:-1] +
+           url_for('manifest.addon_configured_manifest', user_id=user_id, parameters=parameters))
+    return urllib.parse.quote_plus(url)
 
 
 def _is_valid_catalog(catalog_type: str, catalog_id: str):
@@ -66,7 +67,7 @@ def _has_genre_tag(meta: dict, genre: str = None):
     return False
 
 
-def _fetch_anime_list(token, search, catalog_id, offset, fields):
+def _fetch_anime_list(token, search, catalog_id, offset, fields, **kwargs):
     """
     Fetch a list of anime from MyAnimeList API based on the provided parameters
     :param token: The user's access token
@@ -74,28 +75,30 @@ def _fetch_anime_list(token, search, catalog_id, offset, fields):
     :param catalog_id: The ID of the catalog to return
     :param offset: The offset to start from
     :param fields: The fields to return
+    :param kwargs: Additional query parameters for respective endpoints
     :return: The list of anime
     """
     if search:
         if len(search) < 3:
             raise ValueError('Search query must be at least 3 characters long')
         return mal_client.get_anime_list(token, query=search, offset=offset, fields=fields)
-    return mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=fields)
+    return mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=fields, **kwargs)
 
 
-@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>.json')
-@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/search=<search>.json')
-@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json')
-@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/genre=<genre>.json')
-@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/genre=<genre>&search=<search>.json')
-@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>&search=<search>.json')
+@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>.json')
+@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/search=<search>.json')
+@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json')
+@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/genre=<genre>.json')
+@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/genre=<genre>&search=<search>.json')
+@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/skip=<offset>&search=<search>.json')
 @catalog_bp.route(
-    '/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json&genre=<genre>&search=<search>.json')
-def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str = None, genre: str = None,
-                  search: str = None):
+    '/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json&genre=<genre>&search=<search>.json')
+def addon_catalog(user_id: str, options: str, catalog_type: str, catalog_id: str,
+                  offset: str = None, genre: str = None, search: str = None):
     """
     Provides a list of anime from MyAnimeList
     :param user_id: The user's MyAnimeList ID
+    :param options: A query string containing the user's addon configuration options
     :param catalog_type: The type of catalog to return
     :param catalog_id: The ID of the catalog to return, MAL divides a user's anime list into different categories
            (e.g. plan to watch, watching, completed, on hold, dropped)
@@ -110,7 +113,10 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str 
     token = get_token(user_id)
     field_params = 'media_type genres mean start_date end_date synopsis'
     try:
-        response_data = _fetch_anime_list(token, search, catalog_id, offset, field_params)
+        options_dict = querystring_as_dict(options)
+        sort = options_dict.get('sort', config.DEFAULT_SORT_OPTION)
+
+        response_data = _fetch_anime_list(token, search, catalog_id, offset, field_params, sort=sort)
         unwrapped_results = [x['node'] for x in response_data.get('data', [])]
 
         meta_previews = []

@@ -117,11 +117,13 @@ KITSU_RESPONSE = {
 class TestMeta(unittest.TestCase):
     def setUp(self):
         """Set up the Flask test client"""
+        app.config['TESTING'] = True
+        app.config['SECRET'] = "Testing Secret"
         self.client = app.test_client()
 
     def test_meta(self):
         """Test the /meta endpoint"""
-        response = self.client.get('/123/meta/series/mal_28223.json')
+        response = self.client.get('123/someParameters/meta/series/mal_28223.json')
         self.assertEqual(response.status_code, 200)
         response_data = response.json
 
@@ -131,4 +133,4 @@ class TestMeta(unittest.TestCase):
 
         expected = kitsu_to_meta(KITSU_RESPONSE)
         for key in expected:
-            self.assertEqual(response_data['meta'][key], expected[key])
+            self.assertEqual(expected[key], response_data['meta'][key])

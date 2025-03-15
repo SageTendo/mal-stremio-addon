@@ -1,6 +1,6 @@
 import sys
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from app.routes.content_sync import handle_current_status, _handle_content_id, Status
 from run import app
@@ -10,32 +10,34 @@ class TestContentSync(unittest.TestCase):
 
     def setUp(self):
         """Set up testing client"""
+        app.config['TESTING'] = True
+        app.config['SECRET'] = "Testing Secret"
         self.test_client = app.test_client()
 
     def test_handle_mal_id(self):
         content_id, episode = _handle_content_id("mal_12345")
-        self.assertEqual(content_id, "12345")
-        self.assertEqual(episode, 1)
+        self.assertEqual("12345", content_id)
+        self.assertEqual(1, episode)
 
     def test_handle_kitsu_id(self):
         content_id, episode = _handle_content_id("kitsu:1")
-        self.assertEqual(content_id, 1)
-        self.assertEqual(episode, 1)
+        self.assertEqual(1, content_id)
+        self.assertEqual(1, episode)
 
     def test_handle_kitsu_id_with_episode(self):
         content_id, episode = _handle_content_id("kitsu:1:2")
-        self.assertEqual(content_id, 1)
-        self.assertEqual(episode, 2)
+        self.assertEqual(1, content_id)
+        self.assertEqual(2, episode)
 
     def test_handle_no_mal_id(self):
         content_id, episode = _handle_content_id(f"kitsu:{sys.maxsize}")
-        self.assertEqual(content_id, None)
-        self.assertEqual(episode, -1)
+        self.assertEqual(None, content_id)
+        self.assertEqual(-1, episode)
 
     def test_handle_invalid_id(self):
         content_id, episode = _handle_content_id("12345")
-        self.assertEqual(content_id, None)
-        self.assertEqual(episode, -1)
+        self.assertEqual(None, content_id)
+        self.assertEqual(-1, episode)
 
     @patch('app.routes.mal_client.get_anime_details')
     @patch('app.routes.mal_client.update_watched_status')
@@ -48,11 +50,11 @@ class TestContentSync(unittest.TestCase):
         mock_update_watched_status.status_code = 200
 
         # Test valid movie content ID
-        response = self.test_client.get('/123/subtitles/anime/kitsu:12345.json')
+        response = self.test_client.get('123/sort=anime_title/subtitles/anime/kitsu:12345.json')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
         self.assertIn('message', response.json)
-        self.assertEqual(response.json['subtitles'][0]['lang'], Status.OK)
+        self.assertEqual(Status.OK, response.json['subtitles'][0]['lang'])
 
     @patch('app.routes.mal_client.get_anime_details')
     @patch('app.routes.mal_client.update_watched_status')
@@ -65,12 +67,11 @@ class TestContentSync(unittest.TestCase):
         mock_update_watched_status.status_code = 200
 
         # Test valid movie content ID
-        response = self.test_client.get('/123/subtitles/anime/kitsu:12345.json')
+        response = self.test_client.get('123/sort=anime_title/subtitles/anime/kitsu:12345.json')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
         self.assertIn('message', response.json)
-        print(response.json)
-        self.assertEqual(response.json['subtitles'][0]['lang'], Status.OK)
+        self.assertEqual(Status.OK, response.json['subtitles'][0]['lang'])
 
     @patch('app.routes.mal_client.get_anime_details')
     @patch('app.routes.mal_client.update_watched_status')
@@ -83,12 +84,11 @@ class TestContentSync(unittest.TestCase):
         mock_update_watched_status.status_code = 200
 
         # Test valid movie content ID
-        response = self.test_client.get('/123/subtitles/anime/kitsu:12345.json')
+        response = self.test_client.get('123/sort=anime_title/subtitles/anime/kitsu:12345.json')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
         self.assertIn('message', response.json)
-        print(response.json)
-        self.assertEqual(response.json['subtitles'][0]['lang'], Status.NULL)
+        self.assertEqual(Status.NULL, response.json['subtitles'][0]['lang'])
 
     @patch('app.routes.mal_client.get_anime_details')
     @patch('app.routes.mal_client.update_watched_status')
@@ -101,11 +101,11 @@ class TestContentSync(unittest.TestCase):
         mock_update_watched_status.status_code = 200
 
         # Test valid movie content ID
-        response = self.test_client.get('/123/subtitles/anime/kitsu:12345:3.json')
+        response = self.test_client.get('123/sort=anime_title/subtitles/anime/kitsu:12345:3.json')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
         self.assertIn('message', response.json)
-        self.assertEqual(response.json['subtitles'][0]['lang'], Status.OK)
+        self.assertEqual(Status.OK, response.json['subtitles'][0]['lang'])
 
     @patch('app.routes.mal_client.get_anime_details')
     @patch('app.routes.mal_client.update_watched_status')
@@ -118,11 +118,11 @@ class TestContentSync(unittest.TestCase):
         mock_update_watched_status.status_code = 200
 
         # Test valid movie content ID
-        response = self.test_client.get('/123/subtitles/anime/kitsu:12345:2.json')
+        response = self.test_client.get('123/sort=anime_title/subtitles/anime/kitsu:12345:2.json')
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
         self.assertIn('message', response.json)
-        self.assertEqual(response.json['subtitles'][0]['lang'], Status.NULL)
+        self.assertEqual(Status.NULL, response.json['subtitles'][0]['lang'])
 
     def test_handle_plan_to_watch_to_no_update(self):
         status, episode = handle_current_status("plan_to_watch", 0,

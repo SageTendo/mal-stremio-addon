@@ -20,11 +20,12 @@ HEADERS = {
 }
 
 
-@meta_bp.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
-def addon_meta(user_id: str, meta_type: str, meta_id: str):
+@meta_bp.route('/<user_id>/<options>/meta/<meta_type>/<meta_id>.json')
+def addon_meta(user_id: str, options: str, meta_type: str, meta_id: str):
     """
     Provides metadata for a specific content
     :param user_id: The user's API token for MyAnimeList
+    :param options: A query string containing the user's addon configuration options
     :param meta_type: The type of metadata to return
     :param meta_id: The ID of the content
     :return: JSON response

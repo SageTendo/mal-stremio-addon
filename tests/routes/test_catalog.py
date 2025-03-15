@@ -80,6 +80,8 @@ DUMMY_MAL_RESPONSE = {'data': [
 class TestCatalog(unittest.TestCase):
     def setUp(self):
         """Set up the Flask test client."""
+        app.config['TESTING'] = True
+        app.config['SECRET'] = "Testing Secret"
         self.client = app.test_client()
 
     def _meta_asserts(self, response_data):
@@ -120,8 +122,8 @@ class TestCatalog(unittest.TestCase):
         mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
         mock_get_anime_list.return_value = DUMMY_MAL_RESPONSE
 
-        response = self.client.get('/123/catalog/anime/watching.json')
-        self.assertEqual(response.status_code, 200)
+        response = self.client.get('123/sort=anime_title/catalog/anime/watching.json')
+        self.assertEqual(200, response.status_code)
         response_data = response.json
         self._meta_asserts(response_data)
 
@@ -130,45 +132,46 @@ class TestCatalog(unittest.TestCase):
         """Test catalog request with a search query."""
         mock_get_anime_list.return_value = DUMMY_MAL_RESPONSE
 
-        response = self.client.get('/123/catalog/anime/search_list/search=Naruto.json')
-        self.assertEqual(response.status_code, 200)
+        response = self.client.get('123/sort=anime_title/catalog/anime/search_list/search=Naruto.json')
+        self.assertEqual(200, response.status_code)
         response_data = response.json
         assert len(response_data['metas']) > 0
         self._meta_asserts(response_data)
 
         # Test bad request
-        response = self.client.get('/123/catalog/anime/search_list/search=N.json')
-        self.assertEqual(response.status_code, 400)
+        response = self.client.get('123/sort=anime_title/catalog/anime/search_list/search=N.json')
+        self.assertEqual(400, response.status_code)
 
     @patch('app.routes.mal_client.get_user_anime_list')
     def test_genre_filtering_no_results(self, mock_get_user_anime_list):
         """Test catalog request with a search query."""
         mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
 
-        response = self.client.get('/123/catalog/anime/watching/genre=Adventure.json')
-        self.assertEqual(response.status_code, 200)
+        response = self.client.get('123/sort=anime_title/catalog/anime/watching/genre=Adventure.json')
+        self.assertEqual(200, response.status_code)
         response_data = response.json
-        self.assertListEqual(response_data['metas'], [])
+        self.assertListEqual([], response_data['metas'])
 
     @patch('app.routes.mal_client.get_user_anime_list')
     def test_genre_filtering(self, mock_get_user_anime_list):
         """Test catalog request with a search query."""
         mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
 
-        response = self.client.get('/123/catalog/anime/watching/genre=Action.json')
-        self.assertEqual(response.status_code, 200)
+        response = self.client.get('123/sort=anime_title/catalog/anime/watching/genre=Action.json')
+        self.assertEqual(200, response.status_code)
         response_data = response.json
         assert len(response_data['metas']) > 0
         self._meta_asserts(response_data)
 
-        response = self.client.get('/123/catalog/anime/watching/genre=Boys Love.json')
-        self.assertEqual(response.status_code, 200)
+        response = self.client.get('123/sort=anime_title/catalog/anime/watching/genre=Boys Love.json')
+        self.assertEqual(200, response.status_code)
         response_data = response.json
         assert len(response_data['metas']) == 0
         self._meta_asserts(response_data)
 
-        response = self.client.get("/123/catalog/anime/watching/genre={'id':%201,%20'name':%20'Action'}.json")
-        self.assertEqual(response.status_code, 200)
+        response = self.client.get("123/sort=anime_title/catalog/anime/watching/genre={'id':%201,"
+                                   "%20'name':%20'Action'}.json")
+        self.assertEqual(200, response.status_code)
         response_data = response.json
         assert len(response_data['metas']) > 0
         self._meta_asserts(response_data)
