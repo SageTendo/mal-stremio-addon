@@ -123,7 +123,7 @@ class TestMeta(unittest.TestCase):
 
     def test_meta(self):
         """Test the /meta endpoint"""
-        response = self.client.get('123/someParameters/meta/series/mal_28223.json')
+        response = self.client.get('123/meta/series/mal_28223.json')
         self.assertEqual(response.status_code, 200)
         response_data = response.json
 

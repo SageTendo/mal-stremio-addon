@@ -9,9 +9,9 @@ from flask import Blueprint, abort, url_for, request, Request
 
 import config
 from . import mal_client, MAL_ID_PREFIX
-from .auth import get_token
+from .auth import get_valid_user
 from .manifest import MANIFEST
-from .utils import respond_with, log_error, querystring_as_dict
+from .utils import respond_with, log_error
 
 catalog_bp = Blueprint('catalog', __name__)
 
@@ -85,20 +85,19 @@ def _fetch_anime_list(token, search, catalog_id, offset, fields, **kwargs):
     return mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=fields, **kwargs)
 
 
-@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>.json')
-@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/search=<search>.json')
-@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json')
-@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/genre=<genre>.json')
-@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/genre=<genre>&search=<search>.json')
-@catalog_bp.route('/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/skip=<offset>&search=<search>.json')
+@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>.json')
+@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/search=<search>.json')
+@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json')
+@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/genre=<genre>.json')
+@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/genre=<genre>&search=<search>.json')
+@catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>&search=<search>.json')
 @catalog_bp.route(
-    '/<user_id>/<options>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json&genre=<genre>&search=<search>.json')
-def addon_catalog(user_id: str, options: str, catalog_type: str, catalog_id: str,
+    '/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json&genre=<genre>&search=<search>.json')
+def addon_catalog(user_id: str, catalog_type: str, catalog_id: str,
                   offset: str = None, genre: str = None, search: str = None):
     """
     Provides a list of anime from MyAnimeList
     :param user_id: The user's MyAnimeList ID
-    :param options: A query string containing the user's addon configuration options
     :param catalog_type: The type of catalog to return
     :param catalog_id: The ID of the catalog to return, MAL divides a user's anime list into different categories
            (e.g. plan to watch, watching, completed, on hold, dropped)
@@ -110,12 +109,12 @@ def addon_catalog(user_id: str, options: str, catalog_type: str, catalog_id: str
     if not _is_valid_catalog(catalog_type, catalog_id):
         abort(404)
 
-    token = get_token(user_id)
+    user = get_valid_user(user_id)
+    token = user.get('access_token')
+    sort = user.get('sort_watchlist', config.DEFAULT_SORT_OPTION)
+
     field_params = 'media_type genres mean start_date end_date synopsis'
     try:
-        options_dict = querystring_as_dict(options)
-        sort = options_dict.get('sort', config.DEFAULT_SORT_OPTION)
-
         response_data = _fetch_anime_list(token, search, catalog_id, offset, field_params, sort=sort)
         unwrapped_results = [x['node'] for x in response_data.get('data', [])]
 

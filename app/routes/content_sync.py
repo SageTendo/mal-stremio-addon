@@ -6,7 +6,7 @@ from requests import HTTPError
 
 from app.db.db import get_mal_id_from_kitsu_id
 from app.routes import mal_client, MAL_ID_PREFIX
-from app.routes.auth import get_token
+from app.routes.auth import get_valid_user
 from app.routes.manifest import MANIFEST
 from app.routes.utils import respond_with, log_error
 
@@ -58,15 +58,14 @@ def _get_anime_status(token, mal_id):
     return total_episodes, list_status
 
 
-@content_sync_bp.route('/<user_id>/<options>/subtitles/<content_type>/<content_id>/<video_hash>.json')
-@content_sync_bp.route('/<user_id>/<options>/subtitles/<content_type>/<content_id>.json')
-def addon_content_sync(user_id: str, options: str, content_type: str, content_id: str, video_hash: str = None):
+@content_sync_bp.route('/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json')
+@content_sync_bp.route('/<user_id>/subtitles/<content_type>/<content_id>.json')
+def addon_content_sync(user_id: str, content_type: str, content_id: str, video_hash: str = None):
     """
     Synchronize watched status for a specific content with MyAnimeList.
     Stremio will call this endpoint when a user watches a video, requesting a subtitle for it.
     The addon will assume the user has watched the content and will update the watched status in MyAnimeList.
     :param user_id: The user's API token for MyAnimeList
-    :param options: A query string containing the user's addon configuration options
     :param content_type: The type of content
     :param content_id: The ID of the content
     :param video_hash: The hash of the video (ignored)
@@ -83,7 +82,8 @@ def addon_content_sync(user_id: str, options: str, content_type: str, content_id
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.INVALID_ID}], 'message': 'Invalid ID'})
 
     try:
-        token = get_token(user_id)
+        user = get_valid_user(user_id)
+        token = user.get('access_token')
         total_episodes, list_status = _get_anime_status(token, mal_id)
         if not list_status:
             return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.NOT_LIST}],

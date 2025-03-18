@@ -7,9 +7,9 @@ from flask import Blueprint
 import config
 from app.db.db import get_kitsu_id_from_mal_id
 from app.routes import MAL_ID_PREFIX, IMDB_ID_PREFIX
-from app.routes.auth import get_token
+from app.routes.auth import get_valid_user
 from app.routes.manifest import MANIFEST
-from app.routes.utils import respond_with, querystring_as_dict
+from app.routes.utils import respond_with
 
 stream_bp = Blueprint('stream', __name__)
 
@@ -20,12 +20,11 @@ quality_filters = "3Dbrremux,hdrall,dolbyvision,dolbyvisionwithhdr,threed"
 torrentio_api = f"https://torrentio.strem.fun/providers={providers}|qualityfilter={quality_filters}|limit={limit}"
 
 
-@stream_bp.route('/<user_id>/<options>/stream/<content_type>/<content_id>.json')
-def addon_stream(user_id: str, options: str, content_type: str, content_id: str):
+@stream_bp.route('/<user_id>/stream/<content_type>/<content_id>.json')
+def addon_stream(user_id: str, content_type: str, content_id: str):
     """
     Provide torrentio streams for movie content
     :param user_id: The id of the user requesting the content
-    :param options: A query string containing the user's addon configuration options
     :param content_type: The type of content
     :param content_id: The id of the content
     :return: JSON response
@@ -38,11 +37,11 @@ def addon_stream(user_id: str, options: str, content_type: str, content_id: str)
     if content_type not in MANIFEST['types']:
         return respond_with({'streams': [], 'message': 'Content not supported'}, ttl=config.STREAM_CACHE_EXPIRE)
 
-    options_dict = querystring_as_dict(options)
-    if ('fetch_streams' in options_dict) and (options_dict['fetch_streams'] == 'false'):
-        return respond_with({'streams': [], 'message': 'Streams disabled'}, ttl=config.STREAM_CACHE_EXPIRE)
+    user = get_valid_user(user_id)
+    if not user.get('fetch_streams', False):
+        return respond_with({'streams': [], 'message': 'Fetching streams is disabled'},
+                            ttl=config.STREAM_CACHE_EXPIRE)
 
-    get_token(user_id)
     if content_id.startswith(MAL_ID_PREFIX):
         exists, kitsu_id = get_kitsu_id_from_mal_id(content_id)
     elif content_id.startswith('kitsu:'):

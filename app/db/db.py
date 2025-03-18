@@ -1,4 +1,3 @@
-import datetime
 import re
 from functools import lru_cache
 from typing import Dict, Tuple
@@ -17,6 +16,15 @@ UID_map_collection = db.get_collection(Config.MONGO_UID_MAP)
 anime_mapping = anime_db.get_collection(Config.MONGO_ANIME_MAP)
 
 
+def get_user(user_id: str):
+    """
+    Get the user details from the database
+    :param user_id: The user's MyAnimeList ID
+    :return: The user details
+    """
+    return UID_map_collection.find_one({'uid': user_id})
+
+
 def store_user(user_details: Dict):
     """
     Store user details in db
@@ -24,7 +32,6 @@ def store_user(user_details: Dict):
     """
     user_id = user_details['id']
     user_details['uid'] = user_id
-    user_details['last_updated'] = datetime.datetime.utcnow()
     data = user_details.copy()
 
     if user := UID_map_collection.find_one({'uid': user_id}):

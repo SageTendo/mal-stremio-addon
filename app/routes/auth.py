@@ -4,7 +4,7 @@ import requests
 from flask import Blueprint, request, url_for, session, flash, abort, jsonify, make_response
 from werkzeug.utils import redirect
 
-from app.db.db import store_user, UID_map_collection
+from app.db.db import store_user, UID_map_collection, get_user
 from app.routes import mal_client
 from app.routes.utils import handle_error
 
@@ -20,13 +20,13 @@ def _store_user_session(user_details: dict):
     session.permanent = True
 
 
-def get_token(user_id: str):
+def get_valid_user(user_id: str):
     """
-    Get the access token for the user 'user_id' from the database
+    Verify the access token for the user 'user_id' from the database
     :param user_id: The user's MyAnimeList ID
-    :return: The user's access token
+    :return: The user's details
     """
-    if not (user := UID_map_collection.find_one({'uid': user_id})):
+    if not (user := get_user(user_id)):
         return abort(make_response(jsonify({'error': 'User not found'}), 404))
 
     if not user.get('last_updated'):
@@ -35,10 +35,9 @@ def get_token(user_id: str):
         )
 
     expiration_date = user['last_updated'] + datetime.timedelta(seconds=user['expires_in'])
-    if datetime.datetime.utcnow() <= expiration_date:
-        return user['access_token']
-
-    return abort(make_response(jsonify({'error': 'Access token expired'}), 401))
+    if datetime.datetime.utcnow() > expiration_date:
+        return abort(make_response(jsonify({'error': 'Access token expired'}), 401))
+    return user
 
 
 @auth_blueprint.route('/authorization', methods=["GET", "POST"])
@@ -88,6 +87,7 @@ def callback():
         user_details['access_token'] = user_auth_data['access_token']
         user_details['refresh_token'] = user_auth_data['refresh_token']
         user_details['expires_in'] = user_auth_data['expires_in']
+        user_details['last_updated'] = datetime.datetime.utcnow()
 
         if not store_user(user_details):
             flash("Failed to store user details.", "danger")
@@ -115,6 +115,7 @@ def refresh_token():
         user_details['access_token'] = user_auth_data['access_token']
         user_details['refresh_token'] = user_auth_data['refresh_token']
         user_details['expires_in'] = user_auth_data['expires_in']
+        user_details['last_updated'] = datetime.datetime.utcnow()
 
         if not store_user(user_details):
             flash("Failed to update user details.", "danger")

@@ -69,10 +69,13 @@
     </div>
 
     {# Configuration form #}
-    <form class="d-col pt-3 mb-3" action="/configure">
+    <form class="d-col pt-3 mb-3" action="/configure" method="post">
         <label for="sort_watchlist">Sort watchlists by:</label>
         <select id="sort_watchlist" name="sort_watchlist" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default select example">
+            <option selected value="{{ sort_options['Last Updated'] }}">
+                Choose an option
+            </option>
             {% for option in sort_options %}
                 <option value="{{ sort_options[option] }}">{{ option }}</option>
             {% endfor %}
@@ -97,7 +100,7 @@
         <div class="input-group mb-1">
             <input id="manifest_url" type="text" class="form-control bg-dark text-warning"
                    aria-describedby="button-addon2"
-                   placeholder="Addon URL" value="{{ manifest_url }}" readonly>
+                   placeholder="Configure Addon to generate addon URL" value="{{ manifest_url }}" readonly>
 
             <button class="btn btn-outline-success text-white" type="button" id="button-addon2"
                     onclick="copy_to_clipboard()">

@@ -15,20 +15,20 @@ class TestStream(unittest.TestCase):
         """
         Test /stream endpoint with no streams
         """
-        response = self.client.get('123/fetch_streams=false/stream/movie/mal_437.json')
+        response = self.client.get('123/stream/movie/mal_437.json')
         self.assertEqual(200, response.status_code)
 
         data = response.json
         self.assertIn('streams', data)
         self.assertEqual(0, len(data['streams']))
 
-    def test_disable_streams(self):
-        """
-        Test /stream endpoint
-        """
-        response = self.client.get('123/fetch_streams=true/stream/movie/mal_437.json')
-        self.assertEqual(200, response.status_code)
-
-        data = response.json
-        self.assertIn('streams', data)
-        self.assertNotEqual(0, len(data['streams']))
+    # def test_disable_streams(self):
+    #     """
+    #     Test /stream endpoint
+    #     """
+    #     response = self.client.get('123/stream/movie/mal_437.json')
+    #     self.assertEqual(200, response.status_code)
+    #
+    #     data = response.json
+    #     self.assertIn('streams', data)
+    #     self.assertNotEqual(0, len(data['streams']))

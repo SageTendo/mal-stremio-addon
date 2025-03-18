@@ -122,7 +122,7 @@ class TestCatalog(unittest.TestCase):
         mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
         mock_get_anime_list.return_value = DUMMY_MAL_RESPONSE
 
-        response = self.client.get('123/sort=anime_title/catalog/anime/watching.json')
+        response = self.client.get('123/catalog/anime/watching.json')
         self.assertEqual(200, response.status_code)
         response_data = response.json
         self._meta_asserts(response_data)
@@ -132,14 +132,14 @@ class TestCatalog(unittest.TestCase):
         """Test catalog request with a search query."""
         mock_get_anime_list.return_value = DUMMY_MAL_RESPONSE
 
-        response = self.client.get('123/sort=anime_title/catalog/anime/search_list/search=Naruto.json')
+        response = self.client.get('123/catalog/anime/search_list/search=Naruto.json')
         self.assertEqual(200, response.status_code)
         response_data = response.json
         assert len(response_data['metas']) > 0
         self._meta_asserts(response_data)
 
         # Test bad request
-        response = self.client.get('123/sort=anime_title/catalog/anime/search_list/search=N.json')
+        response = self.client.get('123/catalog/anime/search_list/search=N.json')
         self.assertEqual(400, response.status_code)
 
     @patch('app.routes.mal_client.get_user_anime_list')
@@ -147,7 +147,7 @@ class TestCatalog(unittest.TestCase):
         """Test catalog request with a search query."""
         mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
 
-        response = self.client.get('123/sort=anime_title/catalog/anime/watching/genre=Adventure.json')
+        response = self.client.get('123/catalog/anime/watching/genre=Adventure.json')
         self.assertEqual(200, response.status_code)
         response_data = response.json
         self.assertListEqual([], response_data['metas'])
@@ -157,19 +157,19 @@ class TestCatalog(unittest.TestCase):
         """Test catalog request with a search query."""
         mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
 
-        response = self.client.get('123/sort=anime_title/catalog/anime/watching/genre=Action.json')
+        response = self.client.get('123/catalog/anime/watching/genre=Action.json')
         self.assertEqual(200, response.status_code)
         response_data = response.json
         assert len(response_data['metas']) > 0
         self._meta_asserts(response_data)
 
-        response = self.client.get('123/sort=anime_title/catalog/anime/watching/genre=Boys Love.json')
+        response = self.client.get('123/catalog/anime/watching/genre=Boys Love.json')
         self.assertEqual(200, response.status_code)
         response_data = response.json
         assert len(response_data['metas']) == 0
         self._meta_asserts(response_data)
 
-        response = self.client.get("123/sort=anime_title/catalog/anime/watching/genre={'id':%201,"
+        response = self.client.get("123/catalog/anime/watching/genre={'id':%201,"
                                    "%20'name':%20'Action'}.json")
         self.assertEqual(200, response.status_code)
         response_data = response.json

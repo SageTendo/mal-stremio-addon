@@ -16,7 +16,7 @@ class TestManifestBlueprint(unittest.TestCase):
         """
         Test the manifest endpoint
         """
-        response = self.client.get('/123/some_parameters/manifest.json')
+        response = self.client.get('/123/manifest.json')
         self.assertEqual(200, response.status_code)
 
         manifest = response.json
@@ -65,7 +65,7 @@ class TestManifestBlueprint(unittest.TestCase):
         """
         Test the manifest endpoint when the user has configured the addon
         """
-        response = self.client.get('/123/someParameters/manifest.json')
+        response = self.client.get('/123/manifest.json')
         self.assertEqual(200, response.status_code)
 
         manifest = response.json

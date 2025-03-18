@@ -5,7 +5,7 @@ from flask import Blueprint, abort
 
 import config
 from . import IMDB_ID_PREFIX, MAL_ID_PREFIX
-from .auth import get_token
+from .auth import get_valid_user
 from .manifest import MANIFEST
 from .utils import respond_with, log_error
 from ..db.db import get_kitsu_id_from_mal_id
@@ -20,12 +20,11 @@ HEADERS = {
 }
 
 
-@meta_bp.route('/<user_id>/<options>/meta/<meta_type>/<meta_id>.json')
-def addon_meta(user_id: str, options: str, meta_type: str, meta_id: str):
+@meta_bp.route('/<user_id>/meta/<meta_type>/<meta_id>.json')
+def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     Provides metadata for a specific content
     :param user_id: The user's API token for MyAnimeList
-    :param options: A query string containing the user's addon configuration options
     :param meta_type: The type of metadata to return
     :param meta_id: The ID of the content
     :return: JSON response
@@ -37,7 +36,7 @@ def addon_meta(user_id: str, options: str, meta_type: str, meta_id: str):
     if meta_type not in MANIFEST['types']:
         abort(404)
 
-    get_token(user_id)
+    get_valid_user(user_id)
     try:
         url = f"{kitsu_API}/{meta_type}/"
         exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)

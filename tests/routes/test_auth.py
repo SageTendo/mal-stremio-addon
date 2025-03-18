@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
-from app.routes.auth import get_token
+from app.routes.auth import get_valid_user
 from run import app
 
 
@@ -21,7 +21,8 @@ class TestAuthBlueprint(unittest.TestCase):
         """
         Test that the get_token function returns a valid access token from the database
         """
-        token = get_token('123')
+        user = get_valid_user('123')
+        token = user.get('access_token')
         self.assertIsNotNone(token)
         self.assertIsInstance(token, str)
         self.assertNotEqual('', token)

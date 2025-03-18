@@ -50,7 +50,7 @@ class TestContentSync(unittest.TestCase):
         mock_update_watched_status.status_code = 200
 
         # Test valid movie content ID
-        response = self.test_client.get('123/sort=anime_title/subtitles/anime/kitsu:12345.json')
+        response = self.test_client.get('123/subtitles/anime/kitsu:12345.json')
 
         self.assertEqual(200, response.status_code)
         self.assertIn('message', response.json)
@@ -67,7 +67,7 @@ class TestContentSync(unittest.TestCase):
         mock_update_watched_status.status_code = 200
 
         # Test valid movie content ID
-        response = self.test_client.get('123/sort=anime_title/subtitles/anime/kitsu:12345.json')
+        response = self.test_client.get('123/subtitles/anime/kitsu:12345.json')
 
         self.assertEqual(200, response.status_code)
         self.assertIn('message', response.json)
@@ -84,7 +84,7 @@ class TestContentSync(unittest.TestCase):
         mock_update_watched_status.status_code = 200
 
         # Test valid movie content ID
-        response = self.test_client.get('123/sort=anime_title/subtitles/anime/kitsu:12345.json')
+        response = self.test_client.get('123/subtitles/anime/kitsu:12345.json')
 
         self.assertEqual(200, response.status_code)
         self.assertIn('message', response.json)
@@ -101,7 +101,7 @@ class TestContentSync(unittest.TestCase):
         mock_update_watched_status.status_code = 200
 
         # Test valid movie content ID
-        response = self.test_client.get('123/sort=anime_title/subtitles/anime/kitsu:12345:3.json')
+        response = self.test_client.get('123/subtitles/anime/kitsu:12345:3.json')
 
         self.assertEqual(200, response.status_code)
         self.assertIn('message', response.json)
@@ -118,7 +118,7 @@ class TestContentSync(unittest.TestCase):
         mock_update_watched_status.status_code = 200
 
         # Test valid movie content ID
-        response = self.test_client.get('123/sort=anime_title/subtitles/anime/kitsu:12345:2.json')
+        response = self.test_client.get('123/subtitles/anime/kitsu:12345:2.json')
 
         self.assertEqual(200, response.status_code)
         self.assertIn('message', response.json)
