@@ -3,7 +3,7 @@
 {% block header %}
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid d-flex justify-content-between align-items-center">
-            <span class="navbar-brand">MAL-Stremio Addon</span>
+            <a class="navbar-brand" href="/configure">MAL-Stremio Addon</a>
 
             <div class="d-flex align-items-center">
                 <!-- Profile dropdown (works on all screens) -->
@@ -73,9 +73,6 @@
         <label for="sort_watchlist">Sort watchlists by:</label>
         <select id="sort_watchlist" name="sort_watchlist" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default select example">
-            <option selected value="{{ sort_options['Last Updated'] }}">
-                Choose an option
-            </option>
             {% for option in sort_options %}
                 <option value="{{ sort_options[option] }}">{{ option }}</option>
             {% endfor %}
@@ -100,7 +97,8 @@
         <div class="input-group mb-1">
             <input id="manifest_url" type="text" class="form-control bg-dark text-warning"
                    aria-describedby="button-addon2"
-                   placeholder="Configure Addon to generate addon URL" value="{{ manifest_url }}" readonly>
+                   placeholder="Configure Addon to generate the addon's manifest URL" value="{{ manifest_url }}"
+                   readonly>
 
             <button class="btn btn-outline-success text-white" type="button" id="button-addon2"
                     onclick="copy_to_clipboard()">
