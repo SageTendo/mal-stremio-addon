@@ -38,6 +38,14 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/favicon.ico')
+def favicon():
+    """
+    Render the favicon for the app
+    """
+    return app.send_static_file('favicon.ico')
+
+
 @app.route('/configure', methods=['GET', 'POST'])
 @app.route('/<userID>/configure')
 def configure(userID: str = None):
@@ -50,13 +58,7 @@ def configure(userID: str = None):
         return redirect(url_for('index'))
 
     if request.method == 'POST':
-        sort_watchlist = request.args.get('sort_watchlist')
-        if sort_watchlist not in config.SORT_OPTIONS.values():
-            sort_watchlist = config.SORT_OPTIONS['Last Updated']
-        user['sort_watchlist'] = sort_watchlist
-
-        fetch_streams = request.args.get('fetch_streams')
-        user['fetch_streams'] = True if fetch_streams == 'true' else False
+        user |= __handle_addon_options(request.form)
         store_user(user)
 
         user_id = user['uid']
@@ -73,12 +75,18 @@ def configure(userID: str = None):
                                sort_options=config.SORT_OPTIONS)
 
 
-@app.route('/favicon.ico')
-def favicon():
-    """
-    Render the favicon for the app
-    """
-    return app.send_static_file('favicon.ico')
+def __handle_addon_options(addon_config_options):
+    options = {}
+    if addon_config_options.get('sort_watchlist') in config.SORT_OPTIONS.values():
+        options['sort_watchlist'] = addon_config_options.get('sort_watchlist')
+    else:
+        options['sort_watchlist'] = config.DEFAULT_SORT_OPTION
+
+    if addon_config_options.get('fetch_streams', '') == 'true':
+        options['fetch_streams'] = True
+    else:
+        options['fetch_streams'] = False
+    return options
 
 
 if __name__ == '__main__':
