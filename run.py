@@ -64,7 +64,7 @@ def configure(userID: str = None):
         manifest_url = f'{Config.PROTOCOL}://{uri}'
         manifest_magnet = f'stremio://{uri}'
 
-        flash("Configuration saved.", "success")
+        flash("Addon configured .", "success")
         return render_template('configure.html', user=user,
                                sort_options=config.SORT_OPTIONS, manifest_url=manifest_url,
                                manifest_magnet=manifest_magnet)
