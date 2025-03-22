@@ -2,7 +2,7 @@ from flask import Blueprint, abort
 
 from . import MAL_ID_PREFIX
 from .utils import respond_with
-from ..db.db import UID_map_collection
+from ..db.db import get_user
 
 manifest_blueprint = Blueprint('manifest', __name__)
 
@@ -89,7 +89,7 @@ def addon_configured_manifest(user_id: str):
     :param user_id: The user's MyAnimeList ID
     :return: JSON response
     """
-    user = UID_map_collection.find_one({'uid': user_id})
+    user = get_user(user_id)
     if not user:
         return abort(404, f'User ID: {user_id} not found')
     return respond_with(MANIFEST)

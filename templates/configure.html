@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <a class="navbar-brand" href="/configure">MAL-Stremio Addon</a>
+
+            <div class="d-flex align-items-center">
+                <!-- Profile dropdown (works on all screens) -->
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center text-info" href="#" role="button"
+                       id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- Show username on desktop, hide on mobile -->
+                        <img src="{{ user['picture'] }}" alt="Profile" class="rounded-circle me-2" width="32"
+                             height="32">
+                        <span class="me-2 d-none d-md-inline">
+                            {{ user['name'] if user['name'].__len__() < 15 else user['name'][:15] + '...' }}
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end bg-dark" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item text-white" href="{{ url_for('auth.refresh_token') }}">Refresh
+                            MAL</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+
+{% block content %}
+    {# Description #}
+    <div class="card text-left bg-dark text-white">
+        <h5 class="card-title">Configure MAL-Stremio Addon</h5>
+        <p class="card-text">
+            Configure the addon to generate the addon URL for your MAL account. If you wish to change these options
+            in future, you <b>must</b> re-configure the addon.
+        <p>
+            Description of configuration options:
+        <ul>
+            <li>
+                <b>Sort watchlists by</b>: The order to display your watchlists.
+                <ul>
+                    <li>
+                        <b>Last Updated:</b> Sorts the watchlist by order of the most recently updated anime entries.
+                    </li>
+                    <li><b>Title:</b> Sorts the watchlist by anime title (Ascending).</li>
+                    <li><b>Release Date:</b> Sorts the watchlist by order of anime release dates (Descending)</li>
+                    <li><b>Score:</b> Sorts the watchlist by order of user's rating (Descending).</li>
+                </ul>
+            </li>
+            <li><b>Fetch with torrent streams:</b>
+                If this option is enabled, MAL-Stremio will fetch torrent streams from Torrentio.
+                If you already have the Torrentio addon installed, or don't want streams from torrents, keep this
+                disabled.
+            </li>
+        </ul>
+
+        <div class="note mt-3 mb-3">
+            <strong>No Content Showing?</strong>
+            <br>
+            If no content is being displayed, it could be the result of your session expiring.
+            Log in again with MyAnimeList or 'Refresh MAL' on the addon webpage.
+        </div>
+    </div>
+
+    {# Configuration form #}
+    <form class="d-col pt-3 mb-3" action="/configure" method="post">
+        <label for="sort_watchlist">Sort watchlists by:</label>
+        <select id="sort_watchlist" name="sort_watchlist" class="form-control-plaintext bg-dark text-white"
+                aria-label="Default select example">
+            {% set selected_value = user.get('sort_watchlist', config.DEFAULT_SORT_OPTION) %}
+            {% for key, value in sort_options.items() %}
+                <option value="{{ value }}" {% if value == selected_value %}selected{% endif %}>
+                    {{ key }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <br>
+        <label for="fetch_streams">Fetch with torrent streams:</label>
+        <select id="fetch_streams" name="fetch_streams" class="form-control-plaintext bg-dark text-white"
+                aria-label="Default select example">
+            {% set selected_value = user.get('fetch_streams', False) %}
+            <option value="false" {% if selected_value == False %}selected{% endif %}>Disabled</option>
+            <option value="true" {% if selected_value == True %}selected{% endif %}>Enabled</option>
+        </select>
+
+        <button class="btn btn-success mt-3" type="submit" value="Submit">
+            Configure Addon
+        </button>
+    </form>
+
+    {# Addon URL and install button #}
+    <div class="flex-md-row mb-3">
+        <div class="input-group mb-1">
+            <input id="manifest_url" type="text" class="form-control bg-dark text-warning"
+                   aria-describedby="button-addon2"
+                   placeholder="Configure Addon to generate the addon's manifest URL" value="{{ manifest_url }}"
+                   readonly>
+
+            <button class="btn btn-outline-success text-white" type="button" id="button-addon2"
+                    onclick="copy_to_clipboard()">
+                <i class="fa-regular fa-copy"></i> Copy Link
+            </button>
+            <Button class="btn btn-success text-white" onclick="location.href='{{ manifest_magnet }}'">
+                Open in Stremio
+            </Button>
+        </div>
+    </div>
+{% endblock %}

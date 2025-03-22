@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from flask import jsonify, flash, make_response, url_for, redirect, Response
@@ -36,6 +37,16 @@ def respond_with(data, ttl: int = 0) -> Response:
     resp.headers['Access-Control-Allow-Headers'] = '*'
 
     if ttl > 0:
+        resp.content_type = 'application/json; charset=utf-8'
+        resp.vary = 'Accept-Encoding'
+        resp.add_etag(True)
+
+        # Set Expires header with correct format
+        expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=ttl)
+        resp.expires = expires
+        resp.headers['Expires'] = expires.strftime('%a, %d %b %Y %H:%M:%S GMT')
+
         resp.cache_control.public = True
         resp.cache_control.max_age = ttl
+        resp.cache_control.s_maxage = ttl
     return resp

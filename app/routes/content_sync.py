@@ -6,7 +6,7 @@ from requests import HTTPError
 
 from app.db.db import get_mal_id_from_kitsu_id
 from app.routes import mal_client, MAL_ID_PREFIX
-from app.routes.auth import get_token
+from app.routes.auth import get_valid_user
 from app.routes.manifest import MANIFEST
 from app.routes.utils import respond_with, log_error
 
@@ -82,7 +82,8 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.INVALID_ID}], 'message': 'Invalid ID'})
 
     try:
-        token = get_token(user_id)
+        user = get_valid_user(user_id)
+        token = user.get('access_token')
         total_episodes, list_status = _get_anime_status(token, mal_id)
         if not list_status:
             return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.NOT_LIST}],
