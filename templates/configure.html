@@ -73,18 +73,21 @@
         <label for="sort_watchlist">Sort watchlists by:</label>
         <select id="sort_watchlist" name="sort_watchlist" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default select example">
-            {% for option in sort_options %}
-                <option value="{{ sort_options[option] }}">{{ option }}</option>
+            {% set selected_value = user.get('sort_watchlist', config.DEFAULT_SORT_OPTION) %}
+            {% for key, value in sort_options.items() %}
+                <option value="{{ value }}" {% if value == selected_value %}selected{% endif %}>
+                    {{ key }}
+                </option>
             {% endfor %}
         </select>
 
         <br>
         <label for="fetch_streams">Fetch with torrent streams:</label>
         <select id="fetch_streams" name="fetch_streams" class="form-control-plaintext bg-dark text-white"
-                aria-label="Default
-                select example">
-            <option selected value="false">Disabled</option>
-            <option value="true">Enabled</option>
+                aria-label="Default select example">
+            {% set selected_value = user.get('fetch_streams', False) %}
+            <option value="false" {% if selected_value == False %}selected{% endif %}>Disabled</option>
+            <option value="true" {% if selected_value == True %}selected{% endif %}>Enabled</option>
         </select>
 
         <button class="btn btn-success mt-3" type="submit" value="Submit">
