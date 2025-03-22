@@ -97,17 +97,17 @@
 
     {# Addon URL and install button #}
     <div class="d-flex flex-column flex-md-row align-items-stretch mb-3">
-        <input id="manifest_url" type="text" class="form-control bg-dark text-warning mb-2 fs-5"
+        <input id="manifest_url" type="text" class="form-control bg-dark text-warning mb-2 fs-6 rounded-0"
                aria-describedby="button-addon2"
                placeholder="Configure Addon to generate the addon's manifest URL"
                value="{{ manifest_url }}" readonly>
 
         <div class="d-flex flex-column flex-md-row mb-2">
-            <button class="btn btn-outline-success text-white" type="button" id="button-addon2"
+            <button class="btn btn-outline-success text-white rounded-0" type="button" id="button-addon2"
                     onclick="copy_to_clipboard()">
                 <i class="fa-regular fa-copy"></i> Copy Link
             </button>
-            <button class="btn btn-success text-white" onclick="location.href='{{ manifest_magnet }}'">
+            <button class="btn btn-success text-white rounded-0" onclick="location.href='{{ manifest_magnet }}'">
                 Open in Stremio
             </button>
         </div>
