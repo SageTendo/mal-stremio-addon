@@ -7,23 +7,25 @@ from typing import Optional
 import requests
 from flask import Blueprint, abort, url_for, request, Request
 
+import config
 from . import mal_client, MAL_ID_PREFIX
-from .auth import get_token
+from .auth import get_valid_user
 from .manifest import MANIFEST
 from .utils import respond_with, log_error
 
 catalog_bp = Blueprint('catalog', __name__)
 
 
-def _get_transport_url(req: Request, user_id: str):
+def _get_transport_url(req: Request, user_id: str, parameters: str = None):
     """
     Get the transport URL for the user 'user_id'
     :param req: The request object
     :param user_id: The user's MyAnimeList ID
     :return: The transport URL
     """
-    return urllib.parse.quote_plus(
-        req.root_url[:-1] + url_for('manifest.addon_configured_manifest', user_id=user_id))
+    url = (req.url[:-1] +
+           url_for('manifest.addon_configured_manifest', user_id=user_id, parameters=parameters))
+    return urllib.parse.quote_plus(url)
 
 
 def _is_valid_catalog(catalog_type: str, catalog_id: str):
@@ -65,7 +67,7 @@ def _has_genre_tag(meta: dict, genre: str = None):
     return False
 
 
-def _fetch_anime_list(token, search, catalog_id, offset, fields):
+def _fetch_anime_list(token, search, catalog_id, offset, fields, **kwargs):
     """
     Fetch a list of anime from MyAnimeList API based on the provided parameters
     :param token: The user's access token
@@ -73,13 +75,14 @@ def _fetch_anime_list(token, search, catalog_id, offset, fields):
     :param catalog_id: The ID of the catalog to return
     :param offset: The offset to start from
     :param fields: The fields to return
+    :param kwargs: Additional query parameters for respective endpoints
     :return: The list of anime
     """
     if search:
         if len(search) < 3:
             raise ValueError('Search query must be at least 3 characters long')
         return mal_client.get_anime_list(token, query=search, offset=offset, fields=fields)
-    return mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=fields)
+    return mal_client.get_user_anime_list(token, status=catalog_id, offset=offset, fields=fields, **kwargs)
 
 
 @catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>.json')
@@ -90,8 +93,8 @@ def _fetch_anime_list(token, search, catalog_id, offset, fields):
 @catalog_bp.route('/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>&search=<search>.json')
 @catalog_bp.route(
     '/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json&genre=<genre>&search=<search>.json')
-def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str = None, genre: str = None,
-                  search: str = None):
+def addon_catalog(user_id: str, catalog_type: str, catalog_id: str,
+                  offset: str = None, genre: str = None, search: str = None):
     """
     Provides a list of anime from MyAnimeList
     :param user_id: The user's MyAnimeList ID
@@ -106,10 +109,13 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str 
     if not _is_valid_catalog(catalog_type, catalog_id):
         abort(404)
 
-    token = get_token(user_id)
+    user = get_valid_user(user_id)
+    token = user.get('access_token')
+    sort = user.get('sort_watchlist', config.DEFAULT_SORT_OPTION)
+
     field_params = 'media_type genres mean start_date end_date synopsis'
     try:
-        response_data = _fetch_anime_list(token, search, catalog_id, offset, field_params)
+        response_data = _fetch_anime_list(token, search, catalog_id, offset, field_params, sort=sort)
         unwrapped_results = [x['node'] for x in response_data.get('data', [])]
 
         meta_previews = []
@@ -118,7 +124,7 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str, offset: str 
             meta = _mal_to_meta(anime_item, catalog_type=catalog_type, catalog_id=catalog_id,
                                 transport_url=_get_transport_url(request, user_id))
             meta_previews.append(meta)
-        return respond_with({'metas': meta_previews}, ttl=30)
+        return respond_with({'metas': meta_previews}, ttl=config.CATALOG_CACHE_EXPIRE)
     except ValueError as e:
         return respond_with({'metas': [], 'message': str(e)}), 400
     except requests.HTTPError as e:

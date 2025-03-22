@@ -1,8 +1,10 @@
+import datetime
+
 import requests
-from flask import Blueprint, request, url_for, session, flash, abort
+from flask import Blueprint, request, url_for, session, flash, abort, jsonify, make_response
 from werkzeug.utils import redirect
 
-from app.db.db import store_user, UID_map_collection
+from app.db.db import store_user, UID_map_collection, get_user
 from app.routes import mal_client
 from app.routes.utils import handle_error
 
@@ -18,15 +20,24 @@ def _store_user_session(user_details: dict):
     session.permanent = True
 
 
-def get_token(user_id: str):
+def get_valid_user(user_id: str):
     """
-    Get the access token for the user 'user_id' from the database
+    Verify the access token for the user 'user_id' from the database
     :param user_id: The user's MyAnimeList ID
-    :return: The user's access token
+    :return: The user's details
     """
-    if not (user := UID_map_collection.find_one({'uid': user_id})):
-        return abort(404, 'User not found')
-    return user['access_token']
+    if not (user := get_user(user_id)):
+        return abort(make_response(jsonify({'error': 'User not found'}), 404))
+
+    if not user.get('last_updated'):
+        return abort(
+            make_response(jsonify({'error': 'Invalid MAL session. Please refresh or login again.'}), 409)
+        )
+
+    expiration_date = user['last_updated'] + datetime.timedelta(seconds=user['expires_in'])
+    if datetime.datetime.utcnow() > expiration_date:
+        return abort(make_response(jsonify({'error': 'Access token expired'}), 401))
+    return user
 
 
 @auth_blueprint.route('/authorization', methods=["GET", "POST"])
@@ -38,7 +49,7 @@ def authorize_user():
     if 'user' in session:
         flash("You are already logged in.", "warning")
         return redirect(url_for('index'))
-    
+
     auth_url, code_verifier = mal_client.get_auth()
     session['code_verifier'] = code_verifier
     return redirect(auth_url)
@@ -67,16 +78,16 @@ def callback():
         if 'code_verifier' not in session:
             flash("Invalid callback request. First log in.", "warning")
             return redirect(url_for('index'))
-            
-        code_verifier = session['code_verifier']
-        resp = mal_client.get_access_token(auth_code, code_verifier)
 
-        # get user details and append the access and refresh token the info
-        user_details = mal_client.get_user_details(token=resp['access_token'])
+        code_verifier = session['code_verifier']
+        user_auth_data = mal_client.get_access_token(auth_code, code_verifier)
+
+        user_details = mal_client.get_user_details(token=user_auth_data['access_token'])
         user_details['id'] = str(user_details['id'])
-        user_details['access_token'] = resp['access_token']
-        user_details['refresh_token'] = resp['refresh_token']
-        user_details['expires_in'] = resp['expires_in']
+        user_details['access_token'] = user_auth_data['access_token']
+        user_details['refresh_token'] = user_auth_data['refresh_token']
+        user_details['expires_in'] = user_auth_data['expires_in']
+        user_details['last_updated'] = datetime.datetime.utcnow()
 
         if not store_user(user_details):
             flash("Failed to store user details.", "danger")
@@ -100,10 +111,11 @@ def refresh_token():
         return redirect(url_for('index'))
 
     try:
-        resp = mal_client.refresh_token(refresh_token=user_details['refresh_token'])
-        user_details['access_token'] = resp['access_token']
-        user_details['refresh_token'] = resp['refresh_token']
-        user_details['expires_in'] = resp['expires_in']
+        user_auth_data = mal_client.refresh_token(refresh_token=user_details['refresh_token'])
+        user_details['access_token'] = user_auth_data['access_token']
+        user_details['refresh_token'] = user_auth_data['refresh_token']
+        user_details['expires_in'] = user_auth_data['expires_in']
+        user_details['last_updated'] = datetime.datetime.utcnow()
 
         if not store_user(user_details):
             flash("Failed to update user details.", "danger")
@@ -126,5 +138,6 @@ def logout():
         flash("You are not logged in.", "warning")
         return redirect(url_for('index'))
 
+    UID_map_collection.delete_one({'uid': session['user']['uid']})
     session.pop('user')
     return redirect(url_for('index'))

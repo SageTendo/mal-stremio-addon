@@ -3,8 +3,9 @@ import functools
 import requests
 from flask import Blueprint, abort
 
+import config
 from . import IMDB_ID_PREFIX, MAL_ID_PREFIX
-from .auth import get_token
+from .auth import get_valid_user
 from .manifest import MANIFEST
 from .utils import respond_with, log_error
 from ..db.db import get_kitsu_id_from_mal_id
@@ -30,12 +31,12 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     # ignore imdb ids for older versions of mal-stremio
     if IMDB_ID_PREFIX in meta_id:
-        return respond_with({'meta': {}, 'message': 'Content not supported'}, ttl=120)
+        return respond_with({'meta': {}, 'message': 'Content not supported'}, ttl=config.META_CACHE_EXPIRE)
 
     if meta_type not in MANIFEST['types']:
         abort(404)
 
-    get_token(user_id)
+    get_valid_user(user_id)
     try:
         url = f"{kitsu_API}/{meta_type}/"
         exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
@@ -53,10 +54,10 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     meta = kitsu_to_meta(resp.json())
     meta['id'] = meta_id
     meta['type'] = meta_type
-    return respond_with({'meta': meta}, ttl=43200)
+    return respond_with({'meta': meta}, ttl=config.META_CACHE_EXPIRE)
 
 
-@functools.lru_cache(maxsize=1000)
+@functools.lru_cache(maxsize=config.META_CACHE_SIZE)
 def fetch_from_kitsu_api(url: str):
     """Fetch metadata from kitsu API and cache the response"""
     return requests.get(url=url, headers=HEADERS)

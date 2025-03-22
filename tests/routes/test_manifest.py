@@ -8,6 +8,8 @@ class TestManifestBlueprint(unittest.TestCase):
         """
         Set up the test class
         """
+        app.config['TESTING'] = True
+        app.config['SECRET'] = "Testing Secret"
         self.client = app.test_client()
 
     def test_manifest(self):
@@ -15,7 +17,7 @@ class TestManifestBlueprint(unittest.TestCase):
         Test the manifest endpoint
         """
         response = self.client.get('/123/manifest.json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
 
         manifest = response.json
         self.assertIsNotNone(manifest['id'])
@@ -50,7 +52,7 @@ class TestManifestBlueprint(unittest.TestCase):
         Test the manifest endpoint when the user has not configured the addon
         """
         response = self.client.get('/manifest.json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
 
         manifest = response.json
         self.assertIn('configurable', manifest['behaviorHints'])
@@ -64,7 +66,7 @@ class TestManifestBlueprint(unittest.TestCase):
         Test the manifest endpoint when the user has configured the addon
         """
         response = self.client.get('/123/manifest.json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(200, response.status_code)
 
         manifest = response.json
         self.assertIsNotNone(manifest)
