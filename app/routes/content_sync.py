@@ -13,7 +13,7 @@ from app.routes.utils import respond_with, log_error
 content_sync_bp = Blueprint('content_sync', __name__)
 
 
-class Status:
+class UpdateStatus:
     """Enumeration for update status"""
     OK = "MAL=OK"
     NULL = "MAL=NO_UPDATE"
@@ -74,19 +74,20 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     content_id = urllib.parse.unquote(content_id)
     if content_type not in MANIFEST['types']:
         return respond_with(
-            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.SKIP}], 'message': 'Content not supported'})
+            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.SKIP}],
+             'message': 'Content not supported'})
 
     mal_id, current_episode = _handle_content_id(content_id)
     if not mal_id:
         return respond_with(
-            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.INVALID_ID}], 'message': 'Invalid ID'})
+            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.INVALID_ID}], 'message': 'Invalid ID'})
 
     try:
         user = get_valid_user(user_id)
         token = user.get('access_token')
         total_episodes, list_status = _get_anime_status(token, mal_id)
         if not list_status:
-            return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.NOT_LIST}],
+            return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.NOT_LIST}],
                                  'message': 'Content not in a watchlist'})
 
         current_status = list_status.get('status', None)
@@ -94,14 +95,15 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
         status, episode = handle_current_status(current_status, current_episode, watched_episodes, total_episodes)
         if status is None:
             return respond_with(
-                {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.NULL}], 'message': 'No update required'})
+                {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.NULL}],
+                 'message': 'No update required'})
 
         mal_client.update_watched_status(token, mal_id, current_episode, status)
         return respond_with(
-            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.OK}], 'message': 'Content updated'})
+            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.OK}], 'message': 'Content updated'})
     except HTTPError as err:
         log_error(err)
-        return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.FAIL}],
+        return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.FAIL}],
                              'message': 'Failed to update content'})
 
 
