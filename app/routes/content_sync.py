@@ -1,4 +1,5 @@
 import urllib.parse
+from datetime import datetime
 from typing import Optional, Tuple
 
 from flask import Blueprint
@@ -98,7 +99,10 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
                 {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.NULL}],
                  'message': 'No update required'})
 
-        mal_client.update_watched_status(token, mal_id, current_episode, status)
+        start_date = datetime.now().strftime('%Y-%m-%d') if status == 'watching' else None
+        finish_date = datetime.now().strftime('%Y-%m-%d') if status == 'completed' else None
+        mal_client.update_watched_status(token, mal_id, current_episode, status, start_date=start_date,
+                                         finish_date=finish_date)
         return respond_with(
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.OK}], 'message': 'Content updated'})
     except HTTPError as err:

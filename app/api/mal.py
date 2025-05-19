@@ -174,13 +174,17 @@ class MyAnimeListAPI:
         return resp.json()
 
     @staticmethod
-    def update_watched_status(token: str, anime_id: str, episode: int, status: str = 'watching'):
+    def update_watched_status(token: str, anime_id: str, episode: int, status: str = 'watching',
+                              start_date: str = None,
+                              finish_date: str = None):
         """
         Update the watched status of an anime in a user's watchlist
         :param token: The user's access token
         :param anime_id: The ID of the anime
         :param episode: The episode that is being watched
         :param status: The status to update the anime to
+        :param start_date: The date the user started watching the anime
+        :param finish_date: The date the user finished watching the anime
         :return: The details of the anime in the watchlist
         """
         if token is None:
@@ -192,6 +196,12 @@ class MyAnimeListAPI:
         url = f'{BASE_URL}/anime/{anime_id}/my_list_status'
         headers = {'Authorization': f'Bearer {token}'}
         body = {'status': status, 'num_watched_episodes': episode}
+
+        if start_date is not None:
+            body['start_date'] = start_date
+
+        if finish_date is not None:
+            body['finish_date'] = finish_date
 
         resp = requests.put(url=url, headers=headers, data=body, timeout=TIMEOUT)
         resp.raise_for_status()
