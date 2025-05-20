@@ -84,8 +84,12 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     try:
         user = get_valid_user(user_id)
         token = user.get('access_token')
+        track_unlisted_anime = user.get('track_unlisted_anime', False)
         total_episodes, list_status = _get_anime_status(token, mal_id)
-        if not list_status:
+
+        if track_unlisted_anime and not list_status:
+            list_status = {"status": "watching", "num_episodes_watched": 0}
+        elif not list_status:
             return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.NOT_LIST}],
                                  'message': 'Content not in a watchlist'})
 
