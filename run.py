@@ -76,6 +76,9 @@ def configure(userID: str = None):
 
 
 def __handle_addon_options(addon_config_options):
+    """
+    Handle addon configuration parameters that are provided by the user through the configuration page
+    """
     options = {}
     if addon_config_options.get('sort_watchlist') in config.SORT_OPTIONS.values():
         options['sort_watchlist'] = addon_config_options.get('sort_watchlist')
@@ -86,6 +89,11 @@ def __handle_addon_options(addon_config_options):
         options['fetch_streams'] = True
     else:
         options['fetch_streams'] = False
+
+    if addon_config_options.get('track_unlisted_anime', '') == 'true':
+        options['track_unlisted_anime'] = True
+    else:
+        options['track_unlisted_anime'] = False
     return options
 
 
