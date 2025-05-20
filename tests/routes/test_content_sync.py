@@ -2,7 +2,7 @@ import sys
 import unittest
 from unittest.mock import patch
 
-from app.routes.content_sync import handle_current_status, _handle_content_id, Status
+from app.routes.content_sync import handle_current_status, handle_content_id, Status
 from run import app
 
 
@@ -15,27 +15,27 @@ class TestContentSync(unittest.TestCase):
         self.test_client = app.test_client()
 
     def test_handle_mal_id(self):
-        content_id, episode = _handle_content_id("mal_12345")
+        content_id, episode = handle_content_id("mal_12345")
         self.assertEqual("12345", content_id)
         self.assertEqual(1, episode)
 
     def test_handle_kitsu_id(self):
-        content_id, episode = _handle_content_id("kitsu:1")
+        content_id, episode = handle_content_id("kitsu:1")
         self.assertEqual(1, content_id)
         self.assertEqual(1, episode)
 
     def test_handle_kitsu_id_with_episode(self):
-        content_id, episode = _handle_content_id("kitsu:1:2")
+        content_id, episode = handle_content_id("kitsu:1:2")
         self.assertEqual(1, content_id)
         self.assertEqual(2, episode)
 
     def test_handle_no_mal_id(self):
-        content_id, episode = _handle_content_id(f"kitsu:{sys.maxsize}")
+        content_id, episode = handle_content_id(f"kitsu:{sys.maxsize}")
         self.assertEqual(None, content_id)
         self.assertEqual(-1, episode)
 
     def test_handle_invalid_id(self):
-        content_id, episode = _handle_content_id("12345")
+        content_id, episode = handle_content_id("12345")
         self.assertEqual(None, content_id)
         self.assertEqual(-1, episode)
 

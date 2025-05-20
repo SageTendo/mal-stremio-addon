@@ -23,7 +23,7 @@ class Status:
     FAIL = "MAL=FAIL"
 
 
-def _handle_content_id(content_id):
+def handle_content_id(content_id):
     """
     Extract the ID of the content and the current episode.
     If ID is a Kitsu ID, get the relevant MAL ID from the database.
@@ -76,7 +76,7 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
         return respond_with(
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.SKIP}], 'message': 'Content not supported'})
 
-    mal_id, current_episode = _handle_content_id(content_id)
+    mal_id, current_episode = handle_content_id(content_id)
     if not mal_id:
         return respond_with(
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.INVALID_ID}], 'message': 'Invalid ID'})
@@ -119,5 +119,4 @@ def handle_current_status(status, current_episode, watched_episodes, total_episo
             return "completed", total_episodes
         elif current_episode > watched_episodes:
             return "watching", current_episode
-
     return None, -1
