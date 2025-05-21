@@ -23,7 +23,7 @@ class Status:
     FAIL = "MAL=FAIL"
 
 
-def handle_content_id(content_id):
+def _handle_content_id(content_id):
     """
     Extract the ID of the content and the current episode.
     If ID is a Kitsu ID, get the relevant MAL ID from the database.
@@ -76,7 +76,7 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
         return respond_with(
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.SKIP}], 'message': 'Content not supported'})
 
-    mal_id, current_episode = handle_content_id(content_id)
+    mal_id, current_episode = _handle_content_id(content_id)
     if not mal_id:
         return respond_with(
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.INVALID_ID}], 'message': 'Invalid ID'})
@@ -84,12 +84,8 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     try:
         user = get_valid_user(user_id)
         token = user.get('access_token')
-        track_unlisted_anime = user.get('track_unlisted_anime', False)
         total_episodes, list_status = _get_anime_status(token, mal_id)
-
-        if track_unlisted_anime and not list_status:
-            list_status = {"status": "watching", "num_episodes_watched": 0}
-        elif not list_status:
+        if not list_status:
             return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': Status.NOT_LIST}],
                                  'message': 'Content not in a watchlist'})
 
@@ -123,4 +119,5 @@ def handle_current_status(status, current_episode, watched_episodes, total_episo
             return "completed", total_episodes
         elif current_episode > watched_episodes:
             return "watching", current_episode
+
     return None, -1
