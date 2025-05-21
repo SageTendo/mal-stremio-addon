@@ -1,6 +1,6 @@
 import urllib.parse
 from datetime import datetime
-from typing import Optional, Tuple
+from typing import Optional
 
 from flask import Blueprint
 from requests import HTTPError
@@ -15,7 +15,7 @@ content_sync_bp = Blueprint('content_sync', __name__)
 
 
 class UpdateStatus:
-    """Enumeration for update status"""
+    """Enumeration for anime update status"""
     OK = "MAL=OK"
     NULL = "MAL=NO_UPDATE"
     SKIP = "MAL=SKIPPED"
@@ -24,7 +24,7 @@ class UpdateStatus:
     FAIL = "MAL=FAIL"
 
 
-def _handle_content_id(content_id):
+def handle_content_id(content_id):
     """
     Extract the ID of the content and the current episode.
     If ID is a Kitsu ID, get the relevant MAL ID from the database.
@@ -78,30 +78,35 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.SKIP}],
              'message': 'Content not supported'})
 
-    mal_id, current_episode = _handle_content_id(content_id)
-    if not mal_id:
+    mal_id, current_episode = handle_content_id(content_id)
+    if mal_id is None:
         return respond_with(
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.INVALID_ID}], 'message': 'Invalid ID'})
 
     try:
         user = get_valid_user(user_id)
         token = user.get('access_token')
-        total_episodes, list_status = _get_anime_status(token, mal_id)
-        if not list_status:
+        track_unlisted_anime = user.get('track_unlisted_anime', False)
+        total_episodes, anime_listing_status = _get_anime_status(token, mal_id)
+
+        if track_unlisted_anime and not anime_listing_status:
+            # Fake a listing status if unlisted and user wants it tracked
+            anime_listing_status = {"status": "watching", "num_episodes_watched": 0}
+        elif not anime_listing_status:
             return respond_with({'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.NOT_LIST}],
                                  'message': 'Content not in a watchlist'})
 
-        current_status = list_status.get('status', None)
-        watched_episodes = list_status.get('num_episodes_watched', 0)
-        status, episode = handle_current_status(current_status, current_episode, watched_episodes, total_episodes)
-        if status is None:
+        current_watch_status = anime_listing_status.get('status')
+        num_episodes_watched = anime_listing_status.get('num_episodes_watched', 0)
+        new_watch_status = handle_current_status(current_watch_status, current_episode, num_episodes_watched,
+                                                 total_episodes)
+        if not new_watch_status:
             return respond_with(
                 {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.NULL}],
                  'message': 'No update required'})
 
-        start_date = datetime.now().strftime('%Y-%m-%d') if status == 'watching' else None
-        finish_date = datetime.now().strftime('%Y-%m-%d') if status == 'completed' else None
-        mal_client.update_watched_status(token, mal_id, current_episode, status, start_date=start_date,
+        start_date, finish_date = determine_watch_dates(anime_listing_status, current_episode, total_episodes)
+        mal_client.update_watched_status(token, mal_id, current_episode, new_watch_status, start_date=start_date,
                                          finish_date=finish_date)
         return respond_with(
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.OK}], 'message': 'Content updated'})
@@ -111,19 +116,42 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
                              'message': 'Failed to update content'})
 
 
-def handle_current_status(status, current_episode, watched_episodes, total_episodes) -> Tuple[Optional[str], int]:
+def determine_watch_dates(anime_listing_status, current_episode, total_episodes):
+    """
+    Determine the dates to set for the start and finish dates of anime being watched, only if they have not been
+    set before.The start date is set to the current date if the user is watching the first episode. The finish date
+    is set to the current date if the user is watching the last episode.
+    :param anime_listing_status: The listing status of the anime in the user's watchlist (if it exists or has been
+    faked for unlisted anime tracking)
+    :param current_episode: The current episode being watched
+    :param total_episodes: The total number of episodes in the anime
+    :return: A tuple of (start_date, finish_date)
+    """
+    start_date = anime_listing_status.get('start_date')
+    finish_date = anime_listing_status.get('finish_date')
+    num_episodes_watched = anime_listing_status.get('num_episodes_watched', 0)
+
+    set_start = not start_date and current_episode == 1 and num_episodes_watched == 0
+    set_finish = not finish_date and current_episode == total_episodes
+
+    return (
+        datetime.now().strftime('%Y-%m-%d') if set_start else start_date,
+        datetime.now().strftime('%Y-%m-%d') if set_finish else finish_date
+    )
+
+
+def handle_current_status(status, current_episode, watched_episodes, total_episodes) -> Optional[str]:
     """
     Handle the current status of the anime in user's watchlists.
     :param status: The current watchlist status that the anime is in
     :param current_episode: The current episode being watched by the user
     :param watched_episodes: The number of episodes the user has watched
     :param total_episodes: The total number of episodes the anime has
-    :return: A tuple of (status, episode)
+    :return: A string representing the watchlist status to update the anime to
     """
     if status in {"watching", "plan_to_watch", "on_hold"}:
         if current_episode == total_episodes:
-            return "completed", total_episodes
+            return "completed"
         elif current_episode > watched_episodes:
-            return "watching", current_episode
-
-    return None, -1
+            return "watching"
+    return None
