@@ -34,7 +34,12 @@ class TestAuthBlueprint(unittest.TestCase):
         with self.client:
             # Simulate user already logged in
             with self.client.session_transaction() as sess:
-                sess['user'] = {'uid': '123', 'refresh_token': 'test_refresh_token'}
+                sess['user'] = {'uid': '123',
+                                'id': '123',
+                                'name': 'Test User',
+                                'access_token': 'test_access_token',
+                                'refresh_token': 'test_refresh_token',
+                                'expires_in': 3600}
 
             # Call the authorization route
             self.client.get('/authorization')
@@ -72,7 +77,11 @@ class TestAuthBlueprint(unittest.TestCase):
         # Check that the user was stored in the session
         with self.client.session_transaction() as sess:
             self.assertEqual('123', sess['user']['uid'])
+            self.assertEqual('123', sess['user']['id'])
+            self.assertEqual('Test User', sess['user']['name'])
+            self.assertEqual('test_access_token', sess['user']['access_token'])
             self.assertEqual('test_refresh_token', sess['user']['refresh_token'])
+            self.assertEqual(3600, sess['user']['expires_in'])
 
     @patch('app.routes.mal_client.refresh_token')
     @patch('app.db.db.store_user')
@@ -91,7 +100,12 @@ class TestAuthBlueprint(unittest.TestCase):
         # Simulate a logged-in user session
         with self.client:
             with self.client.session_transaction() as sess:
-                sess['user'] = {'uid': '123', 'refresh_token': 'old_refresh_token'}
+                sess['user'] = {'uid': '123',
+                                'id': '123',
+                                'name': 'Test User',
+                                'access_token': 'old_access_token',
+                                'refresh_token': 'old_refresh_token',
+                                'expires_in': 3600}
 
             # Simulate the refresh endpoint
             response = self.client.get('/refresh', follow_redirects=True)
@@ -100,6 +114,7 @@ class TestAuthBlueprint(unittest.TestCase):
             with self.client.session_transaction() as sess:
                 self.assertIn('user', sess)
                 self.assertIn('MyAnimeList session refreshed.', response.data.decode())
+                self.assertEqual('new_access_token', sess['user']['access_token'])
                 self.assertEqual('new_refresh_token', sess['user']['refresh_token'])
 
     def test_session_expired(self):
@@ -126,9 +141,19 @@ class TestAuthBlueprint(unittest.TestCase):
         Test that the user is logged out and redirected to the index page
         """
         with self.client.session_transaction() as sess:
-            sess['user'] = {'uid': '123', 'refresh_token': 'test_refresh_token'}
+            sess['user'] = {'uid': '123',
+                            'id': '123',
+                            'name': 'Test User',
+                            'access_token': 'test_access_token',
+                            'refresh_token': 'test_refresh_token',
+                            'expires_in': 3600}
+
             self.assertEqual('123', sess['user']['uid'])
+            self.assertEqual('123', sess['user']['id'])
+            self.assertEqual('Test User', sess['user']['name'])
+            self.assertEqual('test_access_token', sess['user']['access_token'])
             self.assertEqual('test_refresh_token', sess['user']['refresh_token'])
+            self.assertEqual(3600, sess['user']['expires_in'])
 
         # Call the logout route
         self.client.get('/logout', follow_redirects=True)

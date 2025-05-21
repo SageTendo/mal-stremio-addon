@@ -58,13 +58,6 @@
                 If you already have the Torrentio addon installed, or don't want streams from torrents, keep this
                 disabled.
             </li>
-            <li>
-                <b>Track unlisted anime:</b> If this option is enabled, MAL-Stremio will add any anime you watch in
-                Stremio to your MAL 'watching' list (if it's not already in your MAL lists).
-                <br>
-                <i>Example: If you start watching Naruto in Stremio for the first time, it will be marked and added to
-                    your MAL 'watching' list.</i>
-            </li>
         </ul>
 
         <div class="note mt-3 mb-3">
@@ -93,15 +86,6 @@
         <select id="fetch_streams" name="fetch_streams" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default select example">
             {% set selected_value = user.get('fetch_streams', False) %}
-            <option value="false" {% if selected_value == False %}selected{% endif %}>Disabled</option>
-            <option value="true" {% if selected_value == True %}selected{% endif %}>Enabled</option>
-        </select>
-
-        <br>
-        <label for="track_unlisted">Track unlisted anime:</label>
-        <select id="track_unlisted_anime" name="track_unlisted_anime" class="form-control-plaintext bg-dark text-white"
-                aria-label="Default select example">
-            {% set selected_value = user.get('track_unlisted_anime', False) %}
             <option value="false" {% if selected_value == False %}selected{% endif %}>Disabled</option>
             <option value="true" {% if selected_value == True %}selected{% endif %}>Enabled</option>
         </select>

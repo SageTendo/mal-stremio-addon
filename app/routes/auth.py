@@ -4,7 +4,7 @@ import requests
 from flask import Blueprint, request, url_for, session, flash, abort, jsonify, make_response
 from werkzeug.utils import redirect
 
-from app.db.db import store_user, get_user
+from app.db.db import store_user, UID_map_collection, get_user
 from app.routes import mal_client
 from app.routes.utils import handle_error
 
@@ -93,10 +93,7 @@ def callback():
             flash("Failed to store user details.", "danger")
             return redirect(url_for('index'))
 
-        _store_user_session({
-            'uid': user_details['uid'],
-            'refresh_token': user_details['refresh_token']
-        })
+        _store_user_session(user_details)
         flash("You are now logged in.", "success")
         return redirect(url_for('index'))
     except requests.HTTPError as e:
@@ -109,26 +106,22 @@ def refresh_token():
     Refreshes the access token for MyAnimeList
     :return: redirect response to the index page of the app
     """
-    if not (user_session := session.get('user', None)):
+    if not (user_details := session.get('user', None)):
         flash("Session expired! Please log in to MyAnimeList again.", "danger")
         return redirect(url_for('index'))
 
     try:
-        user_auth_data = mal_client.refresh_token(refresh_token=user_session['refresh_token'])
-        if not store_user({
-            'id': user_session['uid'],
-            'access_token': user_auth_data['access_token'],
-            'refresh_token': user_auth_data['refresh_token'],
-            'expires_in': user_auth_data['expires_in'],
-            'last_updated': datetime.datetime.utcnow()
-        }):
+        user_auth_data = mal_client.refresh_token(refresh_token=user_details['refresh_token'])
+        user_details['access_token'] = user_auth_data['access_token']
+        user_details['refresh_token'] = user_auth_data['refresh_token']
+        user_details['expires_in'] = user_auth_data['expires_in']
+        user_details['last_updated'] = datetime.datetime.utcnow()
+
+        if not store_user(user_details):
             flash("Failed to update user details.", "danger")
             return redirect(url_for('index'))
 
-        _store_user_session({
-            'uid': user_session['uid'],
-            'refresh_token': user_auth_data['refresh_token']
-        })
+        _store_user_session(user_details)
         flash("MyAnimeList session refreshed.", "success")
         return redirect(url_for('index'))
     except requests.HTTPError as e:
@@ -145,5 +138,6 @@ def logout():
         flash("You are not logged in.", "warning")
         return redirect(url_for('index'))
 
+    UID_map_collection.delete_one({'uid': session['user']['uid']})
     session.pop('user')
     return redirect(url_for('index'))
