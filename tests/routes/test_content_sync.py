@@ -62,12 +62,7 @@ class TestContentSync(unittest.TestCase):
     def test_update_untracked_anime_when_enabled(self, mock_get_user, mock_update_watched_status,
                                                  mock_get_anime_details):
         # Mock responses
-        mock_get_user.return_value = {
-            "uid": "123",
-            "id": "123",
-            "access_token": "my access token",
-            "track_unlisted_anime": True
-        }
+        mock_get_user.return_value = {"track_unlisted_anime": True}
         mock_get_anime_details.return_value = {
             'num_episodes': 1,
             'my_list_status': None
@@ -85,12 +80,7 @@ class TestContentSync(unittest.TestCase):
     def test_update_untracked_anime_when_disabled(self, mock_get_user, mock_update_watched_status,
                                                   mock_get_anime_details):
         # Mock responses
-        mock_get_user.return_value = {
-            "uid": "123",
-            "id": "123",
-            "access_token": "my access token",
-            "track_unlisted_anime": False
-        }
+        mock_get_user.return_value = {"track_unlisted_anime": False}
         mock_get_anime_details.return_value = {
             'num_episodes': 1,
             'my_list_status': None
