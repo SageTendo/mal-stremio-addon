@@ -174,7 +174,7 @@ class TestContentSync(unittest.TestCase):
         }
         my_list_status = mock_anime_details['my_list_status']
         current_episode = 1
-        total_episodes = 3
+        total_episodes = mock_anime_details['num_episodes']
 
         start_date, finish_date = determine_watch_dates(my_list_status, current_episode, total_episodes)
         self.assertEqual(start_date, datetime.now().strftime('%Y-%m-%d'))
@@ -188,7 +188,7 @@ class TestContentSync(unittest.TestCase):
         }
         my_list_status = mock_anime_details['my_list_status']
         current_episode = 3
-        total_episodes = 3
+        total_episodes = mock_anime_details['num_episodes']
 
         start_date, finish_date = determine_watch_dates(my_list_status, current_episode, total_episodes)
         self.assertEqual(start_date, None)
@@ -201,14 +201,12 @@ class TestContentSync(unittest.TestCase):
                                'finish_date': '2022-01-02'}
         }
         current_episode = 1
-        total_episodes = 3
+        total_episodes = mock_anime_details['num_episodes']
         my_list_status = mock_anime_details['my_list_status']
 
-        start_date = "2022-01-01"
-        my_list_status['start_date'] = start_date
         start_date, finish_date = determine_watch_dates(my_list_status, current_episode, total_episodes)
-        self.assertEqual(start_date, start_date)
-        self.assertEqual(finish_date, finish_date)
+        self.assertEqual(start_date, my_list_status['start_date'])
+        self.assertEqual(finish_date, my_list_status['finish_date'])
 
     def test_handle_plan_to_watch_to_no_update(self):
         status = handle_current_status("plan_to_watch", 0,
