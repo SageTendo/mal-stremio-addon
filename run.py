@@ -5,7 +5,7 @@ from flask_compress import Compress
 from waitress import serve
 
 import config
-from app.db.db import store_user
+from app.db.db import store_user, get_user
 from app.routes.auth import auth_blueprint
 from app.routes.catalog import catalog_bp
 from app.routes.content_sync import content_sync_bp
@@ -54,12 +54,18 @@ def configure(userID: str = None):
     :param userID: The user's MyAnimeList ID (ignored, as this is sent by Stremio when redirecting to the configure
     page)
     """
-    if not (user := session.get('user', None)):
+    if not (user_session := session.get('user', None)):
         return redirect(url_for('index'))
 
     if request.method == 'POST':
+        if not (user := get_user(user_session['uid'])):
+            flash("User not found.", "danger")
+            return redirect(url_for('index'))
+
         user |= __handle_addon_options(request.form)
-        store_user(user)
+        if not store_user(user):
+            flash("Failed to update user configurations.", "danger")
+            return redirect(url_for('index'))
 
         user_id = user['uid']
         uri = f'{Config.REDIRECT_URL}/{user_id}/manifest.json'
@@ -71,11 +77,18 @@ def configure(userID: str = None):
                                sort_options=config.SORT_OPTIONS, manifest_url=manifest_url,
                                manifest_magnet=manifest_magnet)
     else:
+        if not (user := get_user(user_session['uid'])):
+            flash("User not found.", "danger")
+            return redirect(url_for('index'))
+
         return render_template('configure.html', user=user,
                                sort_options=config.SORT_OPTIONS)
 
 
 def __handle_addon_options(addon_config_options):
+    """
+    Handle addon configuration parameters that are provided by the user through the configuration page
+    """
     options = {}
     if addon_config_options.get('sort_watchlist') in config.SORT_OPTIONS.values():
         options['sort_watchlist'] = addon_config_options.get('sort_watchlist')
@@ -86,6 +99,11 @@ def __handle_addon_options(addon_config_options):
         options['fetch_streams'] = True
     else:
         options['fetch_streams'] = False
+
+    if addon_config_options.get('track_unlisted_anime', '') == 'true':
+        options['track_unlisted_anime'] = True
+    else:
+        options['track_unlisted_anime'] = False
     return options
 
 
