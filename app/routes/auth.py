@@ -26,7 +26,7 @@ def get_valid_user(user_id: str):
     :param user_id: The user's MyAnimeList ID
     :return: The user's details
     """
-    if user := get_user(user_id):
+    if not (user := get_user(user_id)):
         return abort(respond_with({'error': 'User not found'}, ttl=1800, private=True))
 
     if not user.get('last_updated'):
