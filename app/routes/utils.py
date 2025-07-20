@@ -1,7 +1,7 @@
 import datetime
 import logging
 
-from flask import jsonify, flash, make_response, url_for, redirect, Response
+from flask import jsonify, flash, make_response, url_for, redirect, Response, request
 
 
 def handle_error(err) -> Response:
@@ -40,19 +40,18 @@ def respond_with(data, private: bool = False, ttl: int = 0, stale_while_revalida
         resp.content_type = 'application/json; charset=utf-8'
         resp.vary = 'Accept-Encoding'
         resp.add_etag(True)
+        resp.make_conditional(request)
 
         # Set Expires header with correct format
         expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=ttl)
         resp.expires = expires
         resp.headers['Expires'] = expires.strftime('%a, %d %b %Y %H:%M:%S GMT')
 
-        if private:
-            resp.cache_control.private = True
-        else:
-            resp.cache_control.public = True
-            resp.cache_control.s_maxage = ttl
-
-        resp.cache_control.max_age = ttl
-        if stale_while_revalidate > 0:
-            resp.cache_control.stale_while_revalidate = stale_while_revalidate
+        cache_control = [
+            "private" if private else "public",
+            f"max-age={ttl}",
+            f"s-maxage={ttl}" if not private else "",
+            f"stale-while-revalidate={stale_while_revalidate}" if stale_while_revalidate > 0 else "",
+        ]
+        resp.headers['Cache-Control'] = ', '.join(filter(None, cache_control))
     return resp
