@@ -16,7 +16,7 @@ genres = ['Action', 'Adventure', 'Avant Garde',
 
 MANIFEST = {
     'id': 'com.sagetendo.mal-stremio-addon',
-    'version': '3.2.1',
+    'version': '3.2.0',
     'name': 'MAL-Stremio Addon',
     'logo': 'https://i.imgur.com/zVYdffr.png',
     'description': 'Provides users with watchlist content from MyAnimeList within Stremio. '
