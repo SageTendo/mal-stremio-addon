@@ -1,5 +1,6 @@
 from flask import Blueprint, abort
 
+import config
 from . import MAL_ID_PREFIX
 from .utils import respond_with
 from ..db.db import get_user
@@ -15,7 +16,7 @@ genres = ['Action', 'Adventure', 'Avant Garde',
 
 MANIFEST = {
     'id': 'com.sagetendo.mal-stremio-addon',
-    'version': '3.2.0',
+    'version': '3.2.1',
     'name': 'MAL-Stremio Addon',
     'logo': 'https://i.imgur.com/zVYdffr.png',
     'description': 'Provides users with watchlist content from MyAnimeList within Stremio. '
@@ -79,7 +80,7 @@ def addon_unconfigured_manifest():
         'configurable': True,
         'configurationRequired': True
     }
-    return respond_with(unconfigured_manifest)
+    return respond_with(unconfigured_manifest, ttl=config.MANIFEST_CACHE_DURATION, stale_while_revalidate=300)
 
 
 @manifest_blueprint.route('/<user_id>/manifest.json')
@@ -92,4 +93,4 @@ def addon_configured_manifest(user_id: str):
     user = get_user(user_id)
     if not user:
         return abort(404, f'User ID: {user_id} not found')
-    return respond_with(MANIFEST)
+    return respond_with(MANIFEST, ttl=config.MANIFEST_CACHE_DURATION, stale_while_revalidate=300)

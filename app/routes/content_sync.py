@@ -5,6 +5,7 @@ from typing import Optional
 from flask import Blueprint
 from requests import HTTPError
 
+import config
 from app.db.db import get_mal_id_from_kitsu_id
 from app.routes import mal_client, MAL_ID_PREFIX
 from app.routes.auth import get_valid_user
@@ -76,12 +77,15 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     if content_type not in MANIFEST['types']:
         return respond_with(
             {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.SKIP}],
-             'message': 'Content not supported'})
+             'message': 'Content not supported'}, ttl=config.CONTENT_SYNC_CACHE_ON_INVALID_DURATION,
+            stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
 
     mal_id, current_episode = handle_content_id(content_id)
     if mal_id is None:
         return respond_with(
-            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.INVALID_ID}], 'message': 'Invalid ID'})
+            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.INVALID_ID}], 'message': 'Invalid ID'},
+            ttl=config.CONTENT_SYNC_CACHE_ON_INVALID_DURATION,
+            stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
 
     try:
         user = get_valid_user(user_id)
@@ -103,7 +107,9 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
         if not new_watch_status:
             return respond_with(
                 {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.NULL}],
-                 'message': 'No update required'})
+                 'message': 'No update required'},
+                ttl=config.CONTENT_SYNC_NO_UPDATE_DURATION,
+                stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
 
         start_date, finish_date = determine_watch_dates(anime_listing_status, current_episode, total_episodes)
         mal_client.update_watched_status(token, mal_id, current_episode, new_watch_status, start_date=start_date,

@@ -35,31 +35,40 @@ def addon_stream(user_id: str, content_type: str, content_id: str):
 
     content_id = urllib.parse.unquote(content_id)
     if content_type not in MANIFEST['types']:
-        return respond_with({'streams': [], 'message': 'Content not supported'}, ttl=config.STREAM_CACHE_EXPIRE)
+        return respond_with({'streams': [], 'message': 'Content not supported'},
+                            ttl=config.STREAM_CACHE_ON_SUCCESS_DURATION,
+                            stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
 
     user = get_valid_user(user_id)
     if not user.get('fetch_streams', False):
         return respond_with({'streams': [], 'message': 'Fetching streams is disabled'},
-                            ttl=config.STREAM_CACHE_EXPIRE)
+                            ttl=config.STREAM_CACHE_ON_FAIL_TO_FETCH_DURATION,
+                            stale_while_revalidate=config.STREAM_CACHE_STALE_WHILE_REVALIDATE)
 
     if content_id.startswith(MAL_ID_PREFIX):
         exists, kitsu_id = get_kitsu_id_from_mal_id(content_id)
     elif content_id.startswith('kitsu:'):
         exists, kitsu_id = True, content_id.replace('kitsu:', '')
     else:
-        return respond_with({'streams': [], 'message': 'Invalid content ID'}, ttl=360)
+        return respond_with({'streams': [], 'message': 'Invalid content ID'},
+                            ttl=config.STREAM_CACHE_ON_INVALID_DURATION,
+                            stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
 
     if not exists:
-        return respond_with({'streams': [], 'message': 'No Kitsu ID in mapping database'}, ttl=360)
+        return respond_with({'streams': [], 'message': 'No Kitsu ID in mapping database'},
+                            ttl=config.STREAM_CACHE_ON_NO_KITSU_ID_DURATION,
+                            stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
 
     url = f"{torrentio_api}/stream/{content_type}/kitsu:{kitsu_id}.json"
     resp = fetch_streams(url)
     if resp.is_error:
-        return respond_with({'streams': [], 'message': 'No streams found'}, ttl=180)
-    return respond_with(resp.json(), ttl=config.STREAM_CACHE_EXPIRE)
+        return respond_with({'streams': [], 'message': 'Failed to fetch streams'},
+                            ttl=config.STREAM_CACHE_ON_FAIL_TO_FETCH_DURATION,
+                            stale_while_revalidate=config.STREAM_CACHE_STALE_WHILE_REVALIDATE)
+    return respond_with(resp.json(), ttl=config.STREAM_CACHE_ON_SUCCESS_DURATION)
 
 
 @functools.lru_cache(maxsize=config.STREAM_CACHE_SIZE)
 def fetch_streams(url):
     with httpx.Client() as client:
-        return client.get(url)
+        return client.get(url, timeout=5)

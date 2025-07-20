@@ -28,7 +28,7 @@ def log_error(err):
     logging.error(f"{error_label} [{err.response.status_code}] -> {message}\n HINT: {hint}\n")
 
 
-def respond_with(data, ttl: int = 0) -> Response:
+def respond_with(data, private: bool = False, ttl: int = 0, stale_while_revalidate: int = 0) -> Response:
     """
     Respond with CORS headers to the client
     """
@@ -46,7 +46,13 @@ def respond_with(data, ttl: int = 0) -> Response:
         resp.expires = expires
         resp.headers['Expires'] = expires.strftime('%a, %d %b %Y %H:%M:%S GMT')
 
-        resp.cache_control.public = True
+        if private:
+            resp.cache_control.private = True
+        else:
+            resp.cache_control.public = True
+            resp.cache_control.s_maxage = ttl
+
         resp.cache_control.max_age = ttl
-        resp.cache_control.s_maxage = ttl
+        if stale_while_revalidate > 0:
+            resp.cache_control.stale_while_revalidate = stale_while_revalidate
     return resp
