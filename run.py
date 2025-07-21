@@ -46,7 +46,7 @@ def favicon():
     Render the favicon for the app
     """
     response = app.send_static_file('favicon.ico')
-    response.headers['Cache-Control'] = 'private, max-age=3600, stale-while-revalidate=600'
+    response.headers['Cache-Control'] = 'private, max-age=31536000, stale-while-revalidate=3600'
     return response
 
 
