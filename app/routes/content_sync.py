@@ -73,19 +73,26 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
     :param video_hash: The hash of the video (ignored)
     :return: JSON response
     """
+    invalid_data = {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.SKIP}],
+                    'message': None,
+                    'cacheMaxAge': config.CONTENT_SYNC_CACHE_ON_INVALID_DURATION,
+                    'staleRevalidate': config.CONTENT_SYNC_CACHE_ON_INVALID_DURATION,
+                    'staleError': config.CONTENT_SYNC_CACHE_ON_INVALID_DURATION}
+
     content_id = urllib.parse.unquote(content_id)
     if content_type not in MANIFEST['types']:
-        return respond_with(
-            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.SKIP}],
-             'message': 'Content not supported'}, ttl=config.CONTENT_SYNC_CACHE_ON_INVALID_DURATION,
-            stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
+        invalid_data['message'] = 'Content not supported'
+        return respond_with(invalid_data, cacheMaxAge=invalid_data['cacheMaxAge'],
+                            stale_revalidate=invalid_data['staleRevalidate'],
+                            stale_error=invalid_data['staleError'])
 
     mal_id, current_episode = handle_content_id(content_id)
     if mal_id is None:
-        return respond_with(
-            {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.INVALID_ID}], 'message': 'Invalid ID'},
-            ttl=config.CONTENT_SYNC_CACHE_ON_INVALID_DURATION,
-            stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
+        invalid_data['subtitles'][0]['lang'] = UpdateStatus.INVALID_ID
+        invalid_data['message'] = 'Invalid content ID'
+        return respond_with(invalid_data, cacheMaxAge=invalid_data['cacheMaxAge'],
+                            stale_revalidate=invalid_data['staleRevalidate'],
+                            stale_error=invalid_data['staleError'])
 
     try:
         user = get_valid_user(user_id)
@@ -105,11 +112,12 @@ def addon_content_sync(user_id: str, content_type: str, content_id: str, video_h
         new_watch_status = handle_current_status(current_watch_status, current_episode, num_episodes_watched,
                                                  total_episodes)
         if not new_watch_status:
-            return respond_with(
-                {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.NULL}],
-                 'message': 'No update required'},
-                ttl=config.CONTENT_SYNC_NO_UPDATE_DURATION,
-                stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
+            data = {'subtitles': [{'id': 1, 'url': 'about:blank', 'lang': UpdateStatus.NULL}],
+                    'message': 'No update required', 'cacheMaxAge': config.CONTENT_SYNC_NO_UPDATE_DURATION,
+                    'staleRevalidate': config.DEFAULT_STALE_WHILE_REVALIDATE,
+                    'staleError': config.CONTENT_SYNC_NO_UPDATE_DURATION}
+            return respond_with(data, cacheMaxAge=data['cacheMaxAge'], stale_revalidate=data['staleRevalidate'],
+                                stale_error=data['staleError'])
 
         start_date, finish_date = determine_watch_dates(anime_listing_status, current_episode, total_episodes)
         mal_client.update_watched_status(token, mal_id, current_episode, new_watch_status, start_date=start_date,

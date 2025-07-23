@@ -124,8 +124,12 @@ def addon_catalog(user_id: str, catalog_type: str, catalog_id: str,
             meta = _mal_to_meta(anime_item, catalog_type=catalog_type, catalog_id=catalog_id,
                                 transport_url=_get_transport_url(request, user_id))
             meta_previews.append(meta)
-        return respond_with({'metas': meta_previews}, private=True, ttl=config.CATALOG_CACHE_ON_SUCCESS_DURATION,
-                            stale_while_revalidate=config.CATALOG_CACHE_STALE_WHILE_REVALIDATE), 200
+
+        data = {'metas': meta_previews, 'cacheMaxAge': config.CATALOG_CACHE_ON_SUCCESS_DURATION,
+                'staleRevalidate': config.CATALOG_CACHE_STALE_WHILE_REVALIDATE,
+                'staleError': config.CATALOG_STALE_IF_ERROR}
+        return respond_with(data, private=True, cacheMaxAge=data['cacheMaxAge'],
+                            stale_revalidate=data['staleRevalidate'], stale_error=data['staleError'])
     except ValueError as e:
         return respond_with({'metas': [], 'message': str(e)}), 400
     except requests.HTTPError as e:
