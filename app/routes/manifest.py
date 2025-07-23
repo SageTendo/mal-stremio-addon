@@ -80,7 +80,7 @@ def addon_unconfigured_manifest():
         'configurable': True,
         'configurationRequired': True
     }
-    return respond_with(unconfigured_manifest, ttl=config.MANIFEST_CACHE_DURATION, stale_while_revalidate=300)
+    return respond_with(unconfigured_manifest, cacheMaxAge=config.MANIFEST_CACHE_DURATION, stale_revalidate=300)
 
 
 @manifest_blueprint.route('/<user_id>/manifest.json')
@@ -92,5 +92,5 @@ def addon_configured_manifest(user_id: str):
     """
     user = get_user(user_id)
     if not user:
-        return respond_with({"error": f'User ID: {user_id} not found'}, ttl=1800, private=True)
-    return respond_with(MANIFEST, ttl=config.MANIFEST_CACHE_DURATION, stale_while_revalidate=300)
+        return respond_with({"error": f'User ID: {user_id} not found'}, private=True, cacheMaxAge=1800)
+    return respond_with(MANIFEST, cacheMaxAge=config.MANIFEST_CACHE_DURATION, stale_revalidate=300)

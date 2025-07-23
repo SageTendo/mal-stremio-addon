@@ -27,16 +27,18 @@ def get_valid_user(user_id: str):
     :return: The user's details
     """
     if not (user := get_user(user_id)):
-        return abort(respond_with({'error': 'User not found'}, ttl=1800, private=True))
+        return abort(respond_with({'error': 'User not found'}, private=True, cacheMaxAge=1800)), 200
 
     if not user.get('last_updated'):
-        return abort(respond_with({'error': 'Invalid MAL session. Please refresh or login again.'}, ttl=300,
-                                  private=True))
+        return abort(
+            respond_with({'error': 'Invalid MAL session. Please refresh or login again.'}, private=True,
+                         cacheMaxAge=300)), 200
 
     expiration_date = user['last_updated'] + datetime.timedelta(seconds=user['expires_in'])
     if datetime.datetime.utcnow() > expiration_date:
-        return abort(respond_with({'error': 'MAL session expired. Please refresh or login again.'}, ttl=300,
-                                  private=True))
+        return abort(
+            respond_with({'error': 'MAL session expired. Please refresh or login again.'}, private=True,
+                         cacheMaxAge=300)), 200
     return user
 
 
