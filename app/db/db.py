@@ -22,7 +22,7 @@ def get_user(user_id: str):
     :param user_id: The user's MyAnimeList ID
     :return: The user details
     """
-    return UID_map_collection.find_one({'uid': user_id})
+    return UID_map_collection.find_one({"uid": user_id})
 
 
 def store_user(user_details: Dict):
@@ -30,12 +30,12 @@ def store_user(user_details: Dict):
     Store user details in db
     :param user_details: The user details to store
     """
-    user_id = user_details['id']
-    user_details['uid'] = user_id
+    user_id = user_details["id"]
+    user_details["uid"] = user_id
     data = user_details.copy()
 
-    if user := UID_map_collection.find_one({'uid': user_id}):
-        result = UID_map_collection.update_one(user, {'$set': data})
+    if user := UID_map_collection.find_one({"uid": user_id}):
+        result = UID_map_collection.update_one(user, {"$set": data})
     else:
         result = UID_map_collection.insert_one(data)
     return result.acknowledged
@@ -48,18 +48,18 @@ def get_kitsu_id_from_mal_id(mal_id) -> Tuple[bool, str]:
     :param mal_id: The MyAnimeList id of the anime
     :return: A tuple of (found, kitsu_id)
     """
-    mal_id = re.sub(r'[^0-9]', '', str(mal_id))
+    mal_id = re.sub(r"[^0-9]", "", str(mal_id))
     try:
         mal_id = int(mal_id)
-        if res := anime_mapping.find_one({'mal_id': mal_id}):
-            if not res.get('kitsu_id', None):
-                return False, ''
-            return True, res['kitsu_id']
+        if res := anime_mapping.find_one({"mal_id": mal_id}):
+            if not res.get("kitsu_id", None):
+                return False, ""
+            return True, res["kitsu_id"]
     except KeyError:
         log_error(f"No Kitsu ID for: MAL:{mal_id}")
     except ValueError:
         log_error(f"Invalid MyAnimeList ID: {mal_id}")
-    return False, ''
+    return False, ""
 
 
 @lru_cache(maxsize=config.ID_CACHE_SIZE)
@@ -69,16 +69,16 @@ def get_mal_id_from_kitsu_id(kitsu_id) -> Tuple[bool, str]:
     :param kitsu_id: The kitsu id of the anime
     :return: A tuple of (found, mal_id)
     """
-    kitsu_id = re.sub(r'[^0-9]', '', str(kitsu_id))
+    kitsu_id = re.sub(r"[^0-9]", "", str(kitsu_id))
     try:
         kitsu_id = int(kitsu_id)
-        res = anime_mapping.find_one({'kitsu_id': kitsu_id})
+        res = anime_mapping.find_one({"kitsu_id": kitsu_id})
         if res:
-            if not res.get('mal_id', None):
-                return False, ''
-            return True, res['mal_id']
+            if not res.get("mal_id", None):
+                return False, ""
+            return True, res["mal_id"]
     except KeyError:
         log_error(f"No MAL ID for KITSU:{kitsu_id}")
     except ValueError:
         log_error(f"Invalid kitsu ID: {kitsu_id}")
-    return False, ''
+    return False, ""

@@ -11,11 +11,11 @@ BASE_URL = "https://api.myanimelist.net/v1"
 N_BYTES = 96
 QUERY_LIMIT = 100
 TIMEOUT = 8
-CODE_CHALLENGE_METHOD = 'plain'
+CODE_CHALLENGE_METHOD = "plain"
 
-REDIRECT_URI = f'{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback'
-CLIENT_ID = os.environ.get('MAL_ID')
-CLIENT_SECRET = os.environ.get('MAL_SECRET')
+REDIRECT_URI = f"{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback"
+CLIENT_ID = os.environ.get("MAL_ID")
+CLIENT_SECRET = os.environ.get("MAL_SECRET")
 
 
 class MyAnimeListAPI:
@@ -31,16 +31,21 @@ class MyAnimeListAPI:
         """
         state = secrets.token_urlsafe(N_BYTES)[:16]
         code_verifier, code_challenge = (
-            MyAnimeListAPI.__generate_verifier_challenger_pair(128, method=CODE_CHALLENGE_METHOD))
+            MyAnimeListAPI.__generate_verifier_challenger_pair(
+                128, method=CODE_CHALLENGE_METHOD
+            )
+        )
 
-        query_params = (f'response_type=code'
-                        f'&client_id={CLIENT_ID}'
-                        f'&state={state}'
-                        f'&code_challenge={code_challenge}'
-                        f'&code_challenge_method={CODE_CHALLENGE_METHOD}'
-                        f'&redirect_uri={REDIRECT_URI}')
+        query_params = (
+            f"response_type=code"
+            f"&client_id={CLIENT_ID}"
+            f"&state={state}"
+            f"&code_challenge={code_challenge}"
+            f"&code_challenge_method={CODE_CHALLENGE_METHOD}"
+            f"&redirect_uri={REDIRECT_URI}"
+        )
 
-        return f'{AUTH_URL}/oauth2/authorize?{query_params}', code_verifier
+        return f"{AUTH_URL}/oauth2/authorize?{query_params}", code_verifier
 
     @staticmethod
     def get_access_token(authorization_code: str, code_verifier: str):
@@ -49,23 +54,27 @@ class MyAnimeListAPI:
         :param authorization_code: Authorization Code from MyAnimeList
         :return: Access Token
         """
-        url = f'{AUTH_URL}/oauth2/token'
-        data = {'client_id': CLIENT_ID,
-                'client_secret': CLIENT_SECRET,
-                'grant_type': 'authorization_code',
-                'code': authorization_code,
-                'code_verifier': code_verifier,
-                'redirect_uri': REDIRECT_URI}
+        url = f"{AUTH_URL}/oauth2/token"
+        data = {
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+            "grant_type": "authorization_code",
+            "code": authorization_code,
+            "code_verifier": code_verifier,
+            "redirect_uri": REDIRECT_URI,
+        }
 
         resp = requests.post(url=url, data=data, timeout=TIMEOUT)
         resp.raise_for_status()
         resp_json = resp.json()
         resp.close()
 
-        return {'token_type': resp_json['token_type'],
-                'expires_in': resp_json['expires_in'],
-                'access_token': resp_json['access_token'],
-                'refresh_token': resp_json['refresh_token']}
+        return {
+            "token_type": resp_json["token_type"],
+            "expires_in": resp_json["expires_in"],
+            "access_token": resp_json["access_token"],
+            "refresh_token": resp_json["refresh_token"],
+        }
 
     @staticmethod
     def refresh_token(refresh_token: str):
@@ -74,11 +83,13 @@ class MyAnimeListAPI:
         :param refresh_token: Refresh Token
         :return: Access Token
         """
-        url = f'{AUTH_URL}/oauth2/token'
-        data = {'client_id': CLIENT_ID,
-                'client_secret': CLIENT_SECRET,
-                'grant_type': 'refresh_token',
-                'refresh_token': refresh_token}
+        url = f"{AUTH_URL}/oauth2/token"
+        data = {
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+            "grant_type": "refresh_token",
+            "refresh_token": refresh_token,
+        }
 
         resp = requests.post(url=url, data=data, timeout=TIMEOUT)
         resp.raise_for_status()
@@ -94,8 +105,8 @@ class MyAnimeListAPI:
         if not token:
             raise ValueError("Auth Token Must Be Provided")
 
-        url = f'{BASE_URL}/users/@me'
-        headers = {'Authorization': f'Bearer {token}'}
+        url = f"{BASE_URL}/users/@me"
+        headers = {"Authorization": f"Bearer {token}"}
 
         resp = requests.get(url=url, headers=headers, timeout=TIMEOUT)
         resp.raise_for_status()
@@ -116,11 +127,11 @@ class MyAnimeListAPI:
         if not query:
             raise ValueError("A Valid Query Must Be Provided")
 
-        url = f'{BASE_URL}/anime?q={query}'
-        headers = {'Authorization': f'Bearer {token}'}
+        url = f"{BASE_URL}/anime?q={query}"
+        headers = {"Authorization": f"Bearer {token}"}
         query_params = MyAnimeListAPI.__to_query_string(kwargs)
         if query_params:
-            url += f'&{query_params}'
+            url += f"&{query_params}"
 
         resp = requests.get(url=url, headers=headers, timeout=TIMEOUT)
         resp.raise_for_status()
@@ -138,11 +149,11 @@ class MyAnimeListAPI:
         if token is None:
             raise ValueError("Auth Token Must Be Provided")
 
-        url = f'{BASE_URL}/users/@me/animelist?limit={limit}'
-        headers = {'Authorization': f'Bearer {token}'}
+        url = f"{BASE_URL}/users/@me/animelist?limit={limit}"
+        headers = {"Authorization": f"Bearer {token}"}
         query_params = MyAnimeListAPI.__to_query_string(kwargs)
         if query_params:
-            url += f'&{query_params}'
+            url += f"&{query_params}"
 
         resp = requests.get(url=url, headers=headers, timeout=TIMEOUT)
         resp.raise_for_status()
@@ -163,20 +174,25 @@ class MyAnimeListAPI:
         if anime_id is None:
             raise Exception("A Valid Anime ID Must Be Provided")
 
-        url = f'{BASE_URL}/anime/{anime_id}'
-        headers = {'Authorization': f'Bearer {token}'}
+        url = f"{BASE_URL}/anime/{anime_id}"
+        headers = {"Authorization": f"Bearer {token}"}
         query_params = MyAnimeListAPI.__to_query_string(kwargs)
         if query_params:
-            url += f'?{query_params}'
+            url += f"?{query_params}"
 
         resp = requests.get(url=url, headers=headers, timeout=TIMEOUT)
         resp.raise_for_status()
         return resp.json()
 
     @staticmethod
-    def update_watched_status(token: str, anime_id: str, episode: int, status: str = 'watching',
-                              start_date: str = None,
-                              finish_date: str = None):
+    def update_watched_status(
+        token: str,
+        anime_id: str,
+        episode: int,
+        status: str = "watching",
+        start_date: str = None,
+        finish_date: str = None,
+    ):
         """
         Update the watched status of an anime in a user's watchlist
         :param token: The user's access token
@@ -193,15 +209,15 @@ class MyAnimeListAPI:
         if anime_id is None:
             raise Exception("A Valid Anime ID Must Be Provided")
 
-        url = f'{BASE_URL}/anime/{anime_id}/my_list_status'
-        headers = {'Authorization': f'Bearer {token}'}
-        body = {'status': status, 'num_watched_episodes': episode}
+        url = f"{BASE_URL}/anime/{anime_id}/my_list_status"
+        headers = {"Authorization": f"Bearer {token}"}
+        body = {"status": status, "num_watched_episodes": episode}
 
         if start_date is not None:
-            body['start_date'] = start_date
+            body["start_date"] = start_date
 
         if finish_date is not None:
-            body['finish_date'] = finish_date
+            body["finish_date"] = finish_date
 
         resp = requests.put(url=url, headers=headers, data=body, timeout=TIMEOUT)
         resp.raise_for_status()
@@ -247,5 +263,5 @@ class MyAnimeListAPI:
         :param method: The method to use to generate the challenge
         :return: the generated challenge
         """
-        if method == 'plain' or method is None:
+        if method == "plain" or method is None:
             return verifier
