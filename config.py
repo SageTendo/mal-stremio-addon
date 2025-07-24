@@ -10,23 +10,24 @@ class Config:
     """
     Configuration class
     """
+
     JSON_SORT_KEYS = False
-    FLASK_HOST = os.getenv('FLASK_RUN_HOST', "localhost")
-    FLASK_PORT = os.getenv('FLASK_RUN_PORT', "5000")
-    SECRET_KEY = os.getenv('SECRET_KEY', "this is not a secret key")
-    SESSION_TYPE = os.getenv('SESSION_TYPE', "filesystem")
+    FLASK_HOST = os.getenv("FLASK_RUN_HOST", "localhost")
+    FLASK_PORT = os.getenv("FLASK_RUN_PORT", "5000")
+    SECRET_KEY = os.getenv("SECRET_KEY", "this is not a secret key")
+    SESSION_TYPE = os.getenv("SESSION_TYPE", "filesystem")
     SEND_FILE_MAX_AGE_DEFAULT = timedelta(days=7)
     PERMANENT_SESSION_LIFETIME = timedelta(days=30)
-    COMPRESS_ALGORITHM = ['gzip']
+    COMPRESS_ALGORITHM = ["gzip"]
     COMPRESS_BR_LEVEL = 4
-    DEBUG = os.getenv('FLASK_DEBUG', False)
+    DEBUG = os.getenv("FLASK_DEBUG", False)
 
     # MongoDB
-    MONGO_URI = os.getenv('MONGO_URI', "")
-    MONGO_DB = os.getenv('MONGO_DB', "")
-    MONGO_UID_MAP = os.getenv('MONGO_UID_MAP_COLLECTION', "")
-    MONGO_ANIME_DB = os.getenv('MONGO_ANIME_DATABASE', "")
-    MONGO_ANIME_MAP = os.getenv('MONGO_ANIME_MAP_COLLECTION', "")
+    MONGO_URI = os.getenv("MONGO_URI", "")
+    MONGO_DB = os.getenv("MONGO_DB", "")
+    MONGO_UID_MAP = os.getenv("MONGO_UID_MAP_COLLECTION", "")
+    MONGO_ANIME_DB = os.getenv("MONGO_ANIME_DATABASE", "")
+    MONGO_ANIME_MAP = os.getenv("MONGO_ANIME_MAP_COLLECTION", "")
 
     # Env dependent configs
     if DEBUG in ["1", True, "True"]:  # Local development
@@ -63,8 +64,10 @@ CONTENT_SYNC_NO_UPDATE_DURATION = 86400  # 1 day
 CONTENT_SYNC_CACHE_ON_INVALID_DURATION = 86400 * 365  # 1 year
 
 # Addon configuration options
-DEFAULT_SORT_OPTION = 'list_updated_at'
-SORT_OPTIONS = {'Last Updated': 'list_updated_at',
-                'Title': 'anime_title',
-                'Release Date': 'anime_start_date',
-                'Score': 'list_score'}
+DEFAULT_SORT_OPTION = "list_updated_at"
+SORT_OPTIONS = {
+    "Last Updated": "list_updated_at",
+    "Title": "anime_title",
+    "Release Date": "anime_start_date",
+    "Score": "list_score",
+}
