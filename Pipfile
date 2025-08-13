@@ -5,18 +5,18 @@ name = "pypi"
 
 [packages]
 "backports.entry-points-selectable" = "*"
-flask = {extras = ["async"], version = "*"}
+flask = { extras = ["async"], version = "*" }
 lxml = "*"
 pipenv = "*"
 python-dotenv = "*"
 waitress = "*"
 flask-compress = "1.14"
 httpx = "*"
-pymongo = {extras = ["srv"], version = "*"}
+pymongo = { extras = ["srv"], version = "*" }
 requests = "*"
 
 [dev-packages]
-pytest="*"
+pytest = "*"
 pytest-order = "*"
 
 [requires]
