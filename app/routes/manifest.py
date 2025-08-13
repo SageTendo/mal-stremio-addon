@@ -1,9 +1,10 @@
 from flask import Blueprint
 
 import config
+
+from ..db.db import get_user
 from . import MAL_ID_PREFIX
 from .utils import respond_with
-from ..db.db import get_user
 
 manifest_blueprint = Blueprint("manifest", __name__)
 
@@ -107,7 +108,7 @@ def addon_unconfigured_manifest():
     return respond_with(
         unconfigured_manifest,
         cache_max_age=config.MANIFEST_CACHE_DURATION,
-        stale_revalidate=300,
+        stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
     )
 
 
@@ -118,11 +119,13 @@ def addon_configured_manifest(user_id: str):
     :param user_id: The user's MyAnimeList ID
     :return: JSON response
     """
-    user = get_user(user_id)
-    if not user:
+    if not get_user(user_id):
         return respond_with(
             {"error": f"User ID: {user_id} not found"}, private=True, cache_max_age=1800
         )
+
     return respond_with(
-        MANIFEST, cache_max_age=config.MANIFEST_CACHE_DURATION, stale_revalidate=300
+        MANIFEST,
+        cache_max_age=config.MANIFEST_CACHE_DURATION,
+        stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
     )

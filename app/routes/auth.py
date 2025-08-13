@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta
 
 import requests
-from flask import Blueprint, request, url_for, session, flash, abort
+from flask import Blueprint, abort, flash, request, session, url_for
 from werkzeug.utils import redirect
 
-from app.db.db import store_user, get_user
+from app.db.db import get_user, store_user
 from app.routes import mal_client
-from app.routes.utils import handle_error, respond_with
+from app.routes.utils import handle_error, log_error, respond_with
 
 auth_blueprint = Blueprint("auth", __name__)
 
@@ -77,31 +77,30 @@ def callback():
     :return: A webpage response with the manifest URL and Magnet URL
     """
     # check if error occurred from MyAnimeList
+    error = request.args.get(
+        "error_description",
+        "Unknown error occurred when trying to access MyAnimeList",
+    )
     if request.args.get("error"):
-        flash(
-            request.args.get(
-                "error_description",
-                "Unkown error occurred when trying to access MyAnimeList",
-            ),
-            "danger",
-        )
+        flash(error, "danger")
         return redirect(url_for("index"))
 
     if "user" in session:
         flash("You are already logged in.", "warning")
         return redirect(url_for("index"))
 
+    if not (auth_code := request.args.get("code")):
+        flash("Invalid callback request. First log in.", "warning")
+        return redirect(url_for("index"))
+
+    if "code_verifier" not in session:
+        flash("Invalid callback request. First log in.", "warning")
+        return redirect(url_for("index"))
+
     try:
-        # exchange auth code for access token
-        if not (auth_code := request.args.get("code", None)):
-            return redirect(url_for("index"))
-
-        if "code_verifier" not in session:
-            flash("Invalid callback request. First log in.", "warning")
-            return redirect(url_for("index"))
-
-        code_verifier = session["code_verifier"]
-        user_auth_data = mal_client.get_access_token(auth_code, code_verifier)
+        user_auth_data = mal_client.get_access_token(
+            auth_code, session["code_verifier"]
+        )
 
         user_details = mal_client.get_user_details(user_auth_data["access_token"])
         user_details["id"] = str(user_details["id"])
@@ -120,6 +119,7 @@ def callback():
         flash("You are now logged in.", "success")
         return redirect(url_for("index"))
     except requests.HTTPError as e:
+        log_error(e)
         return handle_error(e)
 
 
@@ -135,15 +135,15 @@ def refresh_token():
 
     try:
         user_auth_data = mal_client.refresh_token(user_session["refresh_token"])
-        if not store_user(
-            {
-                "id": user_session["uid"],
-                "access_token": user_auth_data["access_token"],
-                "refresh_token": user_auth_data["refresh_token"],
-                "expires_in": user_auth_data["expires_in"],
-                "last_updated": datetime.utcnow(),
-            }
-        ):
+        user_details = {
+            "id": user_session["uid"],
+            "access_token": user_auth_data["access_token"],
+            "refresh_token": user_auth_data["refresh_token"],
+            "expires_in": user_auth_data["expires_in"],
+            "last_updated": datetime.utcnow(),
+        }
+
+        if not store_user(user_details):
             flash("Failed to update user details.", "danger")
             return redirect(url_for("index"))
 
@@ -156,6 +156,7 @@ def refresh_token():
         flash("MyAnimeList session refreshed.", "success")
         return redirect(url_for("index"))
     except requests.HTTPError as e:
+        log_error(e)
         return handle_error(e)
 
 
