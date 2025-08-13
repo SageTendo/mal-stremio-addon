@@ -30,10 +30,8 @@ class MyAnimeListAPI:
         :return: Authorization URL
         """
         state = secrets.token_urlsafe(N_BYTES)[:16]
-        code_verifier, code_challenge = (
-            MyAnimeListAPI.__generate_verifier_challenger_pair(
-                128, method=CODE_CHALLENGE_METHOD
-            )
+        code_verifier, code_challenge = MyAnimeListAPI.__generate_verifier_challenger_pair(
+            128, method=CODE_CHALLENGE_METHOD
         )
 
         query_params = (
@@ -190,8 +188,8 @@ class MyAnimeListAPI:
         anime_id: str,
         episode: int,
         status: str = "watching",
-        start_date: str = None,
-        finish_date: str = None,
+        start_date: str = "",
+        finish_date: str = "",
     ):
         """
         Update the watched status of an anime in a user's watchlist
@@ -213,10 +211,10 @@ class MyAnimeListAPI:
         headers = {"Authorization": f"Bearer {token}"}
         body = {"status": status, "num_watched_episodes": episode}
 
-        if start_date is not None:
+        if start_date:
             body["start_date"] = start_date
 
-        if finish_date is not None:
+        if finish_date:
             body["finish_date"] = finish_date
 
         resp = requests.put(url=url, headers=headers, data=body, timeout=TIMEOUT)
@@ -234,7 +232,7 @@ class MyAnimeListAPI:
         return urlencode(data) if data else None
 
     @staticmethod
-    def __generate_verifier_challenger_pair(length: int, method: str = None):
+    def __generate_verifier_challenger_pair(length: int, method: str = ""):
         """
         Generate a verifier and challenge as a tuple
         :param length: The length of the verifier string
@@ -263,5 +261,5 @@ class MyAnimeListAPI:
         :param method: The method to use to generate the challenge
         :return: the generated challenge
         """
-        if method == "plain" or method is None:
+        if not method or method == "plain":
             return verifier

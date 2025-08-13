@@ -15,6 +15,10 @@ def handle_error(err) -> Response:
         log_error(err)
         flash(err, "danger")
         return make_response(redirect(url_for("index")))
+    else:
+        log_error(err)
+        flash("Unkown error occurred when tyring to access MyAnimeList", "danger")
+        return make_response(redirect(url_for("index")))
 
 
 def log_error(err):

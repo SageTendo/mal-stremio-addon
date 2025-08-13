@@ -16,7 +16,7 @@ from .utils import respond_with, log_error
 catalog_bp = Blueprint("catalog", __name__)
 
 
-def _get_transport_url(req: Request, user_id: str, parameters: str = None):
+def _get_transport_url(req: Request, user_id: str, parameters: str = ""):
     """
     Get the transport URL for the user 'user_id'
     :param req: The request object
@@ -44,7 +44,7 @@ def _is_valid_catalog(catalog_type: str, catalog_id: str):
     return False
 
 
-def _has_genre_tag(meta: dict, genre: str = None):
+def _has_genre_tag(meta: dict, genre: str = ""):
     """
     Check if the meta has a genre tag
     :param meta: The meta object to check
@@ -82,9 +82,7 @@ def _fetch_anime_list(token, search, catalog_id, offset, fields, **kwargs):
     if search:
         if len(search) < 3:
             raise ValueError("Search query must be at least 3 characters long")
-        return mal_client.get_anime_list(
-            token, query=search, offset=offset, fields=fields
-        )
+        return mal_client.get_anime_list(token, query=search, offset=offset, fields=fields)
     return mal_client.get_user_anime_list(
         token, status=catalog_id, offset=offset, fields=fields, **kwargs
     )
@@ -107,9 +105,9 @@ def addon_catalog(
     user_id: str,
     catalog_type: str,
     catalog_id: str,
-    offset: str = None,
-    genre: str = None,
-    search: str = None,
+    offset: str = "",
+    genre: str = "",
+    search: str = "",
 ):
     """
     Provides a list of anime from MyAnimeList
@@ -137,9 +135,7 @@ def addon_catalog(
         unwrapped_results = [x["node"] for x in response_data.get("data", [])]
 
         meta_previews = []
-        filtered_anime_list = filter(
-            lambda x: _has_genre_tag(x, genre), unwrapped_results
-        )
+        filtered_anime_list = filter(lambda x: _has_genre_tag(x, genre), unwrapped_results)
         for anime_item in filtered_anime_list:
             meta = _mal_to_meta(
                 anime_item,
@@ -169,9 +165,7 @@ def addon_catalog(
         return respond_with({"metas": []}), e.response.status_code
 
 
-def _mal_to_meta(
-    anime_item: dict, catalog_type: str, catalog_id: str, transport_url: str
-):
+def _mal_to_meta(anime_item: dict, catalog_type: str, catalog_id: str, transport_url: str):
     """
     Convert MAL anime item to a valid Stremio meta format
     :param anime_item: The MAL anime item to convert

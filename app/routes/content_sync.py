@@ -55,20 +55,16 @@ def _get_anime_status(token, mal_id):
     :param mal_id: The ID of the anime
     :return: A tuple of (total_episodes, list_status)
     """
-    resp = mal_client.get_anime_details(
-        token, mal_id, fields="num_episodes my_list_status"
-    )
+    resp = mal_client.get_anime_details(token, mal_id, fields="num_episodes my_list_status")
     total_episodes = resp.get("num_episodes", 0)
     list_status = resp.get("my_list_status", None)
     return total_episodes, list_status
 
 
-@content_sync_bp.route(
-    "/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json"
-)
+@content_sync_bp.route("/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json")
 @content_sync_bp.route("/<user_id>/subtitles/<content_type>/<content_id>.json")
 def addon_content_sync(
-    user_id: str, content_type: str, content_id: str, video_hash: str = None
+    user_id: str, content_type: str, content_id: str, video_hash: str = ""
 ):
     """
     Synchronize watched status for a specific content with MyAnimeList.
