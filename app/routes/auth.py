@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 
 import requests
 from flask import Blueprint, request, url_for, session, flash, abort
@@ -28,29 +28,30 @@ def get_valid_user(user_id: str):
     """
     if not (user := get_user(user_id)):
         return abort(
-            respond_with({"error": "User not found"}, private=True, cache_max_age=1800)
-        ), 200
+            200,
+            respond_with({"error": "User not found"}, private=True, cache_max_age=1800),
+        )
 
     if not user.get("last_updated"):
         return abort(
+            200,
             respond_with(
                 {"error": "Invalid MAL session. Please refresh or login again."},
                 private=True,
                 cache_max_age=300,
-            )
-        ), 200
+            ),
+        )
 
-    expiration_date = user["last_updated"] + datetime.timedelta(
-        seconds=user["expires_in"]
-    )
-    if datetime.datetime.utcnow() > expiration_date:
+    expiration_date = user["last_updated"] + timedelta(seconds=user["expires_in"])
+    if datetime.utcnow() > expiration_date:
         return abort(
+            200,
             respond_with(
                 {"error": "MAL session expired. Please refresh or login again."},
                 private=True,
                 cache_max_age=300,
-            )
-        ), 200
+            ),
+        )
     return user
 
 
@@ -77,7 +78,13 @@ def callback():
     """
     # check if error occurred from MyAnimeList
     if request.args.get("error"):
-        flash(request.args.get("error_description"), "danger")
+        flash(
+            request.args.get(
+                "error_description",
+                "Unkown error occurred when trying to access MyAnimeList",
+            ),
+            "danger",
+        )
         return redirect(url_for("index"))
 
     if "user" in session:
@@ -96,12 +103,12 @@ def callback():
         code_verifier = session["code_verifier"]
         user_auth_data = mal_client.get_access_token(auth_code, code_verifier)
 
-        user_details = mal_client.get_user_details(token=user_auth_data["access_token"])
+        user_details = mal_client.get_user_details(user_auth_data["access_token"])
         user_details["id"] = str(user_details["id"])
         user_details["access_token"] = user_auth_data["access_token"]
         user_details["refresh_token"] = user_auth_data["refresh_token"]
         user_details["expires_in"] = user_auth_data["expires_in"]
-        user_details["last_updated"] = datetime.datetime.utcnow()
+        user_details["last_updated"] = datetime.utcnow()
 
         if not store_user(user_details):
             flash("Failed to store user details.", "danger")
@@ -127,16 +134,14 @@ def refresh_token():
         return redirect(url_for("index"))
 
     try:
-        user_auth_data = mal_client.refresh_token(
-            refresh_token=user_session["refresh_token"]
-        )
+        user_auth_data = mal_client.refresh_token(user_session["refresh_token"])
         if not store_user(
             {
                 "id": user_session["uid"],
                 "access_token": user_auth_data["access_token"],
                 "refresh_token": user_auth_data["refresh_token"],
                 "expires_in": user_auth_data["expires_in"],
-                "last_updated": datetime.datetime.utcnow(),
+                "last_updated": datetime.utcnow(),
             }
         ):
             flash("Failed to update user details.", "danger")

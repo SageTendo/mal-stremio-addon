@@ -45,9 +45,7 @@ def index():
     if session.get("user", None):
         return redirect(url_for("configure"))
     response = make_response(render_template("index.html"))
-    response.headers["Cache-Control"] = (
-        "private, max-age=3600, stale-while-revalidate=600"
-    )
+    response.headers["Cache-Control"] = "private, max-age=3600, stale-while-revalidate=600"
     return response
 
 
@@ -65,7 +63,7 @@ def favicon():
 
 @app.route("/configure", methods=["GET", "POST"])
 @app.route("/<user_id>/configure")
-def configure(user_id: str = None):
+def configure(user_id: str = ""):
     """
     Render the configure page
     :param user_id: The user's MyAnimeList ID (ignored, as this is sent by Stremio when redirecting to the configure
@@ -111,9 +109,7 @@ def configure(user_id: str = None):
             manifest_magnet=manifest_magnet,
         )
     )
-    response.headers["Cache-Control"] = (
-        "private, max-age=3600, stale-while-revalidate=600"
-    )
+    response.headers["Cache-Control"] = "private, max-age=3600, stale-while-revalidate=600"
     return response
 
 
