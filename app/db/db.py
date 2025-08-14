@@ -2,17 +2,19 @@ import re
 from functools import lru_cache
 
 from pymongo import MongoClient
+from pymongo.synchronous.collection import Collection
+from pymongo.synchronous.database import Database
 
 import config
 from app.routes.utils import log_error
 from config import Config
 
-client = MongoClient(Config.MONGO_URI)
-db = client.get_database(Config.MONGO_DB)
-anime_db = client.get_database(Config.MONGO_ANIME_DB)
+client: MongoClient = MongoClient(Config.MONGO_URI)
+db: Database = client.get_database(Config.MONGO_DB)
+anime_db: Database = client.get_database(Config.MONGO_ANIME_DB)
 
-UID_map_collection = db.get_collection(Config.MONGO_UID_MAP)
-anime_mapping = anime_db.get_collection(Config.MONGO_ANIME_MAP)
+UID_map_collection: Collection = db.get_collection(Config.MONGO_UID_MAP)
+anime_mapping: Collection = anime_db.get_collection(Config.MONGO_ANIME_MAP)
 
 
 def get_user(user_id: str):
@@ -24,7 +26,7 @@ def get_user(user_id: str):
     return UID_map_collection.find_one({"uid": user_id})
 
 
-def store_user(user_details: dict):
+def store_user(user_details: dict) -> bool:
     """
     Store user details in db
     :param user_details: The user details to store
@@ -34,10 +36,8 @@ def store_user(user_details: dict):
     data = user_details.copy()
 
     if user := UID_map_collection.find_one({"uid": user_id}):
-        result = UID_map_collection.update_one(user, {"$set": data})
-    else:
-        result = UID_map_collection.insert_one(data)
-    return result.acknowledged
+        return UID_map_collection.update_one(user, {"$set": data}).acknowledged
+    return UID_map_collection.insert_one(data).acknowledged
 
 
 @lru_cache(maxsize=config.ID_CACHE_SIZE)
