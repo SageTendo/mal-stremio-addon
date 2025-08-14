@@ -18,6 +18,7 @@ requests = "*"
 [dev-packages]
 pytest = "*"
 pytest-order = "*"
+ruff = "0.12.4"
 
 [requires]
 python_version = "3.9"
