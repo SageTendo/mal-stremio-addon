@@ -1,36 +1,66 @@
 name: Preview
+
 on:
   push:
     branches-ignore:
       - main
 
-env:
-  SECRET_KEY: ${{ secrets.SECRET_KEY }}
-  MONGO_URI: ${{ secrets.MONGO_URI }}
-  MAL_ID: ${{ secrets.MAL_ID }}
-  MAL_SECRET: ${{ secrets.MAL_SECRET }}
-
 jobs:
-  Test:
-    environment: Preview
+  lint:
+    name: Ruff Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v1
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: '3.9'
+
+      - name: Install Ruff
+        run: pip install ruff
+
+      - name: Run Ruff
+        run: ruff check .
+
+      - name: Run Ruff formatter
+        run: ruff format --check .
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      MAL_ID: ${{ secrets.MAL_ID }}
+      MAL_SECRET: ${{ secrets.MAL_SECRET }}
+      MONGO_DB: ${{ vars.MONGO_DB }}
+      MONGO_UID_MAP_COLLECTION: ${{ vars.MONGO_UID_MAP_COLLECTION }}
+      MONGO_ANIME_MAP_COLLECTION: ${{ vars.MONGO_ANIME_MAP_COLLECTION }}
+      MONGO_ANIME_DATABASE: ${{ vars.MONGO_ANIME_DATABASE }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
       - name: Install pipenv
-        run:  pip install pipenv
-      - name: Run tests
-        run: |
-          export MONGO_URI="${{ env.MONGO_URI }}"
-          export SECRET_KEY="${{ env.SECRET_KEY }}"
-          export MAL_ID="${{ env.MAL_ID }}"
-          export MAL_SECRET="${{ env.MAL_SECRET }}"
-          export MONGO_DB="${{ vars.MONGO_DB }}"
-          export MONGO_UID_MAP_COLLECTION="${{ vars.MONGO_UID_MAP_COLLECTION }}"
-          export MONGO_ANIME_MAP_COLLECTION="${{ vars.MONGO_ANIME_MAP_COLLECTION }}"
-          export MONGO_ANIME_DATABASE="${{ vars.MONGO_ANIME_DATABASE }}"
-          pipenv install --dev
-          pipenv run pytest
+        run: pip install pipenv
+
+      - name: Cache pipenv dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/virtualenvs
+          key: ${{ runner.os }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pipenv-
+
+      - name: Install dependencies
+        run: pipenv install --dev
+
+      - name: Run pytest
+        run: pipenv run pytest
