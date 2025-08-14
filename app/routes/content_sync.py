@@ -7,10 +7,10 @@ from requests import HTTPError
 
 import config
 from app.db.db import get_mal_id_from_kitsu_id
-from app.routes import mal_client, MAL_ID_PREFIX
+from app.routes import MAL_ID_PREFIX, mal_client
 from app.routes.auth import get_valid_user
 from app.routes.manifest import MANIFEST
-from app.routes.utils import respond_with, log_error
+from app.routes.utils import handle_api_error, respond_with
 
 content_sync_bp = Blueprint("content_sync", __name__)
 
@@ -26,42 +26,9 @@ class UpdateStatus:
     FAIL = "MAL=FAIL"
 
 
-def handle_content_id(content_id):
-    """
-    Extract the ID of the content and the current episode.
-    If ID is a Kitsu ID, get the relevant MAL ID from the database.
-    :param content_id: The content ID
-    :return: The ID of the content and the current episode
-    """
-    if content_id.startswith(MAL_ID_PREFIX):
-        return content_id.replace(f"{MAL_ID_PREFIX}_", ""), 1  # Assume episode
-    elif content_id.startswith("kitsu:"):
-        content_id = content_id.replace("kitsu:", "")
-        current_episode = 1
-
-        if content_id.count(":") == 1:  # Handle series
-            content_id, current_episode = content_id.split(":")
-
-        exists, mal_id = get_mal_id_from_kitsu_id(content_id)
-        if exists:
-            return mal_id, int(current_episode)
-    return None, -1
-
-
-def _get_anime_status(token, mal_id):
-    """
-    Get the total number of episodes and the watched status of an anime from MyAnimeList.
-    :param token: The user's access token
-    :param mal_id: The ID of the anime
-    :return: A tuple of (total_episodes, list_status)
-    """
-    resp = mal_client.get_anime_details(token, mal_id, fields="num_episodes my_list_status")
-    total_episodes = resp.get("num_episodes", 0)
-    list_status = resp.get("my_list_status", None)
-    return total_episodes, list_status
-
-
-@content_sync_bp.route("/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json")
+@content_sync_bp.route(
+    "/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json"
+)
 @content_sync_bp.route("/<user_id>/subtitles/<content_type>/<content_id>.json")
 def addon_content_sync(
     user_id: str, content_type: str, content_id: str, video_hash: str = ""
@@ -126,12 +93,13 @@ def addon_content_sync(
 
         current_watch_status = anime_listing_status.get("status")
         num_episodes_watched = anime_listing_status.get("num_episodes_watched", 0)
-        new_watch_status = handle_current_status(
-            current_watch_status, current_episode, num_episodes_watched, total_episodes
-        )
+        new_watch_status = handle_current_status(current_watch_status, current_episode, num_episodes_watched,
+                                                 total_episodes)
         if not new_watch_status:
             data = {
-                "subtitles": [{"id": 1, "url": "about:blank", "lang": UpdateStatus.NULL}],
+                "subtitles": [
+                    {"id": 1, "url": "about:blank", "lang": UpdateStatus.NULL}
+                ],
                 "message": "No update required",
                 "cacheMaxAge": config.CONTENT_SYNC_NO_UPDATE_DURATION,
                 "staleRevalidate": config.DEFAULT_STALE_WHILE_REVALIDATE,
@@ -162,16 +130,20 @@ def addon_content_sync(
             }
         )
     except HTTPError as err:
-        log_error(err)
+        handle_api_error(err)
         return respond_with(
             {
-                "subtitles": [{"id": 1, "url": "about:blank", "lang": UpdateStatus.FAIL}],
+                "subtitles": [
+                    {"id": 1, "url": "about:blank", "lang": UpdateStatus.FAIL}
+                ],
                 "message": "Failed to update content",
             }
         )
 
 
-def determine_watch_dates(anime_listing_status, current_episode, total_episodes):
+def determine_watch_dates(
+    anime_listing_status: dict, current_episode: int, total_episodes: int
+):
     """
     Determine the dates to set for the start and finish dates of anime being watched, only if they have not been
     set before.The start date is set to the current date if the user is watching the first episode. The finish date
@@ -195,20 +167,43 @@ def determine_watch_dates(anime_listing_status, current_episode, total_episodes)
     )
 
 
+def handle_content_id(content_id: str):
+    """
+    Extract the ID of the content and the current episode.
+    If ID is a Kitsu ID, get the relevant MAL ID from the database.
+    :param content_id: The content ID
+    :return: The ID of the content and the current episode
+    """
+    if content_id.startswith(MAL_ID_PREFIX):
+        return content_id.replace(f"{MAL_ID_PREFIX}_", ""), 1  # Assume episode
+
+    if content_id.startswith("kitsu:"):
+        content_id = content_id.replace("kitsu:", "")
+        current_episode = 1
+
+        if content_id.count(":") == 1:  # Handle series
+            content_id, current_episode = content_id.split(":")
+
+        exists, mal_id = get_mal_id_from_kitsu_id(content_id)
+        if exists:
+            return mal_id, int(current_episode)
+    return None, -1
+
+
+def _get_anime_status(token: str, mal_id: str):
+    fields = "num_episodes my_list_status"
+    resp = mal_client.get_anime_details(token, mal_id, fields=fields)
+    total_episodes = resp.get("num_episodes", 0)
+    list_status = resp.get("my_list_status", None)
+    return total_episodes, list_status
+
+
 def handle_current_status(
-    status, current_episode, watched_episodes, total_episodes
+    status: str, current_episode: int, watched_episodes: int, total_episodes: int
 ) -> Optional[str]:
-    """
-    Handle the current status of the anime in user's watchlists.
-    :param status: The current watchlist status that the anime is in
-    :param current_episode: The current episode being watched by the user
-    :param watched_episodes: The number of episodes the user has watched
-    :param total_episodes: The total number of episodes the anime has
-    :return: A string representing the watchlist status to update the anime to
-    """
     if status in {"watching", "plan_to_watch", "on_hold"}:
         if current_episode == total_episodes:
             return "completed"
-        elif current_episode > watched_episodes:
+        if current_episode > watched_episodes:
             return "watching"
     return None
