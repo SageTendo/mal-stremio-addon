@@ -10,7 +10,7 @@ from flask import (
     session,
     url_for,
 )
-from flask_compress import Compress
+from flask_compress import Compress  # type: ignore
 from waitress import serve
 
 import config
