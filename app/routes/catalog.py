@@ -12,7 +12,7 @@ import config
 from . import MAL_ID_PREFIX, mal_client
 from .auth import get_valid_user
 from .manifest import MANIFEST
-from .utils import log_error, respond_with
+from .utils import handle_api_error, respond_with
 
 catalog_bp = Blueprint("catalog", __name__)
 
@@ -86,7 +86,7 @@ def addon_catalog(
     except ValueError as e:
         return respond_with({"metas": [], "message": str(e)}), 400
     except requests.HTTPError as e:
-        log_error(e)
+        handle_api_error(e)
         return respond_with({"metas": []}), e.response.status_code
 
 
