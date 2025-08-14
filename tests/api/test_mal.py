@@ -1,13 +1,13 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 from app.api.mal import (
     CLIENT_ID,
     CLIENT_SECRET,
-    REDIRECT_URI,
-    MyAnimeListAPI,
-    TIMEOUT,
     QUERY_LIMIT,
+    REDIRECT_URI,
+    TIMEOUT,
+    MyAnimeListAPI,
 )
 
 

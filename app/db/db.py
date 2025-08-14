@@ -1,6 +1,5 @@
 import re
 from functools import lru_cache
-from typing import Dict, Tuple
 
 from pymongo import MongoClient
 

@@ -4,10 +4,10 @@ from datetime import datetime
 from unittest.mock import patch
 
 from app.routes.content_sync import (
-    handle_current_status,
-    handle_content_id,
     UpdateStatus,
     determine_watch_dates,
+    handle_content_id,
+    handle_current_status,
 )
 from run import app
 
@@ -47,7 +47,7 @@ class TestContentSync(unittest.TestCase):
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
     def test_addon_content_sync_valid_movie_update(
-        self, mock_update_watched_status, mock_get_anime_details
+        self, _mock_update_watched_status, mock_get_anime_details
     ):
         # Mock responses
         mock_get_anime_details.return_value = {
@@ -66,7 +66,7 @@ class TestContentSync(unittest.TestCase):
     @patch("app.routes.mal_client.update_watched_status")
     @patch("app.routes.content_sync.get_valid_user")
     def test_update_untracked_anime_when_enabled(
-        self, mock_get_user, mock_update_watched_status, mock_get_anime_details
+        self, mock_get_user, _mock_update_watched_status, mock_get_anime_details
     ):
         # Mock responses
         mock_get_user.return_value = {"track_unlisted_anime": True}
@@ -85,7 +85,7 @@ class TestContentSync(unittest.TestCase):
     @patch("app.routes.mal_client.update_watched_status")
     @patch("app.routes.content_sync.get_valid_user")
     def test_update_untracked_anime_when_disabled(
-        self, mock_get_user, mock_update_watched_status, mock_get_anime_details
+        self, mock_get_user, _mock_update_watched_status, mock_get_anime_details
     ):
         # Mock responses
         mock_get_user.return_value = {"track_unlisted_anime": False}
@@ -103,7 +103,7 @@ class TestContentSync(unittest.TestCase):
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
     def test_addon_content_sync_valid_movie_set_watched(
-        self, mock_update_watched_status, mock_get_anime_details
+        self, _mock_update_watched_status, mock_get_anime_details
     ):
         # Mock responses
         mock_get_anime_details.return_value = {
@@ -121,7 +121,7 @@ class TestContentSync(unittest.TestCase):
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
     def test_addon_content_sync_valid_movie_no_update(
-        self, mock_update_watched_status, mock_get_anime_details
+        self, _mock_update_watched_status, mock_get_anime_details
     ):
         # Mock responses
         mock_get_anime_details.return_value = {
@@ -139,7 +139,7 @@ class TestContentSync(unittest.TestCase):
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
     def test_addon_content_sync_valid_series_update(
-        self, mock_update_watched_status, mock_get_anime_details
+        self, _mock_update_watched_status, mock_get_anime_details
     ):
         # Mock responses
         mock_get_anime_details.return_value = {
@@ -157,7 +157,7 @@ class TestContentSync(unittest.TestCase):
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
     def test_addon_content_sync_valid_series_no_update(
-        self, mock_update_watched_status, mock_get_anime_details
+        self, _mock_update_watched_status, mock_get_anime_details
     ):
         # Mock responses
         mock_get_anime_details.return_value = {
