@@ -5,6 +5,12 @@ on:
     branches-ignore:
       - main
 
+env:
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  MONGO_URI: ${{ secrets.MONGO_URI }}
+  MAL_ID: ${{ secrets.MAL_ID }}
+  MAL_SECRET: ${{ secrets.MAL_SECRET }}
+
 jobs:
   lint:
     name: Ruff Lint
@@ -30,12 +36,6 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
-    env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        MONGO_URI: ${{ secrets.MONGO_URI }}
-        MAL_ID: ${{ secrets.MAL_ID }}
-        MAL_SECRET: ${{ secrets.MAL_SECRET }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
