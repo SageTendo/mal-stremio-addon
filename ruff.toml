@@ -26,6 +26,7 @@ lint.select = [
 lint.ignore = [
     "E501", # Line too long (handle manually or via formatter)
     "E203", # Whitespace before ':' (Black compatibility)
+    "SIM117", # Multiple with statements
 ]
 
 

@@ -31,7 +31,7 @@ class UpdateStatus:
 )
 @content_sync_bp.route("/<user_id>/subtitles/<content_type>/<content_id>.json")
 def addon_content_sync(
-    user_id: str, content_type: str, content_id: str, video_hash: str = ""
+    user_id: str, content_type: str, content_id: str, _video_hash: str = ""
 ):
     """
     Synchronize watched status for a specific content with MyAnimeList.
@@ -40,7 +40,7 @@ def addon_content_sync(
     :param user_id: The user's API token for MyAnimeList
     :param content_type: The type of content
     :param content_id: The ID of the content
-    :param video_hash: The hash of the video (ignored)
+    :param _video_hash: The hash of the video (ignored)
     :return: JSON response
     """
     invalid_data = {
@@ -93,8 +93,9 @@ def addon_content_sync(
 
         current_watch_status = anime_listing_status.get("status")
         num_episodes_watched = anime_listing_status.get("num_episodes_watched", 0)
-        new_watch_status = handle_current_status(current_watch_status, current_episode, num_episodes_watched,
-                                                 total_episodes)
+        new_watch_status = handle_current_status(
+            current_watch_status, current_episode, num_episodes_watched, total_episodes
+        )
         if not new_watch_status:
             data = {
                 "subtitles": [
