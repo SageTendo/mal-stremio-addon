@@ -180,12 +180,12 @@ class MyAnimeListAPI:
 
     @staticmethod
     def update_watched_status(
-            token: str,
-            anime_id: str,
-            episode: int,
-            status: str = "watching",
-            start_date: str = "",
-            finish_date: str = "",
+        token: str,
+        anime_id: str,
+        episode: int,
+        status: str = "watching",
+        start_date: str = "",
+        finish_date: str = "",
     ):
         """
         Update the watched status of an anime in a user's watchlist

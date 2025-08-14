@@ -45,7 +45,9 @@ def index():
     if session.get("user", None):
         return redirect(url_for("configure"))
     response = make_response(render_template("index.html"))
-    response.headers["Cache-Control"] = "private, max-age=3600, stale-while-revalidate=600"
+    response.headers["Cache-Control"] = (
+        "private, max-age=3600, stale-while-revalidate=600"
+    )
     return response
 
 
@@ -69,7 +71,7 @@ def configure(user_id: str = ""):
     :param user_id: The user's MyAnimeList ID (ignored, as this is sent by Stremio when redirecting to the configure
     page)
     """
-    if not (user_session := session.get("user", None)):
+    if not (user_session := session.get("user")):
         return redirect(url_for("index"))
 
     if request.method == "GET":
@@ -78,7 +80,9 @@ def configure(user_id: str = ""):
             return redirect(url_for("index"))
 
         response = make_response(
-            render_template("configure.html", user=user, sort_options=config.SORT_OPTIONS)
+            render_template(
+                "configure.html", user=user, sort_options=config.SORT_OPTIONS
+            )
         )
         response.headers["Cache-Control"] = (
             "private, max-age=3600, stale-while-revalidate=600"
@@ -109,7 +113,9 @@ def configure(user_id: str = ""):
             manifest_magnet=manifest_magnet,
         )
     )
-    response.headers["Cache-Control"] = "private, max-age=3600, stale-while-revalidate=600"
+    response.headers["Cache-Control"] = (
+        "private, max-age=3600, stale-while-revalidate=600"
+    )
     return response
 
 
