@@ -1,3 +1,5 @@
+from typing import Any
+
 from flask import Blueprint
 
 import config
@@ -31,7 +33,7 @@ genres = [
     "Erotica",
 ]
 
-MANIFEST = {
+MANIFEST: dict[str, Any] = {
     "id": "com.sagetendo.mal-stremio-addon",
     "version": "3.2.0",
     "name": "MAL-Stremio Addon",
@@ -100,15 +102,16 @@ def addon_unconfigured_manifest():
     The user is required to configure the addon before they can use it
     :return: JSON response
     """
-    unconfigured_manifest: dict = MANIFEST.copy()
+    unconfigured_manifest = MANIFEST.copy()
     unconfigured_manifest["behaviorHints"] = {
         "configurable": True,
         "configurationRequired": True,
     }
     return respond_with(
         unconfigured_manifest,
-        cache_max_age=config.MANIFEST_CACHE_DURATION,
+        cache_max_age=config.MANIFEST_DURATION,
         stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
+        stremio_response=True,
     )
 
 
@@ -126,6 +129,7 @@ def addon_configured_manifest(user_id: str):
 
     return respond_with(
         MANIFEST,
-        cache_max_age=config.MANIFEST_CACHE_DURATION,
+        cache_max_age=config.MANIFEST_DURATION,
         stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
+        stremio_response=True,
     )

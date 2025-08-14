@@ -31,39 +31,28 @@ def addon_stream(user_id: str, content_type: str, content_id: str):
     :param content_id: The id of the content
     :return: JSON response
     """
-    invalid_data = {
-        "streams": [],
-        "message": None,
-        "cacheMaxAge": config.STREAM_CACHE_ON_INVALID_DURATION,
-        "staleRevalidate": config.STREAM_CACHE_ON_INVALID_DURATION,
-        "staleError": config.STREAM_CACHE_ON_INVALID_DURATION,
-    }
-
     # ignore imdb ids for older versions of mal-stremio
     if IMDB_ID_PREFIX in content_id:
         return respond_with({})
 
     content_id = urllib.parse.unquote(content_id)
     if content_type not in MANIFEST["types"]:
-        invalid_data["message"] = "Content not supported"
         return respond_with(
-            invalid_data,
-            cache_max_age=invalid_data["cacheMaxAge"],
-            stale_revalidate=invalid_data["staleRevalidate"],
-            stale_error=invalid_data["staleError"],
+            {"streams": [], "message": "Content not supported"},
+            cache_max_age=config.STREAM_ON_INVALID_DURATION,
+            stale_revalidate=config.STREAM_ON_INVALID_DURATION,
+            stale_error=config.STREAM_ON_INVALID_DURATION,
+            stremio_response=True,
         )
 
     user = get_valid_user(user_id)
     if not user.get("fetch_streams", False):
-        invalid_data["message"] = "Fetching streams is disabled"
-        invalid_data["cacheMaxAge"] = config.STREAM_CACHE_ON_FAIL_TO_FETCH_DURATION
-        invalid_data["staleRevalidate"] = config.STREAM_CACHE_ON_FAIL_TO_FETCH_DURATION
-        invalid_data["staleError"] = config.STREAM_CACHE_ON_FAIL_TO_FETCH_DURATION
         return respond_with(
-            invalid_data,
-            cache_max_age=invalid_data["cacheMaxAge"],
-            stale_revalidate=invalid_data["staleRevalidate"],
-            stale_error=invalid_data["staleError"],
+            {"streams": [], "message": "Fetching streams is disabled"},
+            cache_max_age=config.STREAM_ON_FAIL_TO_FETCH_DURATION,
+            stale_revalidate=config.STREAM_ON_FAIL_TO_FETCH_DURATION,
+            stale_error=config.STREAM_ON_FAIL_TO_FETCH_DURATION,
+            stremio_response=True,
         )
 
     if content_id.startswith(MAL_ID_PREFIX):
@@ -71,24 +60,21 @@ def addon_stream(user_id: str, content_type: str, content_id: str):
     elif content_id.startswith("kitsu:"):
         exists, kitsu_id = True, content_id.replace("kitsu:", "")
     else:
-        invalid_data["message"] = "Invalid content ID"
         return respond_with(
-            invalid_data,
-            cache_max_age=invalid_data["cacheMaxAge"],
-            stale_revalidate=invalid_data["staleRevalidate"],
-            stale_error=invalid_data["staleError"],
+            {"streams": [], "message": "Invalid content ID"},
+            cache_max_age=config.STREAM_ON_INVALID_DURATION,
+            stale_revalidate=config.STREAM_ON_INVALID_DURATION,
+            stale_error=config.STREAM_ON_INVALID_DURATION,
+            stremio_response=True,
         )
 
     if not exists:
-        invalid_data["message"] = "No Kitsu ID in mapping database"
-        invalid_data["cacheMaxAge"] = config.STREAM_CACHE_ON_NO_KITSU_ID_DURATION
-        invalid_data["staleRevalidate"] = config.STREAM_CACHE_ON_NO_KITSU_ID_DURATION
-        invalid_data["staleError"] = config.STREAM_CACHE_ON_NO_KITSU_ID_DURATION
         return respond_with(
-            invalid_data,
-            cache_max_age=invalid_data["cacheMaxAge"],
-            stale_revalidate=invalid_data["staleRevalidate"],
-            stale_error=invalid_data["staleError"],
+            {"streams": [], "message": "No Kitsu ID in mapping database"},
+            cache_max_age=config.STREAM_ON_NO_KITSU_ID_DURATION,
+            stale_revalidate=config.STREAM_ON_NO_KITSU_ID_DURATION,
+            stale_error=config.STREAM_ON_NO_KITSU_ID_DURATION,
+            stremio_response=True,
         )
 
     try:

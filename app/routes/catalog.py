@@ -70,18 +70,13 @@ def addon_catalog(
             for anime_item in filtered_anime_list
         ]
 
-        data = {
-            "metas": meta_previews,
-            "cacheMaxAge": config.CATALOG_CACHE_ON_SUCCESS_DURATION,
-            "staleRevalidate": config.CATALOG_CACHE_STALE_WHILE_REVALIDATE,
-            "staleError": config.CATALOG_STALE_IF_ERROR,
-        }
         return respond_with(
-            data,
+            {"metas": meta_previews},
             private=True,
-            cache_max_age=data["cacheMaxAge"],
-            stale_revalidate=data["staleRevalidate"],
-            stale_error=data["staleError"],
+            cache_max_age=config.CATALOG_ON_SUCCESS_DURATION,
+            stale_revalidate=config.CATALOG_STALE_WHILE_REVALIDATE,
+            stale_error=config.CATALOG_STALE_IF_ERROR,
+            stremio_response=True,
         )
     except ValueError as e:
         return respond_with({"metas": [], "message": str(e)}), 400
