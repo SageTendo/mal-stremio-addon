@@ -1,0 +1,48 @@
+# Ruff config for Flask + clean code practices
+# Compatible with Ruff v0.9.3
+
+# Target Python version
+target-version = "py39"
+
+# Rule sets
+lint.select = [
+    "E", # pycodestyle (whitespace, indentation)
+    "F", # pyflakes (undefined vars, imports)
+    "B", # flake8-bugbear (common bugs + clean code)
+    "C4", # flake8-comprehensions (comprehension cleanups)
+    "N", # pep8-naming (naming conventions)
+    "I", # isort (import order)
+    "UP", # pyupgrade (modern Python idioms)
+    "T20", # flake8-print (disallow print/debug)
+    "RET", # flake8-return (return statement style)
+    "ARG", # flake8-unused-arguments
+    "SIM", # flake8-simplify
+    "I", # flake8-isort
+    "F401", # unused imports
+    "E402", # module level import not at top
+]
+
+# Rules to ignore
+lint.ignore = [
+    "E501", # Line too long (handle manually or via formatter)
+    "E203", # Whitespace before ':' (Black compatibility)
+]
+
+
+# Max line length (matches Black if you use it later)
+line-length = 88
+
+# Files/directories to exclude from linting
+exclude = [
+    ".git",
+    "__pycache__",
+    ".venv",
+    "venv",
+    "build",
+    "dist",
+    "migrations",
+    "tests",
+]
+
+# Enable autofix for fixable rules
+fix = true

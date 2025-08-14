@@ -41,7 +41,9 @@ class TestAuthBlueprint(unittest.TestCase):
             # Assert that the user is redirected to the home page with a warning flash
             configure_response = self.client.get("/configure")
             self.assertEqual(200, configure_response.status_code)
-            self.assertIn("You are already logged in.", configure_response.data.decode())
+            self.assertIn(
+                "You are already logged in.", configure_response.data.decode()
+            )
 
     def test_user_not_logged_in(self):
         response = self.client.get("/authorization")
@@ -51,7 +53,9 @@ class TestAuthBlueprint(unittest.TestCase):
     @patch("app.routes.mal_client.get_access_token")
     @patch("app.routes.mal_client.get_user_details")
     @patch("app.db.db.store_user")
-    def test_callback(self, mock_store_user, mock_get_user_details, mock_get_access_token):
+    def test_callback(
+        self, mock_store_user, mock_get_user_details, mock_get_access_token
+    ):
         """
         Test that the user is logged in and redirected to configuration page with a success message
         """
@@ -67,7 +71,9 @@ class TestAuthBlueprint(unittest.TestCase):
         # Simulate the callback with a successful authorization code
         with self.client.session_transaction() as sess:
             sess["code_verifier"] = "mocked_verifier"
-        response = self.client.get("/callback?code=mocked_auth_code", follow_redirects=True)
+        response = self.client.get(
+            "/callback?code=mocked_auth_code", follow_redirects=True
+        )
         self.assertIn("You are now logged in.", response.data.decode())
 
         # Check that the user was stored in the session
