@@ -47,20 +47,25 @@ def log_error(error_label: str, message: str, hint: str, code: int = 0):
 
 
 def respond_with(
-    data,
+    data: dict,
     private: bool = False,
     cache_max_age: int = 0,
     stale_revalidate: int = 0,
     stale_error: int = 0,
+    stremio_response: bool = False,
 ) -> Response:
     """
-    Respond with CORS headers to the client
+    Respond with CORS & cache headers to the client
     data: the data to respond with
     private: whether to make caching available only to the user
     cacheMaxAge: How long to cache the response (0 for no caching)
     stale_revalidate: How long to serve stale content while revalidating
     stale_error: How long to serve stale content when an error occurs
+    stremio_response: Whether the response is intended for Stremio
     """
+    if stremio_response:
+        data = _add_stremio_headers(data, cache_max_age, stale_revalidate, stale_error)
+
     resp = jsonify(data)
     resp.headers["Access-Control-Allow-Origin"] = "*"
     resp.headers["Access-Control-Allow-Headers"] = "*"
@@ -87,3 +92,13 @@ def respond_with(
         ]
         resp.headers["Cache-Control"] = ", ".join(filter(None, cache_control))
     return resp
+
+
+def _add_stremio_headers(
+    data: dict, cache_max_age: int, stale_revalidate: int, stale_error: int
+) -> dict:
+    if cache_max_age > 0:
+        data["cacheMaxAge"] = cache_max_age
+        data["staleRevalidate"] = stale_revalidate
+        data["staleError"] = stale_error
+    return data
