@@ -27,17 +27,12 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     # ignore imdb ids for older versions of mal-stremio
     if IMDB_ID_PREFIX in meta_id:
-        data = {
-            "meta": {},
-            "cacheMaxAge": config.META_CACHE_ON_INVALID_DURATION,
-            "staleRevalidate": config.META_CACHE_ON_INVALID_DURATION,
-            "staleError": config.META_CACHE_ON_INVALID_DURATION,
-        }
         return respond_with(
-            data,
-            cache_max_age=data["cacheMaxAge"],
-            stale_revalidate=data["staleRevalidate"],
-            stale_error=data["staleError"],
+            {"meta": {}},
+            cache_max_age=config.META_ON_INVALID_DURATION,
+            stale_revalidate=config.META_ON_INVALID_DURATION,
+            stale_error=config.META_ON_INVALID_DURATION,
+            stremio_response=True,
         )
 
     if meta_type not in MANIFEST["types"]:
@@ -61,18 +56,12 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     meta = kitsu_to_meta(resp.json())
     meta["id"] = meta_id
     meta["type"] = meta_type
-
-    data = {
-        "meta": meta,
-        "cacheMaxAge": config.META_CACHE_ON_SUCCESS_DURATION,
-        "staleRevalidate": config.DEFAULT_STALE_WHILE_REVALIDATE,
-        "staleError": config.META_CACHE_ON_SUCCESS_DURATION,
-    }
     return respond_with(
-        data,
-        cache_max_age=data["cacheMaxAge"],
-        stale_revalidate=data["staleRevalidate"],
-        stale_error=data["staleError"],
+        {"meta": meta},
+        cache_max_age=config.META_ON_SUCCESS_DURATION,
+        stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
+        stale_error=config.META_ON_SUCCESS_DURATION,
+        stremio_response=True,
     )
 
 

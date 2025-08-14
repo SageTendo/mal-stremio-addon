@@ -60,7 +60,7 @@ class TestContentSync(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.OK, response.json["subtitles"][0]["lang"])
+        self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
 
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
@@ -79,7 +79,7 @@ class TestContentSync(unittest.TestCase):
         response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.OK, response.json["subtitles"][0]["lang"])
+        self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
 
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
@@ -98,7 +98,7 @@ class TestContentSync(unittest.TestCase):
         response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.NOT_LIST, response.json["subtitles"][0]["lang"])
+        self.assertEqual(UpdateStatus.NOT_LIST.value, response.json["subtitles"][0]["lang"])
 
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
@@ -116,7 +116,7 @@ class TestContentSync(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.OK, response.json["subtitles"][0]["lang"])
+        self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
 
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
@@ -134,7 +134,7 @@ class TestContentSync(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.NULL, response.json["subtitles"][0]["lang"])
+        self.assertEqual(UpdateStatus.NULL.value, response.json["subtitles"][0]["lang"])
 
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
@@ -152,7 +152,7 @@ class TestContentSync(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.OK, response.json["subtitles"][0]["lang"])
+        self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
 
     @patch("app.routes.mal_client.get_anime_details")
     @patch("app.routes.mal_client.update_watched_status")
@@ -170,7 +170,7 @@ class TestContentSync(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.NULL, response.json["subtitles"][0]["lang"])
+        self.assertEqual(UpdateStatus.NULL.value, response.json["subtitles"][0]["lang"])
 
     def test_start_date_set_on_new_watch(self):
         mock_anime_details = {

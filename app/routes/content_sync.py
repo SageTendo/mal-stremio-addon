@@ -1,5 +1,6 @@
 import urllib.parse
 from datetime import datetime
+from enum import Enum
 from typing import Optional
 
 from flask import Blueprint
@@ -15,7 +16,7 @@ from app.routes.utils import handle_api_error, respond_with
 content_sync_bp = Blueprint("content_sync", __name__)
 
 
-class UpdateStatus:
+class UpdateStatus(Enum):
     """Enumeration for anime update status"""
 
     OK = "MAL=OK"
@@ -23,11 +24,11 @@ class UpdateStatus:
     SKIP = "MAL=SKIPPED"
     INVALID_ID = "MAL=INVALID_ID"
     NOT_LIST = "MAL=NOT_LISTED"
-    FAIL = "MAL=FAIL"
+    FAIL = "MAL=FAILED_UPDATE"
 
 
 @content_sync_bp.route(
-    "/<user_id>/subtitles/<content_type>/<content_id>/<video_hash>.json"
+    "/<user_id>/subtitles/<content_type>/<content_id>/<_video_hash>.json"
 )
 @content_sync_bp.route("/<user_id>/subtitles/<content_type>/<content_id>.json")
 def addon_content_sync(
@@ -43,33 +44,24 @@ def addon_content_sync(
     :param _video_hash: The hash of the video (ignored)
     :return: JSON response
     """
-    invalid_data = {
-        "subtitles": [{"id": 1, "url": "about:blank", "lang": UpdateStatus.SKIP}],
-        "message": None,
-        "cacheMaxAge": config.CONTENT_SYNC_CACHE_ON_INVALID_DURATION,
-        "staleRevalidate": config.CONTENT_SYNC_CACHE_ON_INVALID_DURATION,
-        "staleError": config.CONTENT_SYNC_CACHE_ON_INVALID_DURATION,
-    }
-
     content_id = urllib.parse.unquote(content_id)
     if content_type not in MANIFEST["types"]:
-        invalid_data["message"] = "Content not supported"
         return respond_with(
-            invalid_data,
-            cache_max_age=invalid_data["cacheMaxAge"],
-            stale_revalidate=invalid_data["staleRevalidate"],
-            stale_error=invalid_data["staleError"],
+            _create_sync_response(status=UpdateStatus.SKIP),
+            cache_max_age=config.CONTENT_SYNC_ON_INVALID_DURATION,
+            stale_revalidate=config.CONTENT_SYNC_ON_INVALID_DURATION,
+            stale_error=config.CONTENT_SYNC_ON_INVALID_DURATION,
+            stremio_response=True,
         )
 
     mal_id, current_episode = handle_content_id(content_id)
     if mal_id is None:
-        invalid_data["subtitles"][0]["lang"] = UpdateStatus.INVALID_ID
-        invalid_data["message"] = "Invalid content ID"
         return respond_with(
-            invalid_data,
-            cache_max_age=invalid_data["cacheMaxAge"],
-            stale_revalidate=invalid_data["staleRevalidate"],
-            stale_error=invalid_data["staleError"],
+            _create_sync_response(status=UpdateStatus.INVALID_ID),
+            cache_max_age=config.CONTENT_SYNC_ON_INVALID_DURATION,
+            stale_revalidate=config.CONTENT_SYNC_ON_INVALID_DURATION,
+            stale_error=config.CONTENT_SYNC_ON_INVALID_DURATION,
+            stremio_response=True,
         )
 
     try:
@@ -82,14 +74,7 @@ def addon_content_sync(
             # Fake a listing status if unlisted and user wants it tracked
             anime_listing_status = {"status": "watching", "num_episodes_watched": 0}
         elif not anime_listing_status:
-            return respond_with(
-                {
-                    "subtitles": [
-                        {"id": 1, "url": "about:blank", "lang": UpdateStatus.NOT_LIST}
-                    ],
-                    "message": "Content not in a watchlist",
-                }
-            )
+            return respond_with(_create_sync_response(status=UpdateStatus.NOT_LIST))
 
         current_watch_status = anime_listing_status.get("status")
         num_episodes_watched = anime_listing_status.get("num_episodes_watched", 0)
@@ -97,20 +82,12 @@ def addon_content_sync(
             current_watch_status, current_episode, num_episodes_watched, total_episodes
         )
         if not new_watch_status:
-            data = {
-                "subtitles": [
-                    {"id": 1, "url": "about:blank", "lang": UpdateStatus.NULL}
-                ],
-                "message": "No update required",
-                "cacheMaxAge": config.CONTENT_SYNC_NO_UPDATE_DURATION,
-                "staleRevalidate": config.DEFAULT_STALE_WHILE_REVALIDATE,
-                "staleError": config.CONTENT_SYNC_NO_UPDATE_DURATION,
-            }
             return respond_with(
-                data,
-                cache_max_age=data["cacheMaxAge"],
-                stale_revalidate=data["staleRevalidate"],
-                stale_error=data["staleError"],
+                _create_sync_response(status=UpdateStatus.NULL),
+                cache_max_age=config.CONTENT_SYNC_NO_UPDATE_DURATION,
+                stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
+                stale_error=config.CONTENT_SYNC_NO_UPDATE_DURATION,
+                stremio_response=True,
             )
 
         start_date, finish_date = determine_watch_dates(
@@ -124,21 +101,11 @@ def addon_content_sync(
             start_date=start_date,
             finish_date=finish_date,
         )
-        return respond_with(
-            {
-                "subtitles": [{"id": 1, "url": "about:blank", "lang": UpdateStatus.OK}],
-                "message": "Content updated",
-            }
-        )
+        return respond_with(_create_sync_response(status=UpdateStatus.OK))
     except HTTPError as err:
         handle_api_error(err)
         return respond_with(
-            {
-                "subtitles": [
-                    {"id": 1, "url": "about:blank", "lang": UpdateStatus.FAIL}
-                ],
-                "message": "Failed to update content",
-            }
+            _create_sync_response(status=UpdateStatus.FAIL),
         )
 
 
@@ -183,20 +150,13 @@ def handle_content_id(content_id: str):
         current_episode = 1
 
         if content_id.count(":") == 1:  # Handle series
-            content_id, current_episode = content_id.split(":")
+            content_id, current_episode_str = content_id.split(":")
+            current_episode = int(current_episode_str)
 
         exists, mal_id = get_mal_id_from_kitsu_id(content_id)
         if exists:
             return mal_id, int(current_episode)
     return None, -1
-
-
-def _get_anime_status(token: str, mal_id: str):
-    fields = "num_episodes my_list_status"
-    resp = mal_client.get_anime_details(token, mal_id, fields=fields)
-    total_episodes = resp.get("num_episodes", 0)
-    list_status = resp.get("my_list_status", None)
-    return total_episodes, list_status
 
 
 def handle_current_status(
@@ -208,3 +168,18 @@ def handle_current_status(
         if current_episode > watched_episodes:
             return "watching"
     return None
+
+
+def _create_sync_response(status: UpdateStatus):
+    return {
+        "subtitles": [{"id": 1, "url": "about:blank", "lang": status.value}],
+        "message": f"{status.name} - {status.value}",
+    }
+
+
+def _get_anime_status(token: str, mal_id: str):
+    fields = "num_episodes my_list_status"
+    resp = mal_client.get_anime_details(token, mal_id, fields=fields)
+    total_episodes = resp.get("num_episodes", 0)
+    list_status = resp.get("my_list_status", None)
+    return total_episodes, list_status
