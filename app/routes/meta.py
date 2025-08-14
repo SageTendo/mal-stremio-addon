@@ -4,20 +4,16 @@ import requests
 from flask import Blueprint, abort
 
 import config
+
+from ..db.db import get_kitsu_id_from_mal_id
 from . import IMDB_ID_PREFIX, MAL_ID_PREFIX
 from .auth import get_valid_user
 from .manifest import MANIFEST
-from .utils import respond_with, log_error
-from ..db.db import get_kitsu_id_from_mal_id
+from .utils import handle_api_error, respond_with
 
 meta_bp = Blueprint("meta", __name__)
 
-kitsu_API = "https://anime-kitsu.strem.fun/meta"
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0",
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-}
+KITSU_API = "https://anime-kitsu.strem.fun/meta"
 
 
 @meta_bp.route("/<user_id>/meta/<meta_type>/<meta_id>.json")
@@ -49,7 +45,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
 
     get_valid_user(user_id)
     try:
-        url = f"{kitsu_API}/{meta_type}/"
+        url = f"{KITSU_API}/{meta_type}/"
         exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
         if not exists:  # if no kitsu id, try with mal id
             mal_id = meta_id.replace(f"{MAL_ID_PREFIX}_", "")
@@ -59,7 +55,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
 
         resp = fetch_from_kitsu_api(url)
     except requests.HTTPError as e:
-        log_error(e)
+        handle_api_error(e)
         return respond_with({"meta": {}, "message": str(e)}), e.response.status_code
 
     meta = kitsu_to_meta(resp.json())
@@ -83,7 +79,7 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
 @functools.lru_cache(maxsize=config.META_CACHE_SIZE)
 def fetch_from_kitsu_api(url: str):
     """Fetch metadata from kitsu API and cache the response"""
-    return requests.get(url=url, headers=HEADERS, timeout=10)
+    return requests.get(url=url, headers=config.REQ_HEADERS, timeout=10)
 
 
 def kitsu_to_meta(kitsu_meta: dict) -> dict:
@@ -101,9 +97,9 @@ def kitsu_to_meta(kitsu_meta: dict) -> dict:
     poster = meta.get("poster", None)
     background = meta.get("background", None)
     description = meta.get("description", None)
-    releaseInfo = meta.get("releaseInfo", None)
+    release_info = meta.get("releaseInfo", None)
     year = meta.get("year", None)
-    imdbRating = meta.get("imdbRating", None)
+    imdb_rating = meta.get("imdbRating", None)
     trailers = meta.get("trailers", [])
     links = meta.get("links", [])
     runtime = meta.get("runtime", None)
@@ -118,9 +114,9 @@ def kitsu_to_meta(kitsu_meta: dict) -> dict:
         "poster": poster,
         "background": background,
         "description": description,
-        "releaseInfo": releaseInfo,
+        "releaseInfo": release_info,
         "year": year,
-        "imdbRating": imdbRating,
+        "imdbRating": imdb_rating,
         "trailers": trailers,
         "links": links,
         "runtime": runtime,

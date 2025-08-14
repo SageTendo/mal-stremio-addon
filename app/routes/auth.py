@@ -6,7 +6,7 @@ from werkzeug.utils import redirect
 
 from app.db.db import get_user, store_user
 from app.routes import mal_client
-from app.routes.utils import handle_error, log_error, respond_with
+from app.routes.utils import handle_auth_error, respond_with
 
 auth_blueprint = Blueprint("auth", __name__)
 
@@ -78,7 +78,7 @@ def callback():
     """
     # check if error occurred from MyAnimeList
     error = request.args.get(
-        "error_description",
+        "message",
         "Unknown error occurred when trying to access MyAnimeList",
     )
     if request.args.get("error"):
@@ -119,8 +119,7 @@ def callback():
         flash("You are now logged in.", "success")
         return redirect(url_for("index"))
     except requests.HTTPError as e:
-        log_error(e)
-        return handle_error(e)
+        return handle_auth_error(e)
 
 
 @auth_blueprint.route("/refresh")
@@ -156,8 +155,7 @@ def refresh_token():
         flash("MyAnimeList session refreshed.", "success")
         return redirect(url_for("index"))
     except requests.HTTPError as e:
-        log_error(e)
-        return handle_error(e)
+        return handle_auth_error(e)
 
 
 @auth_blueprint.route("/logout")

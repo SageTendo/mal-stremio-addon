@@ -1,36 +1,48 @@
 import datetime
 import logging
 
-from flask import jsonify, flash, make_response, url_for, redirect, Response, request
+from flask import Response, flash, jsonify, make_response, redirect, request, url_for
+from requests import HTTPError
 
 
-def handle_error(err) -> Response:
+def handle_auth_error(err: HTTPError) -> Response:
     """
-    Handles errors from MyAnimeList's API
+    Handles auth related errors from MyAnimeList and notify the user
     """
-    if 400 >= err.response.status_code < 500:
-        flash(err, "danger")
-        return make_response(redirect(url_for("index")))
-    elif err.response.status_code >= 500:
-        log_error(err)
-        flash(err, "danger")
-        return make_response(redirect(url_for("index")))
-    else:
-        log_error(err)
-        flash("Unkown error occurred when tyring to access MyAnimeList", "danger")
-        return make_response(redirect(url_for("index")))
-
-
-def log_error(err):
-    """
-    Logs errors from MyAnimeList's API
-    """
+    code = err.response.status_code
     response = err.response.json()
-    error_label = response.get("error", "No error label in response").capitalize()
-    message = response.get("message", "No message field in response")
+    error_label = response.get("error", "No error label in response").upper()
+    message = response.get(
+        "message", "Unknown error occurred when tyring to access MyAnimeList"
+    )
     hint = response.get("hint", "No hint field in response")
+
+    flash(message, "danger")
+    log_error(error_label, message, hint, code)
+    return make_response(redirect(url_for("index")))
+
+
+def handle_api_error(err: HTTPError):
+    """
+    Handles and log external API related errors
+    """
+    code = err.response.status_code
+    response = err.response.json()
+    error_label = response.get("error", "No error label in response").upper()
+    message = response.get(
+        "message", "Unknown error occurred when tyring to access MyAnimeList"
+    )
+    hint = response.get("hint", "No hint field in response")
+    log_error(error_label, message, hint, code)
+
+
+def log_error(error_label: str, message: str, hint: str, code: int = 0):
     logging.error(
-        f"{error_label} [{err.response.status_code}] -> {message}\n HINT: {hint}\n"
+        "%s [%s]\n  MESSAGE: %s\n  HINT:    %s",
+        error_label,
+        code,
+        message,
+        hint,
     )
 
 
@@ -68,7 +80,9 @@ def respond_with(
             "private" if private else "public",
             f"max-age={cache_max_age}",
             f"s-maxage={cache_max_age}" if not private else "",
-            f"stale-while-revalidate={stale_revalidate}" if stale_revalidate > 0 else "",
+            f"stale-while-revalidate={stale_revalidate}"
+            if stale_revalidate > 0
+            else "",
             f"stale-if-error={stale_error}" if stale_error > 0 else "",
         ]
         resp.headers["Cache-Control"] = ", ".join(filter(None, cache_control))
