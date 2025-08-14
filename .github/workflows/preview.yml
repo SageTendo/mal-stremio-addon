@@ -31,14 +31,11 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     env:
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      MONGO_URI: ${{ secrets.MONGO_URI }}
-      MAL_ID: ${{ secrets.MAL_ID }}
-      MAL_SECRET: ${{ secrets.MAL_SECRET }}
-      MONGO_DB: ${{ vars.MONGO_DB }}
-      MONGO_UID_MAP_COLLECTION: ${{ vars.MONGO_UID_MAP_COLLECTION }}
-      MONGO_ANIME_MAP_COLLECTION: ${{ vars.MONGO_ANIME_MAP_COLLECTION }}
-      MONGO_ANIME_DATABASE: ${{ vars.MONGO_ANIME_DATABASE }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        MAL_ID: ${{ secrets.MAL_ID }}
+        MAL_SECRET: ${{ secrets.MAL_SECRET }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -63,4 +60,14 @@ jobs:
         run: pipenv install --dev
 
       - name: Run pytest
-        run: pipenv run pytest
+        run: |
+          export MONGO_URI="${{ env.MONGO_URI }}"
+          export SECRET_KEY="${{ env.SECRET_KEY }}"
+          export MAL_ID="${{ env.MAL_ID }}"
+          export MAL_SECRET="${{ env.MAL_SECRET }}"
+          export MONGO_DB="${{ vars.MONGO_DB }}"
+          export MONGO_UID_MAP_COLLECTION="${{ vars.MONGO_UID_MAP_COLLECTION }}"
+          export MONGO_ANIME_MAP_COLLECTION="${{ vars.MONGO_ANIME_MAP_COLLECTION }}"
+          export MONGO_ANIME_DATABASE="${{ vars.MONGO_ANIME_DATABASE }}"
+          pipenv install --dev
+          pipenv run pytest
