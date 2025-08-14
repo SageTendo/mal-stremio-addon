@@ -34,6 +34,7 @@ jobs:
         run: ruff format --check .
 
   test:
+    environment: Preview
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
