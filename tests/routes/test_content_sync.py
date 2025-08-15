@@ -69,7 +69,7 @@ class TestContentSync(unittest.TestCase):
         self, mock_get_user, _mock_update_watched_status, mock_get_anime_details
     ):
         # Mock responses
-        mock_get_user.return_value = {"track_unlisted_anime": True}
+        mock_get_user.return_value = {"track_unlisted_anime": True}, None
         mock_get_anime_details.return_value = {
             "num_episodes": 1,
             "my_list_status": None,
@@ -88,7 +88,7 @@ class TestContentSync(unittest.TestCase):
         self, mock_get_user, _mock_update_watched_status, mock_get_anime_details
     ):
         # Mock responses
-        mock_get_user.return_value = {"track_unlisted_anime": False}
+        mock_get_user.return_value = {"track_unlisted_anime": False}, None
         mock_get_anime_details.return_value = {
             "num_episodes": 1,
             "my_list_status": None,

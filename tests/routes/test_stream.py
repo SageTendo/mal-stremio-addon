@@ -16,7 +16,7 @@ class TestStream(unittest.TestCase):
         """
         Test /stream endpoint with no streams
         """
-        mock_user.return_value = {"fetch_streams": False}
+        mock_user.return_value = {"fetch_streams": False}, None
 
         with self.client.session_transaction() as sess:
             sess["user"] = {"uid": "123", "refresh_token": "test_refresh_token"}
@@ -33,7 +33,7 @@ class TestStream(unittest.TestCase):
         """
         Test /stream endpoint
         """
-        mock_user.return_value = {"fetch_streams": True}
+        mock_user.return_value = {"fetch_streams": True}, None
 
         with self.client.session_transaction() as sess:
             sess["user"] = {"uid": "123", "refresh_token": "test_refresh_token"}

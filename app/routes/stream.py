@@ -45,7 +45,10 @@ def addon_stream(user_id: str, content_type: str, content_id: str):
             stremio_response=True,
         )
 
-    user = get_valid_user(user_id)
+    user, error = get_valid_user(user_id)
+    if error:
+        return respond_with({"streams": [], "message": error})
+
     if not user.get("fetch_streams", False):
         return respond_with(
             {"streams": [], "message": "Fetching streams is disabled"},
