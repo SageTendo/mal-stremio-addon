@@ -3,15 +3,12 @@ repos:
     rev: v0.12.4  # Use latest Ruff release
     hooks:
       - id: ruff-format       # formats code
+        name: Format Code
         args: []
 
       - id: ruff              # lint + auto-fix
-        args: [--fix]
-
-      - id: ruff-check        # strictly lint without auto-fix
-        entry: ruff check .
-        language: system
-        types: [python]
+        name: Linting
+        args: [--no-fix]
 
   - repo: local
     hooks:
