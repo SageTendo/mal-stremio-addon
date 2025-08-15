@@ -1,12 +1,12 @@
 import datetime
 
 import requests
-from flask import Blueprint, request, url_for, session, flash, abort, jsonify, make_response
+from flask import Blueprint, request, url_for, session, flash, abort
 from werkzeug.utils import redirect
 
 from app.db.db import store_user, get_user
 from app.routes import mal_client
-from app.routes.utils import handle_error
+from app.routes.utils import handle_error, respond_with
 
 auth_blueprint = Blueprint('auth', __name__)
 
@@ -27,16 +27,16 @@ def get_valid_user(user_id: str):
     :return: The user's details
     """
     if not (user := get_user(user_id)):
-        return abort(make_response(jsonify({'error': 'User not found'}), 404))
+        return abort(respond_with({'error': 'User not found'}, ttl=1800, private=True))
 
     if not user.get('last_updated'):
-        return abort(
-            make_response(jsonify({'error': 'Invalid MAL session. Please refresh or login again.'}), 409)
-        )
+        return abort(respond_with({'error': 'Invalid MAL session. Please refresh or login again.'}, ttl=300,
+                                  private=True))
 
     expiration_date = user['last_updated'] + datetime.timedelta(seconds=user['expires_in'])
     if datetime.datetime.utcnow() > expiration_date:
-        return abort(make_response(jsonify({'error': 'Access token expired'}), 401))
+        return abort(respond_with({'error': 'MAL session expired. Please refresh or login again.'}, ttl=300,
+                                  private=True))
     return user
 
 

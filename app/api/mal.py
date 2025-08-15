@@ -9,8 +9,8 @@ from config import Config
 AUTH_URL = "https://myanimelist.net/v1"
 BASE_URL = "https://api.myanimelist.net/v1"
 N_BYTES = 96
-QUERY_LIMIT = 30
-TIMEOUT = 30
+QUERY_LIMIT = 100
+TIMEOUT = 8
 CODE_CHALLENGE_METHOD = 'plain'
 
 REDIRECT_URI = f'{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback'

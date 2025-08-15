@@ -1,6 +1,6 @@
 import logging
 
-from flask import Flask, render_template, session, url_for, redirect, request, flash
+from flask import Flask, render_template, session, url_for, redirect, request, flash, make_response
 from flask_compress import Compress
 from waitress import serve
 
@@ -35,7 +35,9 @@ def index():
     """
     if session.get('user', None):
         return redirect(url_for('configure'))
-    return render_template('index.html')
+    response = make_response(render_template('index.html'))
+    response.headers['Cache-Control'] = 'private, max-age=3600, stale-while-revalidate=600'
+    return response
 
 
 @app.route('/favicon.ico')
@@ -43,7 +45,9 @@ def favicon():
     """
     Render the favicon for the app
     """
-    return app.send_static_file('favicon.ico')
+    response = app.send_static_file('favicon.ico')
+    response.headers['Cache-Control'] = 'private, max-age=31536000, stale-while-revalidate=3600'
+    return response
 
 
 @app.route('/configure', methods=['GET', 'POST'])
@@ -73,16 +77,21 @@ def configure(userID: str = None):
         manifest_magnet = f'stremio://{uri}'
 
         flash("Addon options configured.", "success")
-        return render_template('configure.html', user=user,
-                               sort_options=config.SORT_OPTIONS, manifest_url=manifest_url,
-                               manifest_magnet=manifest_magnet)
+        response = make_response(render_template('configure.html', user=user,
+                                                 sort_options=config.SORT_OPTIONS, manifest_url=manifest_url,
+                                                 manifest_magnet=manifest_magnet))
+        response.headers['Cache-Control'] = 'private, max-age=3600, stale-while-revalidate=600'
+        return response
+
     else:
         if not (user := get_user(user_session['uid'])):
             flash("User not found.", "danger")
             return redirect(url_for('index'))
 
-        return render_template('configure.html', user=user,
-                               sort_options=config.SORT_OPTIONS)
+        response = make_response(render_template('configure.html', user=user,
+                                                 sort_options=config.SORT_OPTIONS))
+        response.headers['Cache-Control'] = 'private, max-age=3600, stale-while-revalidate=600'
+        return response
 
 
 def __handle_addon_options(addon_config_options):
