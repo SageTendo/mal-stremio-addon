@@ -1,12 +1,13 @@
 from datetime import datetime, timedelta
+from typing import Optional
 
 import requests
-from flask import Blueprint, abort, flash, request, session, url_for
+from flask import Blueprint, flash, request, session, url_for
 from werkzeug.utils import redirect
 
 from app.db.db import get_user, store_user
 from app.routes import mal_client
-from app.routes.utils import handle_auth_error, respond_with
+from app.routes.utils import handle_auth_error
 
 auth_blueprint = Blueprint("auth", __name__)
 
@@ -20,39 +21,25 @@ def _store_user_session(user_details: dict):
     session.permanent = True
 
 
-def get_valid_user(user_id: str):
+def get_valid_user(
+    user_id: str,
+) -> tuple[dict, Optional[str]]:
     """
     Verify the access token for the user 'user_id' from the database
     :param user_id: The user's MyAnimeList ID
-    :return: The user's details
+    :return: A tuple of the user details if valid, and an error message if invalid
     """
-    if not (user := get_user(user_id)):
-        return abort(
-            200,
-            respond_with({"error": "User not found"}, private=True, cache_max_age=1800),
-        )
+    user = get_user(user_id)
+    if not user:
+        return {}, "No user found. Please re-login to MyAnimeList."
 
     if not user.get("last_updated"):
-        return abort(
-            200,
-            respond_with(
-                {"error": "Invalid MAL session. Please refresh or login again."},
-                private=True,
-                cache_max_age=300,
-            ),
-        )
+        return {}, "Invalid MAL session. Please refresh or login again."
 
     expiration_date = user["last_updated"] + timedelta(seconds=user["expires_in"])
     if datetime.utcnow() > expiration_date:
-        return abort(
-            200,
-            respond_with(
-                {"error": "MAL session expired. Please refresh or login again."},
-                private=True,
-                cache_max_age=300,
-            ),
-        )
-    return user
+        return {}, "MAL session expired. Please refresh or login again."
+    return user, None
 
 
 @auth_blueprint.route("/authorization", methods=["GET", "POST"])

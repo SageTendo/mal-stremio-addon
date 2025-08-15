@@ -52,11 +52,22 @@ def addon_catalog(
     if not _is_valid_catalog(catalog_type, catalog_id):
         abort(404)
 
-    user = get_valid_user(user_id)
-    token = user.get("access_token")
-    sort = user.get("sort_watchlist", config.DEFAULT_SORT_OPTION)
+    user, error = get_valid_user(user_id)
+    if error:
+        metas = [
+            {
+                "id": f"mal:{i}",
+                "type": "anime",
+                "name": "Error",
+                "description": error,
+            }
+            for i in range(30)  # 30 metas to keep the UI consistent
+        ]
+        return respond_with({"metas": metas}, stremio_response=True)
 
     try:
+        token = user.get("access_token")
+        sort = user.get("sort_watchlist", config.DEFAULT_SORT_OPTION)
         response_data = _fetch_anime_list(token, search, catalog_id, offset, sort=sort)
         anime_list = [x["node"] for x in response_data.get("data", [])]
         filtered_anime_list = filter(lambda x: _has_genre_tag(x, genre), anime_list)

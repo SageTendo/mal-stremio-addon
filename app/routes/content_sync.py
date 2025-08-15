@@ -64,9 +64,14 @@ def addon_content_sync(
             stremio_response=True,
         )
 
+    user, error = get_valid_user(user_id)
+    if error:
+        return respond_with(
+            _create_sync_response(status=UpdateStatus.FAIL, message=error),
+        )
+
     try:
-        user = get_valid_user(user_id)
-        token = user.get("access_token")
+        token = user.get("access_token", "")
         track_unlisted_anime = user.get("track_unlisted_anime", False)
         total_episodes, anime_listing_status = _get_anime_status(token, mal_id)
 
@@ -170,10 +175,13 @@ def handle_current_status(
     return None
 
 
-def _create_sync_response(status: UpdateStatus):
+def _create_sync_response(status: UpdateStatus, message: Optional[str] = None):
+    if not message:
+        message = f"{status.name} - {status.value}"
+
     return {
         "subtitles": [{"id": 1, "url": "about:blank", "lang": status.value}],
-        "message": f"{status.name} - {status.value}",
+        "message": f"{message}",
     }
 
 

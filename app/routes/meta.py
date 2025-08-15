@@ -16,11 +16,11 @@ meta_bp = Blueprint("meta", __name__)
 KITSU_API = "https://anime-kitsu.strem.fun/meta"
 
 
-@meta_bp.route("/<user_id>/meta/<meta_type>/<meta_id>.json")
-def addon_meta(user_id: str, meta_type: str, meta_id: str):
+@meta_bp.route("/<_user_id>/meta/<meta_type>/<meta_id>.json")
+def addon_meta(_user_id: str, meta_type: str, meta_id: str):
     """
     Provides metadata for a specific content
-    :param user_id: The user's API token for MyAnimeList
+    :param _user_id: The user's MyAnimeList ID (ignored)
     :param meta_type: The type of metadata to return
     :param meta_id: The ID of the content
     :return: JSON response
@@ -38,7 +38,10 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     if meta_type not in MANIFEST["types"]:
         abort(404)
 
-    get_valid_user(user_id)
+    user, error = get_valid_user(_user_id)
+    if error:
+        return respond_with({"meta": {}, "message": error})
+
     try:
         url = f"{KITSU_API}/{meta_type}/"
         exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
@@ -49,20 +52,19 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
             url += f"kitsu:{kitsu_id}.json"
 
         resp = fetch_from_kitsu_api(url)
+        meta = kitsu_to_meta(resp.json())
+        meta["id"] = meta_id
+        meta["type"] = meta_type
+        return respond_with(
+            {"meta": meta},
+            cache_max_age=config.META_ON_SUCCESS_DURATION,
+            stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
+            stale_error=config.META_ON_SUCCESS_DURATION,
+            stremio_response=True,
+        )
     except requests.HTTPError as e:
         handle_api_error(e)
         return respond_with({"meta": {}, "message": str(e)}), e.response.status_code
-
-    meta = kitsu_to_meta(resp.json())
-    meta["id"] = meta_id
-    meta["type"] = meta_type
-    return respond_with(
-        {"meta": meta},
-        cache_max_age=config.META_ON_SUCCESS_DURATION,
-        stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
-        stale_error=config.META_ON_SUCCESS_DURATION,
-        stremio_response=True,
-    )
 
 
 @functools.lru_cache(maxsize=config.META_CACHE_SIZE)

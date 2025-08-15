@@ -20,7 +20,9 @@ class TestAuthBlueprint(unittest.TestCase):
         """
         Test that the get_token function returns a valid access token from the database
         """
-        user = get_valid_user("123")
+        user, error = get_valid_user("123")
+        self.assertIsNone(error)
+
         token = user.get("access_token")
         self.assertIsNotNone(token)
         self.assertIsInstance(token, str)
