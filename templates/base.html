@@ -13,7 +13,7 @@
 
 <body class="container bg-dark text-white">
 {% block header %}{% endblock %}
-<div class="d-row" style="left: 0; margin-top: 100px;">
+<div class="d-row" style="left: 0; margin-top: 80px;">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% for category, message in messages %}
             {% if messages %}
@@ -34,4 +34,15 @@
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
         crossorigin="anonymous"></script>
 </body>
+
+<footer class="d-flex w-100 justify-content-md-center mt-4 mb-3">
+    <div class="d-flex flex-column align-items-md-center">
+        <span class="text-muted mb-2">If you like this addon, consider supporting me with a coffee :)</span>
+        <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script>
+        <script type='text/javascript'>
+            kofiwidget2.init('Buy me a coffee', '#2a4a77', 'F1F41JO2XK');
+            kofiwidget2.draw();
+        </script>
+    </div>
+</footer>
 </html>
