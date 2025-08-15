@@ -205,7 +205,7 @@ def _handle_poster_object(poster_object):
     """
     if not poster_object:
         return None
-    return poster_object.get("large") or poster_object.get("medium")
+    return poster_object.get("medium") or poster_object.get("large")
 
 
 def _handle_genres_with_links(genres, transport_url, catalog_type, catalog_id):
@@ -239,4 +239,4 @@ def _handle_background_object(background_objects):
         else 0
     )
     random_image = background_objects[index]
-    return random_image.get("large") or random_image.get("medium")
+    return random_image.get("medium") or random_image.get("large")
