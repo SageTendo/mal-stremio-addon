@@ -1,0 +1,21 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.4  # Use latest Ruff release
+    hooks:
+      - id: ruff-format       # formats code
+        name: Format Code
+        args: []
+
+      - id: ruff              # lint + auto-fix
+        name: Linting
+        args: [--no-fix]
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Run pytest
+        entry: pipenv run pytest   # runs inside your env
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
