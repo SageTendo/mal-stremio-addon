@@ -1,5 +1,6 @@
 import re
 from functools import lru_cache
+from typing import Optional
 
 from pymongo import MongoClient
 from pymongo.synchronous.collection import Collection
@@ -17,7 +18,7 @@ UID_map_collection: Collection = db.get_collection(Config.MONGO_UID_MAP)
 anime_mapping: Collection = anime_db.get_collection(Config.MONGO_ANIME_MAP)
 
 
-def get_user(user_id: str):
+def get_user(user_id: str) -> Optional[dict]:
     """
     Get the user details from the database
     :param user_id: The user's MyAnimeList ID
