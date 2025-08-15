@@ -31,9 +31,11 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     # ignore imdb ids for older versions of mal-stremio
     if IMDB_ID_PREFIX in meta_id:
-        return respond_with({'meta': {}, 'message': 'Content not supported'},
-                            ttl=config.META_CACHE_ON_SUCCESS_DURATION,
-                            stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
+        data = {'meta': {}, 'cacheMaxAge': config.META_CACHE_ON_INVALID_DURATION,
+                'staleRevalidate': config.META_CACHE_ON_INVALID_DURATION,
+                'staleError': config.META_CACHE_ON_INVALID_DURATION}
+        return respond_with(data, cacheMaxAge=data['cacheMaxAge'], stale_revalidate=data['staleRevalidate'],
+                            stale_error=data['staleError'])
 
     if meta_type not in MANIFEST['types']:
         abort(404)
@@ -56,14 +58,18 @@ def addon_meta(user_id: str, meta_type: str, meta_id: str):
     meta = kitsu_to_meta(resp.json())
     meta['id'] = meta_id
     meta['type'] = meta_type
-    return respond_with({'meta': meta}, ttl=config.META_CACHE_ON_SUCCESS_DURATION,
-                        stale_while_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE)
+
+    data = {'meta': meta, 'cacheMaxAge': config.META_CACHE_ON_SUCCESS_DURATION,
+            'staleRevalidate': config.DEFAULT_STALE_WHILE_REVALIDATE,
+            'staleError': config.META_CACHE_ON_SUCCESS_DURATION}
+    return respond_with(data, cacheMaxAge=data['cacheMaxAge'], stale_revalidate=data['staleRevalidate'],
+                        stale_error=data['staleError'])
 
 
 @functools.lru_cache(maxsize=config.META_CACHE_SIZE)
 def fetch_from_kitsu_api(url: str):
     """Fetch metadata from kitsu API and cache the response"""
-    return requests.get(url=url, headers=HEADERS, timeout=5)
+    return requests.get(url=url, headers=HEADERS, timeout=10)
 
 
 def kitsu_to_meta(kitsu_meta: dict) -> dict:

@@ -28,30 +28,37 @@ def log_error(err):
     logging.error(f"{error_label} [{err.response.status_code}] -> {message}\n HINT: {hint}\n")
 
 
-def respond_with(data, private: bool = False, ttl: int = 0, stale_while_revalidate: int = 0) -> Response:
+def respond_with(data, private: bool = False, cacheMaxAge: int = 0, stale_revalidate: int = 0,
+                 stale_error: int = 0) -> Response:
     """
     Respond with CORS headers to the client
+    data: the data to respond with
+    private: whether to make caching available only to the user
+    cacheMaxAge: How long to cache the response (0 for no caching)
+    stale_revalidate: How long to serve stale content while revalidating
+    stale_error: How long to serve stale content when an error occurs
     """
     resp = jsonify(data)
     resp.headers['Access-Control-Allow-Origin'] = "*"
     resp.headers['Access-Control-Allow-Headers'] = '*'
 
-    if ttl > 0:
+    if cacheMaxAge > 0:
         resp.content_type = 'application/json; charset=utf-8'
         resp.vary = 'Accept-Encoding'
         resp.add_etag(True)
         resp.make_conditional(request)
 
         # Set Expires header with correct format
-        expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=ttl)
+        expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=cacheMaxAge)
         resp.expires = expires
         resp.headers['Expires'] = expires.strftime('%a, %d %b %Y %H:%M:%S GMT')
 
         cache_control = [
             "private" if private else "public",
-            f"max-age={ttl}",
-            f"s-maxage={ttl}" if not private else "",
-            f"stale-while-revalidate={stale_while_revalidate}" if stale_while_revalidate > 0 else "",
+            f"max-age={cacheMaxAge}",
+            f"s-maxage={cacheMaxAge}" if not private else "",
+            f"stale-while-revalidate={stale_revalidate}" if stale_revalidate > 0 else "",
+            f"stale-if-error={stale_error}" if stale_error > 0 else ""
         ]
         resp.headers['Cache-Control'] = ', '.join(filter(None, cache_control))
     return resp
