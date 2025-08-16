@@ -51,18 +51,6 @@ def index():
     return response
 
 
-@app.route("/favicon.ico")
-def favicon():
-    """
-    Render the favicon for the app
-    """
-    response = app.send_static_file("favicon.ico")
-    response.headers["Cache-Control"] = (
-        "private, max-age=31536000, stale-while-revalidate=3600"
-    )
-    return response
-
-
 @app.route("/configure", methods=["GET", "POST"])
 @app.route("/<user_id>/configure")
 def configure(user_id: str = ""):
@@ -74,28 +62,8 @@ def configure(user_id: str = ""):
     if not (user_session := session.get("user")):
         return redirect(url_for("index"))
 
-    if request.method == "GET":
-        if not (user := get_user(user_session["uid"])):
-            flash("User not found.", "danger")
-            return redirect(url_for("index"))
-
-        response = make_response(
-            render_template(
-                "configure.html", user=user, sort_options=config.SORT_OPTIONS
-            )
-        )
-        response.headers["Cache-Control"] = (
-            "private, max-age=3600, stale-while-revalidate=600"
-        )
-        return response
-
     if not (user := get_user(user_session["uid"])):
         flash("User not found.", "danger")
-        return redirect(url_for("index"))
-
-    user |= __handle_addon_options(request.form)
-    if not store_user(user):
-        flash("Failed to update user configurations.", "danger")
         return redirect(url_for("index"))
 
     user_id = user["uid"]
@@ -103,8 +71,27 @@ def configure(user_id: str = ""):
     manifest_url = f"{Config.PROTOCOL}://{uri}"
     manifest_magnet = f"stremio://{uri}"
 
-    flash("Addon options configured.", "success")
-    response = make_response(
+    # Handle form submission
+    if request.method == "POST":
+        user |= __handle_addon_options(request.form)
+        if not store_user(user):
+            flash("Failed to update user configurations.", "danger")
+            return redirect(url_for("index"))
+
+        flash("Addon options configured.", "success")
+        r = make_response(
+            render_template(
+                "configure.html",
+                user=user,
+                sort_options=config.SORT_OPTIONS,
+                manifest_url=manifest_url,
+                manifest_magnet=manifest_magnet,
+            )
+        )
+        r.headers["Cache-Control"] = "private, max-age=3600, stale-while-revalidate=600"
+        return r
+
+    r = make_response(
         render_template(
             "configure.html",
             user=user,
@@ -113,10 +100,8 @@ def configure(user_id: str = ""):
             manifest_magnet=manifest_magnet,
         )
     )
-    response.headers["Cache-Control"] = (
-        "private, max-age=3600, stale-while-revalidate=600"
-    )
-    return response
+    r.headers["Cache-Control"] = "private, max-age=3600, stale-while-revalidate=600"
+    return r
 
 
 def __handle_addon_options(addon_config_options):
