@@ -51,18 +51,6 @@ def index():
     return response
 
 
-@app.route("/favicon.ico")
-def favicon():
-    """
-    Render the favicon for the app
-    """
-    response = app.send_static_file("favicon.ico")
-    response.headers["Cache-Control"] = (
-        "private, max-age=31536000, stale-while-revalidate=3600"
-    )
-    return response
-
-
 @app.route("/configure", methods=["GET", "POST"])
 @app.route("/<user_id>/configure")
 def configure(user_id: str = ""):
