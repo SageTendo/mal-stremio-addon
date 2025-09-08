@@ -3,6 +3,7 @@ services:
   backend:
     build: .
     container_name: backend
+    restart: unless-stopped
     ports:
       - "${FLASK_PORT}:${FLASK_PORT}"
     env_file:
@@ -17,7 +18,7 @@ services:
     container_name: mongo
     restart: unless-stopped
     ports:
-      - "27017:27017"
+      - "27018:27017"   # host:container
     volumes:
       - mongo_data:/data/db
 
