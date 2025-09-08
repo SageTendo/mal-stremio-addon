@@ -123,6 +123,9 @@ def __handle_addon_options(addon_config_options):
         options["track_unlisted_anime"] = True
     else:
         options["track_unlisted_anime"] = False
+
+    if addon_config_options.get("nsfw_enabled", "") == "true":
+        options["nsfw_enabled"] = True
     return options
 
 
