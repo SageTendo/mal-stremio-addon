@@ -126,6 +126,8 @@ def __handle_addon_options(addon_config_options):
 
     if addon_config_options.get("nsfw_enabled", "") == "true":
         options["nsfw_enabled"] = True
+    else:
+        options["nsfw_enabled"] = False
     return options
 
 
