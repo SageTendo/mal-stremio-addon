@@ -1,0 +1,25 @@
+version: '3'
+services:
+  backend:
+    build: .
+    container_name: backend
+    ports:
+      - "${FLASK_PORT}:${FLASK_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=${MONGO_URI}
+      - MONGO_DB=${MONGO_DB}
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
