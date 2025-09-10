@@ -37,8 +37,7 @@
     <div class="card text-left bg-dark text-white">
         <h5 class="card-title">Configure MAL-Stremio Addon</h5>
         <p class="card-text">
-            Configure the addon to generate the addon URL for your MAL account. If you wish to change these options
-            in future, you <b>must</b> re-configure the addon.
+            Below, you can set your addon preferences.
         <p>
             Description of configuration options:
         <ul>
@@ -64,6 +63,9 @@
                 <br>
                 <i>Example: If you start watching Naruto in Stremio for the first time, it will be marked and added to
                     your MAL 'watching' list.</i>
+            </li>
+            <li>
+                <b>Show NSFW anime:</b> If this option is enabled, MAL-Stremio will show NSFW content in your watchlists and searches.
             </li>
         </ul>
 
@@ -106,6 +108,14 @@
             <option value="true" {% if selected_value == True %}selected{% endif %}>Enabled</option>
         </select>
 
+        <br>
+        <label for="nsfw_enabled">Show NSFW anime:</label>
+        <select id="nsfw_enabled" name="nsfw_enabled" class="form-control-plaintext bg-dark text-white"
+            aria-label="Default select example">
+            {% set selected_value = user.get('nsfw_enabled', False) %}
+            <option value="false" {% if selected_value==False %}selected{% endif %}>Disabled</option>
+            <option value="true" {% if selected_value==True %}selected{% endif %}>Enabled</option>
+        </select>
         <button class="btn btn-success mt-3" type="submit" value="Submit">
             Configure Addon
         </button>
