@@ -68,7 +68,11 @@ def addon_catalog(
     try:
         token = user.get("access_token")
         sort = user.get("sort_watchlist", config.DEFAULT_SORT_OPTION)
-        response_data = _fetch_anime_list(token, search, catalog_id, offset, sort=sort)
+        nsfw_enabled = user.get("nsfw_enabled", False)
+        response_data = _fetch_anime_list(
+            token, search, catalog_id, offset, sort=sort, nsfw=nsfw_enabled
+        )
+
         anime_list = [x["node"] for x in response_data.get("data", [])]
         filtered_anime_list = filter(lambda x: _has_genre_tag(x, genre), anime_list)
         meta_previews = [
@@ -126,18 +130,28 @@ def _has_genre_tag(meta: dict, genre: str = ""):
     )
 
 
-def _fetch_anime_list(token, search, catalog_id, offset, **kwargs):
+def _fetch_anime_list(token, search, catalog_id, offset, nsfw=False, **kwargs):
     if search and len(search) < 3:
         raise ValueError("Search query must be at least 3 characters long")
 
-    return_fields = "media_type genres mean start_date end_date synopsis"
+    return_fields = "media_type,genres,mean,start_date,end_date,synopsis"
     if search:
         return mal_client.get_anime_list(
-            token, query=search, offset=offset, fields=return_fields
+            token,
+            query=search,
+            offset=offset,
+            fields=return_fields,
+            nsfw=nsfw,
+            **kwargs,
         )
 
     return mal_client.get_user_anime_list(
-        token, status=catalog_id, offset=offset, fields=return_fields, **kwargs
+        token,
+        status=catalog_id,
+        offset=offset,
+        fields=return_fields,
+        nsfw=nsfw,
+        **kwargs,
     )
 
 
