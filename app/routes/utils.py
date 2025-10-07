@@ -9,16 +9,26 @@ def handle_auth_error(err: HTTPError) -> Response:
     """
     Handles auth related errors from MyAnimeList and notify the user
     """
-    code = err.response.status_code
-    response = err.response.json()
-    error_label = response.get("error", "No error label in response").upper()
-    message = response.get(
-        "message", "Unknown error occurred when tyring to access MyAnimeList"
-    )
-    hint = response.get("hint", "No hint field in response")
+    if not err.response:
+        flash("No response received from MyAnimeList.", "danger")
+        log_error("NO_RESPONSE", str(err), "No response from MAL", 500)
+        return make_response(redirect(url_for("index")))
 
-    flash(message, "danger")
-    log_error(error_label, message, hint, code)
+    code = err.response.status_code
+    body = err.response.text.strip()
+
+    try:
+        response = err.response.json()
+        error_label = response.get("error", "No error label in response").upper()
+        message = response.get(
+            "message", "Unknown error occurred when tyring to access MyAnimeList"
+        )
+        hint = response.get("hint", "No hint field in response")
+        flash(message, "danger")
+        log_error(error_label, message, hint, code)
+    except ValueError:
+        flash("Invalid response received from MyAnimeList.", "danger")
+        log_error("INVALID_JSON", "Empty or invalid JSON response from MAL", body, code)
     return make_response(redirect(url_for("index")))
 
 
