@@ -10,8 +10,11 @@ def handle_auth_error(err: HTTPError) -> Response:
     Handles auth related errors from MyAnimeList and notify the user
     """
     if not err.response:
-        flash("No response received from MyAnimeList.", "danger")
-        log_error("NO_RESPONSE", str(err), "No response from MAL", 500)
+        flash(
+            "No valid response received from MyAnimeList. The service might be down, please try again later.",
+            "danger",
+        )
+        log_error("INVALID_RESPONSE", str(err), "No valid response from MAL", 500)
         return make_response(redirect(url_for("index")))
 
     code = err.response.status_code
