@@ -15,6 +15,7 @@ def handle_auth_error(err: HTTPError) -> Response:
 
     code = err.response.status_code
     content_type = err.response.headers.get("Content-Type", "")
+    body = err.response.text.strip()
 
     if "application/json" in content_type.lower():
         try:
@@ -22,7 +23,9 @@ def handle_auth_error(err: HTTPError) -> Response:
         except ValueError:
             body = err.response.text.strip()
             flash("Invalid response received from MyAnimeList.", "danger")
-            log_error("INVALID_JSON", "Empty or invalid JSON response from MAL", body, code)
+            log_error(
+                "INVALID_JSON", "Empty or invalid JSON response from MAL", body, code
+            )
             return make_response(redirect(url_for("index")))
 
         error_label = response.get("error", "No error label in response").upper()
@@ -43,10 +46,18 @@ def handle_auth_error(err: HTTPError) -> Response:
     elif code == 404:
         flash("MyAnimeList returned a not found error.", "danger")
     elif code >= 500:
-        flash("MyAnimeList returned an internal server error. The server might be down, try again later.", "danger")
+        flash(
+            "MyAnimeList returned an internal server error. The server might be down, try again later.",
+            "danger",
+        )
     else:
         flash("Unknown error occurred when trying to access MyAnimeList.", "danger")
-    log_error("NON_JSON_RESPONSE", "Unknown error occurred when trying to access MyAnimeList", body, code)
+    log_error(
+        "NON_JSON_RESPONSE",
+        "Unknown error occurred when trying to access MyAnimeList",
+        body,
+        code,
+    )
     return make_response(redirect(url_for("index")))
 
 
