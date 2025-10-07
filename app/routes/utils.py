@@ -9,16 +9,44 @@ def handle_auth_error(err: HTTPError) -> Response:
     """
     Handles auth related errors from MyAnimeList and notify the user
     """
-    code = err.response.status_code
-    response = err.response.json()
-    error_label = response.get("error", "No error label in response").upper()
-    message = response.get(
-        "message", "Unknown error occurred when tyring to access MyAnimeList"
-    )
-    hint = response.get("hint", "No hint field in response")
+    if not err.response:
+        flash("No response received from MyAnimeList.", "danger")
+        return make_response(redirect(url_for("index")))
 
-    flash(message, "danger")
-    log_error(error_label, message, hint, code)
+    code = err.response.status_code
+    content_type = err.response.headers.get("Content-Type", "")
+
+    if "application/json" in content_type.lower():
+        try:
+            response = err.response.json()
+        except ValueError:
+            body = err.response.text.strip()
+            flash("Invalid response received from MyAnimeList.", "danger")
+            log_error("INVALID_JSON", "Empty or invalid JSON response from MAL", body, code)
+            return make_response(redirect(url_for("index")))
+
+        error_label = response.get("error", "No error label in response").upper()
+        message = response.get(
+            "message", "Unknown error occurred when tyring to access MyAnimeList"
+        )
+        hint = response.get("hint", "No hint field in response")
+        flash(message, "danger")
+        log_error(error_label, message, hint, code)
+        return make_response(redirect(url_for("index")))
+
+    if code == 400:
+        flash("Invalid request was made to MyAnimeList.", "danger")
+    elif code == 401:
+        flash("Request could not be made to MyAnimeList. Are you logged in?", "danger")
+    elif code == 403:
+        flash("Unauthorized request when trying to access MyAnimeList.", "danger")
+    elif code == 404:
+        flash("MyAnimeList returned a not found error.", "danger")
+    elif code >= 500:
+        flash("MyAnimeList returned an internal server error. The server might be down, try again later.", "danger")
+    else:
+        flash("Unknown error occurred when trying to access MyAnimeList.", "danger")
+    log_error("NON_JSON_RESPONSE", "Unknown error occurred when trying to access MyAnimeList", body, code)
     return make_response(redirect(url_for("index")))
 
 
