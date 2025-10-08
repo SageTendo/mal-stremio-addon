@@ -32,18 +32,14 @@ when the content has been watched all the way through.
 
 To install the addon:
 
-1. Visit [The Addon Website](https://mal-stremio.vercel.app/) and generate an API Key for MyAnimeList using the "
-   Generate Token" button. This will redirect you to the MyAnimeList authentication page.
-2. Log in to your MyAnimeList account and authorize the addon to access your anime list.
-3. After authorization, a manifest URL will be generated. Copy the manifest URL.
-4. Open Stremio and go to the addon search box.
-5. Paste the copied manifest URL into the addon search box and press Enter. Alternatively, you can click "Open In
-   Stremio" to automatically add the addon to Stremio.
-6. In Stremio, click install, and the addon will be added and ready for use.
+1. Visit [The Addon Configuration Page](https://mal-stremio.vercel.app/).
+2. Log in with MyAnimeList account and authorize the addon to access your anime list.
+3. After logging in, you can configure your addon preferences.
+4. Click 'Open in Stremio' to install the addon. You can also copy the manisteft URL and manually install it on Stremio.
+5. Profit!
 
 **NB**: If no content is being displayed, it could be the result of your session expiring. To renew your session, return
-to the [Addon's website](https://mal-stremio.vercel.app/) to "Sign in with MyAnimeList" or "Refresh MyAnimeList
-Session". Afterwards, content should then show up in Stremio.
+to the [Addon's website](https://mal-stremio.vercel.app/) to "Sign in with MyAnimeList" or "Refresh MAL". Afterwards, content should then show up in Stremio.
 
 ---
 
