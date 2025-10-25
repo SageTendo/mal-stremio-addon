@@ -1,4 +1,5 @@
 import logging
+import time
 
 from flask import (
     Flask,
@@ -10,7 +11,7 @@ from flask import (
     session,
     url_for,
 )
-from flask_compress import Compress  # type: ignore
+from flask_compress import Compress
 from waitress import serve
 
 import config
@@ -73,7 +74,11 @@ def configure(user_id: str = ""):
 
     # Handle form submission
     if request.method == "POST":
-        user |= __handle_addon_options(request.form)
+        addon_configs = __handle_addon_options(request.form)
+        user |= addon_configs
+        if addon_configs["catalogs"]:
+            user["configTimestamp"] = time.time()
+
         if not store_user(user):
             flash("Failed to update user configurations.", "danger")
             return redirect(url_for("index"))
@@ -128,6 +133,18 @@ def __handle_addon_options(addon_config_options):
         options["nsfw_enabled"] = True
     else:
         options["nsfw_enabled"] = False
+
+    options["catalogs"] = []
+    if addon_config_options.get("include_plan_to_watch"):
+        options["catalogs"].append("plan_to_watch")
+    if addon_config_options.get("include_watching"):
+        options["catalogs"].append("watching")
+    if addon_config_options.get("include_completed"):
+        options["catalogs"].append("completed")
+    if addon_config_options.get("include_on_hold"):
+        options["catalogs"].append("on_hold")
+    if addon_config_options.get("include_dropped"):
+        options["catalogs"].append("dropped")
     return options
 
 

@@ -122,14 +122,20 @@ def addon_configured_manifest(user_id: str):
     :param user_id: The user's MyAnimeList ID
     :return: JSON response
     """
-    if not get_user(user_id):
+    user = get_user(user_id)
+    if not user:
         return respond_with(
             {"error": f"User ID: {user_id} not found"}, private=True, cache_max_age=1800
         )
 
-    return respond_with(
-        MANIFEST,
-        cache_max_age=config.MANIFEST_DURATION,
-        stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
-        stremio_response=True,
-    )
+    user_catalogs = user.get("catalogs", [])
+    if user_catalogs:
+        user_manifest = MANIFEST.copy()
+        user_manifest["catalogs"] = list(
+            filter(
+                lambda x: x["id"] in user_catalogs or x["id"] == "search_list",
+                MANIFEST["catalogs"],
+            )
+        )
+        return respond_with(user_manifest)
+    return respond_with(MANIFEST)
