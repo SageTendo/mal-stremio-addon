@@ -128,8 +128,8 @@ def addon_configured_manifest(user_id: str):
             {"error": f"User ID: {user_id} not found"}, private=True, cache_max_age=1800
         )
 
-    user_catalogs = user.get("catalogs", [])
-    if user_catalogs:
+    user_catalogs = user.get("catalogs")
+    if user_catalogs is not None:
         user_manifest = MANIFEST.copy()
         user_manifest["catalogs"] = list(
             filter(

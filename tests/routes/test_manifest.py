@@ -109,6 +109,24 @@ class TestManifestBlueprint(unittest.TestCase):
         self.assertEqual(len(manifest["catalogs"]), 2)
 
     @patch("app.routes.manifest.get_user")
+    def test_catalog_filtering_no_user_catalogs(self, mock_user):
+        """
+        Test the manifest endpoint when the user has no catalogs filtered.
+        This test passes when the catalogs list includes 1 catalog;
+        search (by default).
+        """
+        mock_user.return_value = {"catalogs": None}
+        with self.client.session_transaction() as sess:
+            sess["user"] = {"uid": "123", "refresh_token": "test_refresh_token"}
+
+        response = self.client.get("/123/manifest.json")
+        self.assertEqual(200, response.status_code)
+
+        manifest = response.json
+        self.assertIsNotNone(manifest)
+        self.assertEqual(len(manifest["catalogs"]), len(MANIFEST["catalogs"]))
+
+    @patch("app.routes.manifest.get_user")
     def test_catalog_filtering_no_catalogs(self, mock_user):
         """
         Test the manifest endpoint when the user has no catalogs filtered.
@@ -124,7 +142,7 @@ class TestManifestBlueprint(unittest.TestCase):
 
         manifest = response.json
         self.assertIsNotNone(manifest)
-        self.assertEqual(len(manifest["catalogs"]), len(MANIFEST["catalogs"]))
+        self.assertEqual(len(manifest["catalogs"]), 1)
 
     @patch("app.routes.manifest.get_user")
     def test_catalog_filtering_invalid_catalog(self, mock_user):
