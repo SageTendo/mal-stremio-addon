@@ -1,5 +1,4 @@
 import logging
-import time
 
 from flask import (
     Flask,
@@ -74,11 +73,7 @@ def configure(user_id: str = ""):
 
     # Handle form submission
     if request.method == "POST":
-        addon_configs = __handle_addon_options(request.form)
-        user |= addon_configs
-        if addon_configs["catalogs"]:
-            user["configTimestamp"] = time.time()
-
+        user |= __handle_addon_options(request.form)
         if not store_user(user):
             flash("Failed to update user configurations.", "danger")
             return redirect(url_for("index"))
