@@ -49,15 +49,12 @@ class TestContentSync(unittest.TestCase):
     def test_addon_content_sync_valid_movie_update(
         self, _mock_update_watched_status, mock_get_anime_details
     ):
-        # Mock responses
         mock_get_anime_details.return_value = {
             "num_episodes": 1,
             "my_list_status": {"status": "watching", "num_episodes_watched": 0},
         }
 
-        # Test valid movie content ID
         response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
-
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
         self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
@@ -68,7 +65,6 @@ class TestContentSync(unittest.TestCase):
     def test_update_untracked_anime_when_enabled(
         self, mock_get_user, _mock_update_watched_status, mock_get_anime_details
     ):
-        # Mock responses
         mock_get_user.return_value = {"track_unlisted_anime": True}, None
         mock_get_anime_details.return_value = {
             "num_episodes": 1,
@@ -87,14 +83,12 @@ class TestContentSync(unittest.TestCase):
     def test_update_untracked_anime_when_disabled(
         self, mock_get_user, _mock_update_watched_status, mock_get_anime_details
     ):
-        # Mock responses
         mock_get_user.return_value = {"track_unlisted_anime": False}, None
         mock_get_anime_details.return_value = {
             "num_episodes": 1,
             "my_list_status": None,
         }
 
-        # Test valid movie content ID
         response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
@@ -107,15 +101,12 @@ class TestContentSync(unittest.TestCase):
     def test_addon_content_sync_valid_movie_set_watched(
         self, _mock_update_watched_status, mock_get_anime_details
     ):
-        # Mock responses
         mock_get_anime_details.return_value = {
             "num_episodes": 1,
             "my_list_status": {"status": "watching", "num_episodes_watched": 1},
         }
 
-        # Test valid movie content ID
         response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
-
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
         self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
@@ -125,15 +116,12 @@ class TestContentSync(unittest.TestCase):
     def test_addon_content_sync_valid_movie_no_update(
         self, _mock_update_watched_status, mock_get_anime_details
     ):
-        # Mock responses
         mock_get_anime_details.return_value = {
             "num_episodes": 1,
             "my_list_status": {"status": "watched", "num_episodes_watched": 1},
         }
 
-        # Test valid movie content ID
         response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
-
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
         self.assertEqual(UpdateStatus.NULL.value, response.json["subtitles"][0]["lang"])
@@ -143,15 +131,12 @@ class TestContentSync(unittest.TestCase):
     def test_addon_content_sync_valid_series_update(
         self, _mock_update_watched_status, mock_get_anime_details
     ):
-        # Mock responses
         mock_get_anime_details.return_value = {
             "num_episodes": 3,
             "my_list_status": {"status": "watching", "num_episodes_watched": 2},
         }
 
-        # Test valid movie content ID
         response = self.test_client.get("123/subtitles/anime/kitsu:12345:3.json")
-
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
         self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
@@ -161,15 +146,12 @@ class TestContentSync(unittest.TestCase):
     def test_addon_content_sync_valid_series_no_update(
         self, _mock_update_watched_status, mock_get_anime_details
     ):
-        # Mock responses
         mock_get_anime_details.return_value = {
             "num_episodes": 3,
             "my_list_status": {"status": "watching", "num_episodes_watched": 2},
         }
 
-        # Test valid movie content ID
         response = self.test_client.get("123/subtitles/anime/kitsu:12345:2.json")
-
         self.assertEqual(200, response.status_code)
         self.assertIn("message", response.json)
         self.assertEqual(UpdateStatus.NULL.value, response.json["subtitles"][0]["lang"])
