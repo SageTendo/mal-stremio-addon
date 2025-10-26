@@ -10,7 +10,7 @@ from flask import (
     session,
     url_for,
 )
-from flask_compress import Compress  # type: ignore
+from flask_compress import Compress
 from waitress import serve
 
 import config
@@ -128,6 +128,18 @@ def __handle_addon_options(addon_config_options):
         options["nsfw_enabled"] = True
     else:
         options["nsfw_enabled"] = False
+
+    options["catalogs"] = []
+    if addon_config_options.get("include_plan_to_watch"):
+        options["catalogs"].append("plan_to_watch")
+    if addon_config_options.get("include_watching"):
+        options["catalogs"].append("watching")
+    if addon_config_options.get("include_completed"):
+        options["catalogs"].append("completed")
+    if addon_config_options.get("include_on_hold"):
+        options["catalogs"].append("on_hold")
+    if addon_config_options.get("include_dropped"):
+        options["catalogs"].append("dropped")
     return options
 
 

@@ -38,47 +38,192 @@
         <h5 class="card-title">Configure MAL-Stremio Addon</h5>
         <p class="card-text">
             Below, you can set your addon preferences.
-        <p>
-            Description of configuration options:
-        <ul>
-            <li>
-                <b>Sort watchlists by</b>: The order to display your watchlists.
-                <ul>
-                    <li>
-                        <b>Last Updated:</b> Sorts the watchlist by order of the most recently updated anime entries.
-                    </li>
-                    <li><b>Title:</b> Sorts the watchlist by anime title (Ascending).</li>
-                    <li><b>Release Date:</b> Sorts the watchlist by order of anime release dates (Descending)</li>
-                    <li><b>Score:</b> Sorts the watchlist by order of user's rating (Descending).</li>
-                </ul>
-            </li>
-            <li><b>Fetch with torrent streams:</b>
-                If this option is enabled, MAL-Stremio will fetch torrent streams from Torrentio.
-                If you already have the Torrentio addon installed, or don't want streams from torrents, keep this
-                disabled.
-            </li>
-            <li>
-                <b>Track unlisted anime:</b> If this option is enabled, MAL-Stremio will add any anime you watch in
-                Stremio to your MAL 'watching' list (if it's not already in your MAL lists).
-                <br>
-                <i>Example: If you start watching Naruto in Stremio for the first time, it will be marked and added to
-                    your MAL 'watching' list.</i>
-            </li>
-            <li>
-                <b>Show NSFW anime:</b> If this option is enabled, MAL-Stremio will show NSFW content in your watchlists and searches.
-            </li>
-        </ul>
+        </p>
 
-        <div class="note mt-3 mb-3">
-            <strong>No Content Showing?</strong>
-            <br>
-            If no content is being displayed, it could be the result of your session expiring.
-            Log in again with MyAnimeList or 'Refresh MAL' on the addon webpage.
+        <div class="accordion bg-dark text-white rounded-3 mb-4" id="addonOptionsAccordion">
+            <h5 class="text-info fw-semibold mb-3">Addon Options Explained</h5>
+
+            <!-- Watchlists to Show -->
+            <div class="accordion-item bg-dark text-white border-secondary">
+                <h2 class="accordion-header" id="headingWatchlists">
+                    <button class="accordion-button bg-dark text-white fw-semibold collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseWatchlists" aria-expanded="false"
+                            aria-controls="collapseWatchlists">
+                        <i class="fa-solid fa-list-check me-2 text-info"></i>Watchlists to Show
+                    </button>
+                </h2>
+                <div id="collapseWatchlists" class="accordion-collapse collapse show"
+                     aria-labelledby="headingWatchlists"
+                     data-bs-parent="#addonOptionsAccordion">
+                    <div class="accordion-body small">
+                        Select which watchlists appear inside Stremio.
+                        <br>
+                        <p class="fst-italic mb-1">Example: If "Plan to Watch" is selected, only that list will be
+                            shown inside Stremio.
+                        </p>
+                        <strong>If none are selected, only 'search results' will be available. Tracking and syncing
+                            anime will still work.</strong>
+                        <p class="text-warning fst-italic mb-0">
+                            <i class="fa-solid fa-exclamation-triangle me-1"></i>
+                            You’ll need to uninstall and reinstall the addon after changing this setting.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sort Watchlists -->
+            <div class="accordion-item bg-dark text-white border-secondary">
+                <h2 class="accordion-header" id="headingSort">
+                    <button class="accordion-button bg-dark text-white fw-semibold collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseSort" aria-expanded="false" aria-controls="collapseSort">
+                        <i class="fa-solid fa-arrows-up-down me-2 text-warning"></i>Sort Watchlists By
+                    </button>
+                </h2>
+                <div id="collapseSort" class="accordion-collapse collapse" aria-labelledby="headingSort"
+                     data-bs-parent="#addonOptionsAccordion">
+                    <div class="accordion-body small">
+                        Choose how your watchlists are displayed:
+                        <ul class="ms-3 mb-0">
+                            <li><b>Last Updated:</b> Most recently updated entries first</li>
+                            <li><b>Title:</b> Alphabetically (A → Z)</li>
+                            <li><b>Release Date:</b> Newest to oldest</li>
+                            <li><b>Score:</b> Highest rated first</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fetch with Torrent Streams -->
+            <div class="accordion-item bg-dark text-white border-secondary">
+                <h2 class="accordion-header" id="headingTorrent">
+                    <button class="accordion-button bg-dark text-white fw-semibold collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseTorrent" aria-expanded="false" aria-controls="collapseTorrent">
+                        <i class="fa-solid fa-magnet me-2 text-success"></i>Fetch With Torrent Streams
+                    </button>
+                </h2>
+                <div id="collapseTorrent" class="accordion-collapse collapse" aria-labelledby="headingTorrent"
+                     data-bs-parent="#addonOptionsAccordion">
+                    <div class="accordion-body small">
+                        Enable fetching from Torrentio to add torrent streams.
+                        <p class="text-warning fst-italic mb-0 mt-1">
+                            If you already have Torrentio or prefer not to use torrents, leave this disabled.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Track Unlisted Anime -->
+            <div class="accordion-item bg-dark text-white border-secondary">
+                <h2 class="accordion-header" id="headingTrack">
+                    <button class="accordion-button bg-dark text-white fw-semibold collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseTrack" aria-expanded="false" aria-controls="collapseTrack">
+                        <i class="fa-solid fa-eye me-2 text-primary"></i>Track and Sync Unlisted Anime
+                    </button>
+                </h2>
+                <div id="collapseTrack" class="accordion-collapse collapse" aria-labelledby="headingTrack"
+                     data-bs-parent="#addonOptionsAccordion">
+                    <div class="accordion-body small">
+                        Automatically add new anime you watch in Stremio to your MAL "Watching" list.
+                        <p class="fst-italic mb-0">Example: Watching "Naruto" for the first time adds it to MAL.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Show NSFW Anime -->
+            <div class="accordion-item bg-dark text-white border-secondary">
+                <h2 class="accordion-header" id="headingNSFW">
+                    <button class="accordion-button bg-dark text-white fw-semibold collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseNSFW" aria-expanded="false" aria-controls="collapseNSFW">
+                        <i class="fa-solid fa-user-secret me-2 text-danger"></i>Show NSFW Anime
+                    </button>
+                </h2>
+                <div id="collapseNSFW" class="accordion-collapse collapse" aria-labelledby="headingNSFW"
+                     data-bs-parent="#addonOptionsAccordion">
+                    <div class="accordion-body small">
+                        Includes NSFW anime in your watchlists and searches.
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     {# Configuration form #}
-    <form class="d-col pt-3 mb-3" action="/configure" method="post">
+    <form class="d-col p-3 mb-3 border border-secondary rounded-2" action="/configure"
+          method="post">
+        <!-- Catalog Config -->
+        <div class="card bg-dark text-white border-0 mt-4 mb-4 shadow-sm">
+            <div class="card-body px-4 py-3 rounded-3 border border-secondary bg-gradient"
+                 style="background: linear-gradient(145deg, #1a1a1a, #121212);">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-semibold text-info m-0">Watchlists to Show</h5>
+                    <small class="text-muted fst-italic">Customize your addon feed</small>
+                </div>
+
+                <div class="list-group list-group-flush">
+                    {% set user_catalogs = user.get('catalogs', None) %}
+                    {% set no_catalogs = user_catalogs is none %}
+                    <label
+                            class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 mb-2 hover-glow">
+                        <span>
+                            <i class="fa-solid fa-clock text-warning me-2"></i>
+                            Show <span class="text-warning fw-semibold">Plan to Watch</span>
+                        </span>
+                        <input class="form-check-input ms-2" type="checkbox" id="include_plan_to_watch"
+                               name="include_plan_to_watch"
+                               {% if no_catalogs or ("plan_to_watch" in user_catalogs) %}checked{% endif %}>
+                    </label>
+
+                    <label
+                            class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 mb-2 hover-glow">
+                        <div>
+                            <i class="fa-solid fa-eye text-success me-2"></i>
+                            Show <span class="text-success fw-semibold">Watching</span>
+                        </div>
+                        <input class="form-check-input ms-2" type="checkbox" id="include_watching"
+                               name="include_watching"
+                               {% if no_catalogs or ("watching" in user_catalogs) %}checked{% endif %}>
+                    </label>
+
+                    <label
+                            class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 mb-2 hover-glow">
+                        <div>
+                            <i class="fa-solid fa-circle-check text-primary me-2"></i>
+                            Show <span class="text-primary fw-semibold">Completed</span>
+                        </div>
+                        <input class="form-check-input ms-2" type="checkbox" id="include_completed"
+                               name="include_completed"
+                               {% if no_catalogs or ("completed" in user_catalogs) %}checked{% endif %}>
+                    </label>
+
+                    <label
+                            class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 mb-2 hover-glow">
+                        <div>
+                            <i class="fa-solid fa-pause-circle text-info me-2"></i>
+                            Show <span class="text-info fw-semibold">On-Hold</span>
+                        </div>
+                        <input class="form-check-input ms-2" type="checkbox" id="include_on_hold" name="include_on_hold"
+                               {% if no_catalogs or ("on_hold" in user_catalogs) %}checked{% endif %}>
+                    </label>
+
+                    <label
+                            class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 hover-glow">
+                        <div>
+                            <i class="fa-solid fa-xmark-circle text-danger me-2"></i>
+                            Show <span class="text-danger fw-semibold">Dropped</span>
+                        </div>
+                        <input class="form-check-input ms-2" type="checkbox" id="include_dropped" name="include_dropped"
+                               {% if no_catalogs or ("dropped" in user_catalogs) %}checked{% endif %}>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sorting -->
         <label for="sort_watchlist">Sort watchlists by:</label>
         <select id="sort_watchlist" name="sort_watchlist" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default select example">
@@ -91,6 +236,7 @@
         </select>
 
         <br>
+        <!-- Stream Fetching -->
         <label for="fetch_streams">Fetch with torrent streams:</label>
         <select id="fetch_streams" name="fetch_streams" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default select example">
@@ -100,6 +246,7 @@
         </select>
 
         <br>
+        <!-- Track Unlisted Anime -->
         <label for="track_unlisted">Track unlisted anime:</label>
         <select id="track_unlisted_anime" name="track_unlisted_anime" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default select example">
@@ -108,25 +255,26 @@
             <option value="true" {% if selected_value == True %}selected{% endif %}>Enabled</option>
         </select>
 
-        <br>
-        <label for="nsfw_enabled">Show NSFW anime:</label>
-        <select id="nsfw_enabled" name="nsfw_enabled" class="form-control-plaintext bg-dark text-white"
-            aria-label="Default select example">
-            {% set selected_value = user.get('nsfw_enabled', False) %}
-            <option value="false" {% if selected_value==False %}selected{% endif %}>Disabled</option>
-            <option value="true" {% if selected_value==True %}selected{% endif %}>Enabled</option>
-        </select>
         <button class="btn btn-success mt-3" type="submit" value="Submit">
             Configure Addon
         </button>
     </form>
 
+    <div class="note mt-3 mb-3">
+        <strong>No Content Showing?</strong>
+        <br>
+        If no content is being displayed, it could be the result of your session expiring.
+        Log in again with MyAnimeList or 'Refresh MAL' on the addon webpage.
+    </div>
+
     {# Addon URL and install button #}
     <div class="d-flex flex-column flex-md-row align-items-stretch mb-3">
-        <input id="manifest_url" type="text" class="form-control bg-dark text-warning mb-2 fs-6 rounded-0"
-               aria-describedby="button-addon2"
-               placeholder="Configure Addon to generate the addon's manifest URL"
-               value="{{ manifest_url }}" readonly>
+        <label for="manifest_url" class="input-group mb-2">
+            <input id="manifest_url" type="text" class="form-control bg-dark text-warning fs-6 rounded-0"
+                   aria-describedby="button-addon2"
+                   placeholder="Configure Addon to generate the addon's manifest URL"
+                   value="{{ manifest_url }}" readonly>
+        </label>
 
         <div class="d-flex flex-column flex-md-row mb-2">
             <button class="btn btn-outline-success text-white rounded-0" type="button" id="button-addon2"
@@ -138,4 +286,35 @@
             </button>
         </div>
     </div>
+
+    <style>
+        /* Soft hover highlight and transition */
+        .hover-glow {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .hover-glow:hover {
+            background-color: #1e1e1e !important;
+            box-shadow: 0 0 6px rgba(0, 200, 255, 0.2);
+        }
+
+        .form-check-input {
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+            accent-color: #0dcaf0;
+        }
+
+        .addon-options p {
+            margin: 0.15rem 0;
+        }
+
+        .addon-options ul {
+            margin-top: 0.25rem;
+        }
+
+        .addon-options i {
+            width: 1.2em; /* keeps icons aligned */
+        }
+    </style>
 {% endblock %}
