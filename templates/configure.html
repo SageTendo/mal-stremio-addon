@@ -255,6 +255,16 @@
             <option value="true" {% if selected_value == True %}selected{% endif %}>Enabled</option>
         </select>
 
+        <br>
+        <!-- Show NSFW Anime -->
+        <label for="nsfw_enabled">Show NSFW anime:</label>
+        <select id="nsfw_enabled" name="nsfw_enabled" class="form-control-plaintext bg-dark text-white"
+            aria-label="Default select example">
+            {% set selected_value = user.get('nsfw_enabled', False) %}
+            <option value="false" {% if selected_value==False %}selected{% endif %}>Disabled</option>
+            <option value="true" {% if selected_value==True %}selected{% endif %}>Enabled</option>
+        </select>
+
         <button class="btn btn-success mt-3" type="submit" value="Submit">
             Configure Addon
         </button>
