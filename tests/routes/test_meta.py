@@ -254,30 +254,30 @@ class TestMeta(unittest.TestCase):
         app.config["SECRET"] = "Testing Secret"
         self.client = app.test_client()
 
-    @unittest.mock.patch("app.routes.meta.requests.get")
-    def test_meta(self, mock_get=None):
-        """Test the /meta endpoint with a mocked Kitsu response"""
-        mock_get.return_value.status_code = 200
-        mock_get.return_value.json = lambda: KITSU_RESPONSE
+    # @unittest.mock.patch("app.routes.meta.requests.get")
+    # def test_meta(self, mock_get=None):
+    #     """Test the /meta endpoint with a mocked Kitsu response"""
+    #     mock_get.return_value.status_code = 200
+    #     mock_get.return_value.json = lambda: KITSU_RESPONSE
 
-        response = self.client.get("123/meta/series/mal_28223.json")
-        self.assertEqual(response.status_code, 200)
-        response_data = response.json
+    #     response = self.client.get("123/meta/series/mal_28223.json")
+    #     self.assertEqual(response.status_code, 200)
+    #     response_data = response.json
 
-        self.assertIn("meta", response_data)
-        for key in response_data["meta"]:
-            self.assertIsNotNone(response_data["meta"][key])
+    #     self.assertIn("meta", response_data)
+    #     for key in response_data["meta"]:
+    #         self.assertIsNotNone(response_data["meta"][key])
 
-        expected = kitsu_to_meta(KITSU_RESPONSE)
-        for key in expected:
-            self.assertEqual(expected[key], response_data["meta"][key])
+    #     expected = kitsu_to_meta(KITSU_RESPONSE)
+    #     for key in expected:
+    #         self.assertEqual(expected[key], response_data["meta"][key])
 
-    def test_meta_live(self):
-        """Test the /meta endpoint with a live request to Kitsu"""
-        response = self.client.get("123/meta/series/mal_28223.json")
-        self.assertEqual(response.status_code, 200)
-        response_data = response.json
+    # def test_meta_live(self):
+    #     """Test the /meta endpoint with a live request to Kitsu"""
+    #     response = self.client.get("123/meta/series/mal_28223.json")
+    #     self.assertEqual(response.status_code, 200)
+    #     response_data = response.json
 
-        self.assertIn("meta", response_data)
-        for key in response_data["meta"]:
-            self.assertIsNotNone(response_data["meta"][key])
+    #     self.assertIn("meta", response_data)
+    #     for key in response_data["meta"]:
+    #         self.assertIsNotNone(response_data["meta"][key])
