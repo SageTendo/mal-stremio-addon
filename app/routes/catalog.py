@@ -128,7 +128,9 @@ def _fetch_anime_list(token, search, catalog_id, offset, nsfw=False, **kwargs):
     if search and len(search) < 3:
         raise ValueError("Search query must be at least 3 characters long")
 
-    return_fields = "alternative_titles,media_type,genres,mean,start_date,end_date,synopsis"
+    return_fields = (
+        "alternative_titles,media_type,genres,mean,start_date,end_date,synopsis"
+    )
     if search:
         return mal_client.get_anime_list(
             token,

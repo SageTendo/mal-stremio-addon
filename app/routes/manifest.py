@@ -5,7 +5,6 @@ from flask import Blueprint
 import config
 
 from ..db.db import get_user
-from . import MAL_ID_PREFIX
 from .utils import respond_with
 
 manifest_blueprint = Blueprint("manifest", __name__)
