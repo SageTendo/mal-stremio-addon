@@ -112,11 +112,6 @@ def __handle_addon_options(addon_config_options):
     else:
         options["sort_watchlist"] = config.DEFAULT_SORT_OPTION
 
-    if addon_config_options.get("fetch_streams", "") == "true":
-        options["fetch_streams"] = True
-    else:
-        options["fetch_streams"] = False
-
     if addon_config_options.get("track_unlisted_anime", "") == "true":
         options["track_unlisted_anime"] = True
     else:
