@@ -148,7 +148,7 @@ def handle_content_id(content_id: str):
     :return: The ID of the content and the current episode
     """
     if content_id.startswith(MAL_ID_PREFIX):
-        return content_id.replace(f"{MAL_ID_PREFIX}_", ""), 1  # Assume episode
+        return content_id.replace(MAL_ID_PREFIX, ""), 1  # Assume episode
 
     if content_id.startswith("kitsu:"):
         content_id = content_id.replace("kitsu:", "")
