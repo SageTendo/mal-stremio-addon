@@ -29,6 +29,15 @@
         {% endif %}
         {% endfor %}
         {% endwith %}
+
+        <!-- TODO: Remove this warning once the streaming and metadata functionality is fully implemented -->
+        <div class="container alert alert-warning alert-dismissible fade show" role="alert">
+            ⚠️ Streaming and metadata functionality in MAL-Stremio is currently limited.
+            <a href="https://github.com/SageTendo/mal-stremio-addon/issues/120" target="_blank">
+                See GitHub Issue for more information.
+            </a>
+        </div>
+
         {% block content %}
         {% endblock %}
     </div>

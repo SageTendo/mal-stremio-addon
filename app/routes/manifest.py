@@ -5,7 +5,6 @@ from flask import Blueprint
 import config
 
 from ..db.db import get_user
-from . import MAL_ID_PREFIX
 from .utils import respond_with
 
 manifest_blueprint = Blueprint("manifest", __name__)
@@ -35,7 +34,7 @@ genres = [
 
 MANIFEST: dict[str, Any] = {
     "id": "com.sagetendo.mal-stremio-addon",
-    "version": "3.5.1",
+    "version": "4.0.0-alpha",
     "name": "MAL-Stremio Addon",
     "logo": "https://i.imgur.com/zVYdffr.png",
     "description": "Provides users with watchlist content from MyAnimeList within Stremio. "
@@ -90,8 +89,8 @@ MANIFEST: dict[str, Any] = {
         },
     ],
     "behaviorHints": {"configurable": True},
-    "resources": ["catalog", "meta", "subtitles", "stream"],
-    "idPrefixes": [MAL_ID_PREFIX, "kitsu"],
+    "resources": ["catalog", "subtitles"],
+    "idPrefixes": ["mal", "kitsu"],
 }
 
 

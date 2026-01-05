@@ -81,7 +81,7 @@ def addon_content_sync(
         elif not anime_listing_status:
             return respond_with(_create_sync_response(status=UpdateStatus.NOT_LIST))
 
-        current_watch_status = anime_listing_status.get("status")
+        current_watch_status = anime_listing_status.get("status", "")
         num_episodes_watched = anime_listing_status.get("num_episodes_watched", 0)
         new_watch_status = handle_current_status(
             current_watch_status, current_episode, num_episodes_watched, total_episodes
@@ -127,8 +127,8 @@ def determine_watch_dates(
     :param total_episodes: The total number of episodes in the anime
     :return: A tuple of (start_date, finish_date)
     """
-    start_date = anime_listing_status.get("start_date")
-    finish_date = anime_listing_status.get("finish_date")
+    start_date = anime_listing_status.get("start_date", "")
+    finish_date = anime_listing_status.get("finish_date", "")
     num_episodes_watched = anime_listing_status.get("num_episodes_watched", 0)
 
     set_start = not start_date and current_episode == 1 and num_episodes_watched == 0
@@ -148,7 +148,7 @@ def handle_content_id(content_id: str):
     :return: The ID of the content and the current episode
     """
     if content_id.startswith(MAL_ID_PREFIX):
-        return content_id.replace(f"{MAL_ID_PREFIX}_", ""), 1  # Assume episode
+        return content_id.replace(MAL_ID_PREFIX, ""), 1  # Assume episode
 
     if content_id.startswith("kitsu:"):
         content_id = content_id.replace("kitsu:", "")

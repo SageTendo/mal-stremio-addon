@@ -95,26 +95,6 @@
                 </div>
             </div>
 
-            <!-- Fetch with Torrent Streams -->
-            <div class="accordion-item bg-dark text-white border-secondary">
-                <h2 class="accordion-header" id="headingTorrent">
-                    <button class="accordion-button bg-dark text-white fw-semibold collapsed" type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseTorrent" aria-expanded="false" aria-controls="collapseTorrent">
-                        <i class="fa-solid fa-magnet me-2 text-success"></i>Fetch With Torrent Streams
-                    </button>
-                </h2>
-                <div id="collapseTorrent" class="accordion-collapse collapse" aria-labelledby="headingTorrent"
-                     data-bs-parent="#addonOptionsAccordion">
-                    <div class="accordion-body small">
-                        Enable fetching from Torrentio to add torrent streams.
-                        <p class="text-warning fst-italic mb-0 mt-1">
-                            If you already have Torrentio or prefer not to use torrents, leave this disabled.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
             <!-- Track Unlisted Anime -->
             <div class="accordion-item bg-dark text-white border-secondary">
                 <h2 class="accordion-header" id="headingTrack">
@@ -233,16 +213,6 @@
                     {{ key }}
                 </option>
             {% endfor %}
-        </select>
-
-        <br>
-        <!-- Stream Fetching -->
-        <label for="fetch_streams">Fetch with torrent streams:</label>
-        <select id="fetch_streams" name="fetch_streams" class="form-control-plaintext bg-dark text-white"
-                aria-label="Default select example">
-            {% set selected_value = user.get('fetch_streams', False) %}
-            <option value="false" {% if selected_value == False %}selected{% endif %}>Disabled</option>
-            <option value="true" {% if selected_value == True %}selected{% endif %}>Enabled</option>
         </select>
 
         <br>

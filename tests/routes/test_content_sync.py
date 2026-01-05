@@ -3,6 +3,7 @@ import unittest
 from datetime import datetime
 from unittest.mock import patch
 
+from app.routes import MAL_ID_PREFIX
 from app.routes.content_sync import (
     UpdateStatus,
     determine_watch_dates,
@@ -20,7 +21,7 @@ class TestContentSync(unittest.TestCase):
         self.test_client = app.test_client()
 
     def test_handle_mal_id(self):
-        content_id, episode = handle_content_id("mal_12345")
+        content_id, episode = handle_content_id(f"{MAL_ID_PREFIX}12345")
         self.assertEqual("12345", content_id)
         self.assertEqual(1, episode)
 

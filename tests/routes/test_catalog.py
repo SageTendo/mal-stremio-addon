@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 
+from app.routes import MAL_ID_PREFIX
 from run import app
 
 DUMMY_MAL_RESPONSE = {
@@ -112,7 +113,7 @@ class TestCatalog(unittest.TestCase):
         self.assertIn("metas", response_data)
         for anime in response_data["metas"]:
             self.assertIn("id", anime)
-            self.assertIn("mal_", anime["id"])
+            self.assertIn(MAL_ID_PREFIX, anime["id"])
             self.assertIn("name", anime)
             self.assertIsNotNone(anime["name"])
 
