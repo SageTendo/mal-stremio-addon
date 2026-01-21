@@ -1,0 +1,36 @@
+[project]
+name = ""
+version = "0.0.1"
+requires-python = "~=3.9"
+dependencies = [
+    "backports.entry-points-selectable",
+    "flask[async]",
+    "lxml",
+    "pipenv",
+    "python-dotenv",
+    "waitress",
+    "flask-compress==1.14",
+    "httpx",
+    "pymongo",
+    "requests",
+    "gunicorn",
+    "kitsu.py",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-order",
+    "ruff==0.12.4",
+    "pytest-watcher",
+]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+
+[tool.uv.sources]
+"kitsu.py" = { git = "https://github.com/SageTendo/kitsu.py" }
