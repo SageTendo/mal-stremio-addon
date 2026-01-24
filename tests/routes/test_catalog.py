@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from app.routes import MAL_ID_PREFIX
+from config import MAL_ID_PREFIX
 from run import app
 
 DUMMY_MAL_RESPONSE = {

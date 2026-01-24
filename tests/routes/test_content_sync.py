@@ -3,13 +3,13 @@ import unittest
 from datetime import datetime
 from unittest.mock import patch
 
-from app.routes import MAL_ID_PREFIX
 from app.routes.content_sync import (
     UpdateStatus,
     determine_watch_dates,
     handle_content_id,
     handle_current_status,
 )
+from config import MAL_ID_PREFIX
 from run import app
 
 
