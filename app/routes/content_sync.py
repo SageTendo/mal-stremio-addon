@@ -8,7 +8,7 @@ from requests import HTTPError
 
 import config
 from app.db.db import get_mal_id_from_kitsu_id
-from app.routes import MAL_ID_PREFIX, mal_client
+from app.routes import mal_client
 from app.routes.auth import get_valid_user
 from app.routes.manifest import MANIFEST
 from app.routes.utils import handle_api_error, respond_with
@@ -147,8 +147,8 @@ def handle_content_id(content_id: str):
     :param content_id: The content ID
     :return: The ID of the content and the current episode
     """
-    if content_id.startswith(MAL_ID_PREFIX):
-        return content_id.replace(MAL_ID_PREFIX, ""), 1  # Assume episode
+    if content_id.startswith(config.MAL_ID_PREFIX):
+        return content_id.replace(config.MAL_ID_PREFIX, ""), 1  # Assume episode
 
     if content_id.startswith("kitsu:"):
         content_id = content_id.replace("kitsu:", "")

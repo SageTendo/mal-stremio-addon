@@ -3,7 +3,6 @@ import urllib.parse
 from typing import Optional
 
 import config
-from app.routes import MAL_ID_PREFIX
 
 
 def get_transport_url(manifest_uri: str):
@@ -28,7 +27,7 @@ def mal_to_meta(
     """
     formatted_content_id = None
     if content_id := anime_item.get("id"):
-        formatted_content_id = f"{MAL_ID_PREFIX}{content_id}"
+        formatted_content_id = f"{config.MAL_ID_PREFIX}{content_id}"
 
     title = anime_item.get("alternative_titles", {}).get("en") or anime_item.get(
         "title"
@@ -36,9 +35,12 @@ def mal_to_meta(
     synopsis = anime_item.get("synopsis")
     poster = _handle_poster_object(anime_item.get("main_picture", {}))
 
-    anime_item_genres = anime_item.get("genres")
+    anime_item_genres = anime_item.get("genres", [])
     genres, links = _handle_genres_with_links(
-        anime_item_genres, transport_url, catalog_type, catalog_id
+        [genre["name"] for genre in anime_item_genres],
+        transport_url,
+        catalog_type,
+        catalog_id,
     )
 
     mean_score: Optional[str] = None
@@ -84,24 +86,25 @@ def _handle_poster_object(poster_object):
     return poster_object.get("large") or poster_object.get("medium")
 
 
-def _handle_genres_with_links(genres, transport_url, catalog_type, catalog_id):
+def _handle_genres_with_links(
+    genres: list[str], transport_url, catalog_type, catalog_id
+):
     """Handle the genres from MAL and create Stremio genre links for them"""
     if not genres:
         return [], []
 
-    formatted_genres = [genre["name"] for genre in genres]
     links = []
     if transport_url:
         links = [
             {
-                "name": genre["name"],
+                "name": genre,
                 "category": "Genres",
                 "url": f"stremio:///discover/{transport_url}/{catalog_type}/{catalog_id}"
-                f"?genre={genre['name']}",
+                f"?genre={genre}",
             }
             for genre in genres
         ]
-    return formatted_genres, links
+    return genres, links
 
 
 def _handle_background_object(background_objects):
