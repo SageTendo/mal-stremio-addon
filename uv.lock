@@ -19,6 +19,7 @@ dependencies = [
     { name = "httpx" },
     { name = "kitsu-py" },
     { name = "lxml" },
+    { name = "mal-py" },
     { name = "pipenv", version = "2025.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "pipenv", version = "2026.0.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
     { name = "pymongo" },
@@ -43,8 +44,9 @@ requires-dist = [
     { name = "flask-compress", specifier = "==1.14" },
     { name = "gunicorn" },
     { name = "httpx" },
-    { name = "kitsu-py", git = "https://github.com/SageTendo/kitsu.py" },
+    { name = "kitsu-py", git = "https://github.com/SageTendo/kitsu.py.git" },
     { name = "lxml" },
+    { name = "mal-py", git = "https://github.com/SageTendo/mal.py.git" },
     { name = "pipenv" },
     { name = "pymongo" },
     { name = "python-dotenv" },
@@ -926,7 +928,7 @@ name = "importlib-metadata"
 version = "8.7.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "zipp" },
+    { name = "zipp", marker = "python_full_version < '3.10'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f3/49/3b30cad09e7771a4982d9975a8cbf64f00d4a1ececb53297f1d9a7be1b10/importlib_metadata-8.7.1.tar.gz", hash = "sha256:49fef1ae6440c182052f407c8d34a68f72efc36db9ca90dc0113398f2fdde8bb", size = 57107, upload-time = "2025-12-21T10:00:19.278Z" }
 wheels = [
@@ -982,7 +984,7 @@ wheels = [
 [[package]]
 name = "kitsu-py"
 version = "1.0.0"
-source = { git = "https://github.com/SageTendo/kitsu.py#d283ac186e4d0ce0f92734ef12465cf7269b8448" }
+source = { git = "https://github.com/SageTendo/kitsu.py.git#d283ac186e4d0ce0f92734ef12465cf7269b8448" }
 dependencies = [
     { name = "aiohttp" },
     { name = "python-dateutil" },
@@ -1126,6 +1128,14 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/7a/c1/27428a2ff348e994ab4f8777d3a0ad510b6b92d37718e5887d2da99952a2/lxml-6.0.2-pp311-pypy311_pp73-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:60fa43be34f78bebb27812ed90f1925ec99560b0fa1decdb7d12b84d857d31e9", size = 4272119, upload-time = "2025-09-22T04:04:51.801Z" },
     { url = "https://files.pythonhosted.org/packages/f0/d0/3020fa12bcec4ab62f97aab026d57c2f0cfd480a558758d9ca233bb6a79d/lxml-6.0.2-pp311-pypy311_pp73-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:21c73b476d3cfe836be731225ec3421fa2f048d84f6df6a8e70433dff1376d5a", size = 4417314, upload-time = "2025-09-22T04:04:55.024Z" },
     { url = "https://files.pythonhosted.org/packages/6c/77/d7f491cbc05303ac6801651aabeb262d43f319288c1ea96c66b1d2692ff3/lxml-6.0.2-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:27220da5be049e936c3aca06f174e8827ca6445a4353a1995584311487fc4e3e", size = 3518768, upload-time = "2025-09-22T04:04:57.097Z" },
+]
+
+[[package]]
+name = "mal-py"
+version = "0.1.0"
+source = { git = "https://github.com/SageTendo/mal.py.git#7ccb6bb536d4f19424d5f4422828a2cfe31a8281" }
+dependencies = [
+    { name = "aiohttp" },
 ]
 
 [[package]]

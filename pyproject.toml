@@ -14,7 +14,8 @@ dependencies = [
     "pymongo",
     "requests",
     "gunicorn",
-    "kitsu.py",
+    "kitsu-py",
+    "mal-py",
 ]
 
 [dependency-groups]
@@ -33,4 +34,5 @@ name = "pypi"
 url = "https://pypi.org/simple"
 
 [tool.uv.sources]
-"kitsu.py" = { git = "https://github.com/SageTendo/kitsu.py" }
+kitsu-py = { git = "https://github.com/SageTendo/kitsu.py.git" }
+mal-py = { git = "https://github.com/SageTendo/mal.py.git" }
