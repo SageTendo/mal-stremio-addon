@@ -10,6 +10,7 @@ env:
   MONGO_URI: ${{ secrets.MONGO_URI }}
   MAL_ID: ${{ secrets.MAL_ID }}
   MAL_SECRET: ${{ secrets.MAL_SECRET }}
+  UV_CACHE_DIR: /tmp/.uv-cache
 
 jobs:
   lint:
@@ -44,21 +45,22 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version-file: '.python-version'
 
-      - name: Install pipenv
-        run: pip install pipenv
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
 
-      - name: Cache pipenv dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.local/share/virtualenvs
-          key: ${{ runner.os }}-pipenv-${{ hashFiles('Pipfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pipenv-
+      # - name: Restore uv cache
+      #   uses: actions/cache@v5
+      #   with:
+      #     path: /tmp/.uv-cache
+      #     key: uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+      #     restore-keys: |
+      #       uv-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+      #       uv-${{ runner.os }}
 
-      - name: Install dependencies
-        run: pipenv install --dev
+      - name: Install Dependencies
+        run: uv sync --locked --all-extras --dev
 
       - name: Run pytest
         run: |
@@ -70,5 +72,7 @@ jobs:
           export MONGO_UID_MAP_COLLECTION="${{ vars.MONGO_UID_MAP_COLLECTION }}"
           export MONGO_ANIME_MAP_COLLECTION="${{ vars.MONGO_ANIME_MAP_COLLECTION }}"
           export MONGO_ANIME_DATABASE="${{ vars.MONGO_ANIME_DATABASE }}"
-          pipenv install --dev
-          pipenv run pytest
+          uv run pytest
+
+      # - name: Minimize uv cache
+      #   run: uv cache prune --ci
