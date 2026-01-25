@@ -1,7 +1,8 @@
 import logging
+from re import A
 
-from flask import (
-    Flask,
+from quart import (
+    Quart,
     flash,
     make_response,
     redirect,
@@ -10,8 +11,7 @@ from flask import (
     session,
     url_for,
 )
-from flask_compress import Compress
-from waitress import serve
+from quart_compress import Compress
 
 import config
 from app.db.db import get_user, store_user
@@ -22,27 +22,33 @@ from app.routes.manifest import manifest_blueprint
 from app.routes.meta import meta_bp
 from config import Config
 
-app = Flask(__name__, template_folder="./templates", static_folder="./static")
-app.config.from_object("config.Config")
-app.register_blueprint(auth_blueprint)
-app.register_blueprint(manifest_blueprint)
-app.register_blueprint(catalog_bp)
-app.register_blueprint(meta_bp)
-app.register_blueprint(content_sync_bp)
-
-Compress(app)
-
+comppress = Compress()
 logging.basicConfig(format="%(asctime)s %(message)s")
 
 
+def create_app():
+    app = Quart(__name__, template_folder="./templates", static_folder="./static")
+    app.config.from_object("config.Config")
+    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(manifest_blueprint)
+    app.register_blueprint(catalog_bp)
+    app.register_blueprint(meta_bp)
+    app.register_blueprint(content_sync_bp)
+    # comppress.init_app(app)
+    return app
+
+
+app = create_app()
+
+
 @app.route("/")
-def index():
+async def index():
     """
     Render the index page
     """
     if session.get("user", None):
         return redirect(url_for("configure"))
-    response = make_response(render_template("index.html"))
+    response = await make_response(await render_template("index.html"))
     response.headers["Cache-Control"] = (
         "private, max-age=3600, stale-while-revalidate=600"
     )
@@ -51,7 +57,7 @@ def index():
 
 @app.route("/configure", methods=["GET", "POST"])
 @app.route("/<user_id>/configure")
-def configure(user_id: str = ""):
+async def configure(user_id: str = ""):
     """
     Render the configure page
     :param user_id: The user's MyAnimeList ID (ignored, as this is sent by Stremio when redirecting to the configure
@@ -61,7 +67,7 @@ def configure(user_id: str = ""):
         return redirect(url_for("index"))
 
     if not (user := get_user(user_session["uid"])):
-        flash("User not found.", "danger")
+        await flash("User not found.", "danger")
         return redirect(url_for("index"))
 
     user_id = user["uid"]
@@ -71,14 +77,14 @@ def configure(user_id: str = ""):
 
     # Handle form submission
     if request.method == "POST":
-        user |= __handle_addon_options(request.form)
+        user |= __handle_addon_options(await request.form)
         if not store_user(user):
-            flash("Failed to update user configurations.", "danger")
+            await flash("Failed to update user configurations.", "danger")
             return redirect(url_for("index"))
 
-        flash("Addon options configured.", "success")
-        r = make_response(
-            render_template(
+        await flash("Addon options configured.", "success")
+        r = await make_response(
+            await render_template(
                 "configure.html",
                 user=user,
                 sort_options=config.SORT_OPTIONS,
@@ -89,8 +95,8 @@ def configure(user_id: str = ""):
         r.headers["Cache-Control"] = "private, max-age=3600, stale-while-revalidate=600"
         return r
 
-    r = make_response(
-        render_template(
+    r = await make_response(
+        await render_template(
             "configure.html",
             user=user,
             sort_options=config.SORT_OPTIONS,
@@ -137,4 +143,6 @@ def __handle_addon_options(addon_config_options):
 
 
 if __name__ == "__main__":
-    serve(app, host="0.0.0.0", port=5000)
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=5000)

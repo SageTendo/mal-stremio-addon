@@ -1,5 +1,7 @@
-import unittest
 from unittest.mock import patch
+
+import pytest
+import pytest_asyncio
 
 from config import MAL_ID_PREFIX
 from run import app
@@ -102,110 +104,132 @@ DUMMY_MAL_RESPONSE = {
 }
 
 
-class TestCatalog(unittest.TestCase):
-    def setUp(self):
-        """Set up the Flask test client."""
-        app.config["TESTING"] = True
-        app.config["SECRET"] = "Testing Secret"
-        self.client = app.test_client()
+@pytest.fixture
+def test_app():
+    """
+    Set up the test class
+    """
+    app.config["SECRET"] = "Testing Secret"
+    app.config["TESTING"] = True
+    return app
 
-    def _meta_asserts(self, response_data):
-        self.assertIn("metas", response_data)
-        for anime in response_data["metas"]:
-            self.assertIn("id", anime)
-            self.assertIn(MAL_ID_PREFIX, anime["id"])
-            self.assertIn("name", anime)
-            self.assertIsNotNone(anime["name"])
 
-            self.assertIn("type", anime)
-            self.assertIn(anime["type"], ["series", "movie"])
-            self.assertIn("genres", anime)
-            self.assertIsNotNone(anime["genres"])
+@pytest_asyncio.fixture
+async def client(test_app):
+    async with test_app.test_client() as client:
+        yield client
 
-            self.assertIn("links", anime)
-            self.assertEqual(anime["links"][0]["name"], "Action")
-            self.assertIsNotNone(anime["links"][0]["url"])
 
-            self.assertIn("poster", anime)
-            self.assertEqual(anime["poster"], "http://example.com/poster.jpg")
-            self.assertIn("imdbRating", anime)
-            self.assertIn(anime["imdbRating"], ["8.5", None])
+def _meta_asserts(response_data):
+    assert "metas" in response_data
 
-            self.assertIn("background", anime)
-            self.assertIn(
-                anime["background"],
-                [
-                    "http://example.com/poster1.jpg",
-                    "http://example.com/poster2.jpg",
-                    "http://example.com/poster3.jpg",
-                ],
-            )
+    for anime in response_data["metas"]:
+        assert "id" in anime
+        assert MAL_ID_PREFIX in anime["id"]
 
-            self.assertIn("releaseInfo", anime)
-            self.assertIn(anime["releaseInfo"], ["2002-", "2002-2002", None])
-            self.assertIn("description", anime)
-            self.assertIn(
-                anime["description"], ["Naruto anime", "Naruto Shippuden anime", None]
-            )
+        assert "name" in anime
+        assert anime["name"] is not None
 
-    @patch("app.routes.mal_client.get_user_anime_list")
-    @patch("app.routes.mal_client.get_anime_list")
-    def test_catalog(self, mock_get_user_anime_list, mock_get_anime_list):
-        """Test valid catalog request."""
-        mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
-        mock_get_anime_list.return_value = DUMMY_MAL_RESPONSE
+        assert "type" in anime
+        assert anime["type"] in ["series", "movie"]
 
-        response = self.client.get("123/catalog/anime/watching.json")
-        self.assertEqual(200, response.status_code)
-        response_data = response.json
-        self._meta_asserts(response_data)
+        assert "genres" in anime
+        assert anime["genres"] is not None
 
-    @patch("app.routes.mal_client.get_anime_list")
-    def test_search(self, mock_get_anime_list):
-        """Test catalog request with a search query."""
-        mock_get_anime_list.return_value = DUMMY_MAL_RESPONSE
+        assert "links" in anime
+        assert anime["links"][0]["name"] == "Action"
+        assert anime["links"][0]["url"] is not None
 
-        response = self.client.get("123/catalog/anime/search_list/search=Naruto.json")
-        self.assertEqual(200, response.status_code)
-        response_data = response.json
-        assert len(response_data["metas"]) > 0
-        self._meta_asserts(response_data)
+        assert "poster" in anime
+        assert anime["poster"] == "http://example.com/poster.jpg"
 
-        # Test bad request
-        response = self.client.get("123/catalog/anime/search_list/search=N.json")
-        self.assertEqual(400, response.status_code)
+        assert "imdbRating" in anime
+        assert anime["imdbRating"] in ["8.5", None]
 
-    @patch("app.routes.mal_client.get_user_anime_list")
-    def test_genre_filtering_no_results(self, mock_get_user_anime_list):
-        """Test catalog request with a search query."""
-        mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
+        assert "background" in anime
+        assert anime["background"] in [
+            "http://example.com/poster1.jpg",
+            "http://example.com/poster2.jpg",
+            "http://example.com/poster3.jpg",
+        ]
 
-        response = self.client.get("123/catalog/anime/watching/genre=Adventure.json")
-        self.assertEqual(200, response.status_code)
-        response_data = response.json
-        self.assertListEqual([], response_data["metas"])
+        assert "releaseInfo" in anime
+        assert anime["releaseInfo"] in ["2002-", "2002-2002", None]
 
-    @patch("app.routes.mal_client.get_user_anime_list")
-    def test_genre_filtering(self, mock_get_user_anime_list):
-        """Test catalog request with a search query."""
-        mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
+        assert "description" in anime
+        assert anime["description"] in [
+            "Naruto anime",
+            "Naruto Shippuden anime",
+            None,
+        ]
 
-        response = self.client.get("123/catalog/anime/watching/genre=Action.json")
-        self.assertEqual(200, response.status_code)
-        response_data = response.json
-        assert len(response_data["metas"]) > 0
-        self._meta_asserts(response_data)
 
-        response = self.client.get("123/catalog/anime/watching/genre=Boys Love.json")
-        self.assertEqual(200, response.status_code)
-        response_data = response.json
-        assert len(response_data["metas"]) == 0
-        self._meta_asserts(response_data)
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_user_anime_list")
+@patch("app.routes.mal_client.get_anime_list")
+async def test_catalog(mock_get_user_anime_list, mock_get_anime_list, client):
+    """Test valid catalog request."""
+    mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
+    mock_get_anime_list.return_value = DUMMY_MAL_RESPONSE
 
-        response = self.client.get(
-            "123/catalog/anime/watching/genre={'id':%201,%20'name':%20'Action'}.json"
-        )
-        self.assertEqual(200, response.status_code)
-        response_data = response.json
-        assert len(response_data["metas"]) > 0
-        self._meta_asserts(response_data)
+    response = await client.get("123/catalog/anime/watching.json")
+    assert response.status_code == 200
+    response_data = await response.json
+    _meta_asserts(response_data)
+
+
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_anime_list")
+async def test_search(mock_get_anime_list, client):
+    """Test catalog request with a search query."""
+    mock_get_anime_list.return_value = DUMMY_MAL_RESPONSE
+
+    response = await client.get("123/catalog/anime/search_list/search=Naruto.json")
+    assert response.status_code == 200
+
+    response_data = await response.json
+    assert len(response_data["metas"]) > 0
+    _meta_asserts(response_data)
+
+    # Test bad request
+    response = await client.get("123/catalog/anime/search_list/search=N.json")
+    assert response.status_code == 400
+
+
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_user_anime_list")
+async def test_genre_filtering_no_results(mock_get_user_anime_list, client):
+    """Test catalog request with a search query."""
+    mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
+
+    response = await client.get("123/catalog/anime/watching/genre=Adventure.json")
+    assert response.status_code == 200
+    response_data = await response.json
+    assert len(response_data["metas"]) == 0
+
+
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_user_anime_list")
+async def test_genre_filtering(mock_get_user_anime_list, client):
+    """Test catalog request with a search query."""
+    mock_get_user_anime_list.return_value = DUMMY_MAL_RESPONSE
+
+    response = await client.get("123/catalog/anime/watching/genre=Action.json")
+    assert response.status_code == 200
+    response_data = await response.json
+    assert len(response_data["metas"]) > 0
+    _meta_asserts(response_data)
+
+    response = await client.get("123/catalog/anime/watching/genre=Boys Love.json")
+    assert response.status_code == 200
+    response_data = await response.json
+    assert len(response_data["metas"]) == 0
+    _meta_asserts(response_data)
+
+    response = await client.get(
+        "123/catalog/anime/watching/genre={'id':%201,%20'name':%20'Action'}.json"
+    )
+    assert response.status_code == 200
+    response_data = await response.json
+    assert len(response_data["metas"]) > 0
+    _meta_asserts(response_data)

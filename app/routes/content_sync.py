@@ -3,15 +3,16 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from flask import Blueprint
+from quart import Blueprint
 from requests import HTTPError
 
 import config
 from app.db.db import get_mal_id_from_kitsu_id
-from app.routes import mal_client
 from app.routes.auth import get_valid_user
 from app.routes.manifest import MANIFEST
 from app.routes.utils import handle_api_error, respond_with
+
+from . import mal_client
 
 content_sync_bp = Blueprint("content_sync", __name__)
 
@@ -31,7 +32,7 @@ class UpdateStatus(Enum):
     "/<user_id>/subtitles/<content_type>/<content_id>/<_video_hash>.json"
 )
 @content_sync_bp.route("/<user_id>/subtitles/<content_type>/<content_id>.json")
-def addon_content_sync(
+async def addon_content_sync(
     user_id: str, content_type: str, content_id: str, _video_hash: str = ""
 ):
     """
@@ -46,7 +47,7 @@ def addon_content_sync(
     """
     content_id = urllib.parse.unquote(content_id)
     if content_type not in MANIFEST["types"]:
-        return respond_with(
+        return await respond_with(
             _create_sync_response(status=UpdateStatus.SKIP),
             cache_max_age=config.CONTENT_SYNC_ON_INVALID_DURATION,
             stale_revalidate=config.CONTENT_SYNC_ON_INVALID_DURATION,
@@ -56,7 +57,7 @@ def addon_content_sync(
 
     mal_id, current_episode = handle_content_id(content_id)
     if mal_id is None:
-        return respond_with(
+        return await respond_with(
             _create_sync_response(status=UpdateStatus.INVALID_ID),
             cache_max_age=config.CONTENT_SYNC_ON_INVALID_DURATION,
             stale_revalidate=config.CONTENT_SYNC_ON_INVALID_DURATION,
@@ -66,7 +67,7 @@ def addon_content_sync(
 
     user, error = get_valid_user(user_id)
     if error:
-        return respond_with(
+        return await respond_with(
             _create_sync_response(status=UpdateStatus.FAIL, message=error),
         )
 
@@ -79,7 +80,9 @@ def addon_content_sync(
             # Fake a listing status if unlisted and user wants it tracked
             anime_listing_status = {"status": "watching", "num_episodes_watched": 0}
         elif not anime_listing_status:
-            return respond_with(_create_sync_response(status=UpdateStatus.NOT_LIST))
+            return await respond_with(
+                _create_sync_response(status=UpdateStatus.NOT_LIST)
+            )
 
         current_watch_status = anime_listing_status.get("status", "")
         num_episodes_watched = anime_listing_status.get("num_episodes_watched", 0)
@@ -87,7 +90,7 @@ def addon_content_sync(
             current_watch_status, current_episode, num_episodes_watched, total_episodes
         )
         if not new_watch_status:
-            return respond_with(
+            return await respond_with(
                 _create_sync_response(status=UpdateStatus.NULL),
                 cache_max_age=config.CONTENT_SYNC_NO_UPDATE_DURATION,
                 stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
@@ -106,10 +109,10 @@ def addon_content_sync(
             start_date=start_date,
             finish_date=finish_date,
         )
-        return respond_with(_create_sync_response(status=UpdateStatus.OK))
+        return await respond_with(_create_sync_response(status=UpdateStatus.OK))
     except HTTPError as err:
         handle_api_error(err)
-        return respond_with(
+        return await respond_with(
             _create_sync_response(status=UpdateStatus.FAIL),
         )
 

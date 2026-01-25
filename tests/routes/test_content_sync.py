@@ -1,7 +1,9 @@
 import sys
-import unittest
 from datetime import datetime
 from unittest.mock import patch
+
+import pytest
+import pytest_asyncio
 
 from app.routes.content_sync import (
     UpdateStatus,
@@ -13,252 +15,241 @@ from config import MAL_ID_PREFIX
 from run import app
 
 
-class TestContentSync(unittest.TestCase):
-    def setUp(self):
-        """Set up testing client"""
-        app.config["TESTING"] = True
-        app.config["SECRET"] = "Testing Secret"
-        self.test_client = app.test_client()
+@pytest.fixture
+def test_app():
+    """
+    Set up the test class
+    """
+    app.config["SECRET"] = "Testing Secret"
+    app.config["TESTING"] = True
+    return app
 
-    def test_handle_mal_id(self):
-        content_id, episode = handle_content_id(f"{MAL_ID_PREFIX}12345")
-        self.assertEqual("12345", content_id)
-        self.assertEqual(1, episode)
 
-    def test_handle_kitsu_id(self):
-        content_id, episode = handle_content_id("kitsu:1")
-        self.assertEqual(1, content_id)
-        self.assertEqual(1, episode)
+@pytest_asyncio.fixture
+async def client(test_app):
+    async with test_app.test_client() as client:
+        yield client
 
-    def test_handle_kitsu_id_with_episode(self):
-        content_id, episode = handle_content_id("kitsu:1:2")
-        self.assertEqual(1, content_id)
-        self.assertEqual(2, episode)
 
-    def test_handle_no_mal_id(self):
-        content_id, episode = handle_content_id(f"kitsu:{sys.maxsize}")
-        self.assertEqual(None, content_id)
-        self.assertEqual(-1, episode)
+# ----- ID Handling -----
+def test_handle_mal_id():
+    content_id, episode = handle_content_id(f"{MAL_ID_PREFIX}12345")
+    assert content_id == "12345"
+    assert episode == 1
 
-    def test_handle_invalid_id(self):
-        content_id, episode = handle_content_id("12345")
-        self.assertEqual(None, content_id)
-        self.assertEqual(-1, episode)
 
-    @patch("app.routes.mal_client.get_anime_details")
-    @patch("app.routes.mal_client.update_watched_status")
-    def test_addon_content_sync_valid_movie_update(
-        self, _mock_update_watched_status, mock_get_anime_details
-    ):
-        # Mock responses
-        mock_get_anime_details.return_value = {
-            "num_episodes": 1,
-            "my_list_status": {"status": "watching", "num_episodes_watched": 0},
-        }
+def test_handle_kitsu_id():
+    content_id, episode = handle_content_id("kitsu:1")
+    assert content_id == 1
+    assert episode == 1
 
-        # Test valid movie content ID
-        response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
 
-        self.assertEqual(200, response.status_code)
-        self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
+def test_handle_kitsu_id_with_episode():
+    content_id, episode = handle_content_id("kitsu:1:2")
+    assert content_id == 1
+    assert episode == 2
 
-    @patch("app.routes.mal_client.get_anime_details")
-    @patch("app.routes.mal_client.update_watched_status")
-    @patch("app.routes.content_sync.get_valid_user")
-    def test_update_untracked_anime_when_enabled(
-        self, mock_get_user, _mock_update_watched_status, mock_get_anime_details
-    ):
-        # Mock responses
-        mock_get_user.return_value = {"track_unlisted_anime": True}, None
-        mock_get_anime_details.return_value = {
-            "num_episodes": 1,
-            "my_list_status": None,
-        }
 
-        # Test valid movie content ID
-        response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
-        self.assertEqual(200, response.status_code)
-        self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
+def test_handle_no_mal_id():
+    content_id, episode = handle_content_id(f"kitsu:{sys.maxsize}")
+    assert content_id is None
+    assert episode == -1
 
-    @patch("app.routes.mal_client.get_anime_details")
-    @patch("app.routes.mal_client.update_watched_status")
-    @patch("app.routes.content_sync.get_valid_user")
-    def test_update_untracked_anime_when_disabled(
-        self, mock_get_user, _mock_update_watched_status, mock_get_anime_details
-    ):
-        # Mock responses
-        mock_get_user.return_value = {"track_unlisted_anime": False}, None
-        mock_get_anime_details.return_value = {
-            "num_episodes": 1,
-            "my_list_status": None,
-        }
 
-        # Test valid movie content ID
-        response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
-        self.assertEqual(200, response.status_code)
-        self.assertIn("message", response.json)
-        self.assertEqual(
-            UpdateStatus.NOT_LIST.value, response.json["subtitles"][0]["lang"]
-        )
+def test_handle_invalid_id():
+    content_id, episode = handle_content_id("12345")
+    assert content_id is None
+    assert episode == -1
 
-    @patch("app.routes.mal_client.get_anime_details")
-    @patch("app.routes.mal_client.update_watched_status")
-    def test_addon_content_sync_valid_movie_set_watched(
-        self, _mock_update_watched_status, mock_get_anime_details
-    ):
-        # Mock responses
-        mock_get_anime_details.return_value = {
-            "num_episodes": 1,
-            "my_list_status": {"status": "watching", "num_episodes_watched": 1},
-        }
 
-        # Test valid movie content ID
-        response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
+# ----- Content Sync / Route Tests -----
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_anime_details")
+@patch("app.routes.mal_client.update_watched_status")
+async def test_addon_content_sync_valid_movie_update(_, mock_get_anime_details, client):
+    mock_get_anime_details.return_value = {
+        "num_episodes": 1,
+        "my_list_status": {"status": "watching", "num_episodes_watched": 0},
+    }
 
-        self.assertEqual(200, response.status_code)
-        self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
+    response = await client.get("123/subtitles/anime/kitsu:12345.json")
+    assert response.status_code == 200
 
-    @patch("app.routes.mal_client.get_anime_details")
-    @patch("app.routes.mal_client.update_watched_status")
-    def test_addon_content_sync_valid_movie_no_update(
-        self, _mock_update_watched_status, mock_get_anime_details
-    ):
-        # Mock responses
-        mock_get_anime_details.return_value = {
-            "num_episodes": 1,
-            "my_list_status": {"status": "watched", "num_episodes_watched": 1},
-        }
+    data = await response.json
+    assert "message" in data
+    assert data["subtitles"][0]["lang"] == UpdateStatus.OK.value
 
-        # Test valid movie content ID
-        response = self.test_client.get("123/subtitles/anime/kitsu:12345.json")
 
-        self.assertEqual(200, response.status_code)
-        self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.NULL.value, response.json["subtitles"][0]["lang"])
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_anime_details")
+@patch("app.routes.mal_client.update_watched_status")
+@patch("app.routes.content_sync.get_valid_user")
+async def test_update_untracked_anime_when_enabled(
+    mock_get_user, _, mock_get_anime_details, client
+):
+    mock_get_user.return_value = {"track_unlisted_anime": True}, None
+    mock_get_anime_details.return_value = {
+        "num_episodes": 1,
+        "my_list_status": None,
+    }
 
-    @patch("app.routes.mal_client.get_anime_details")
-    @patch("app.routes.mal_client.update_watched_status")
-    def test_addon_content_sync_valid_series_update(
-        self, _mock_update_watched_status, mock_get_anime_details
-    ):
-        # Mock responses
-        mock_get_anime_details.return_value = {
-            "num_episodes": 3,
-            "my_list_status": {"status": "watching", "num_episodes_watched": 2},
-        }
+    response = await client.get("123/subtitles/anime/kitsu:12345.json")
+    assert response.status_code == 200
 
-        # Test valid movie content ID
-        response = self.test_client.get("123/subtitles/anime/kitsu:12345:3.json")
+    data = await response.json
+    assert "message" in data
+    assert data["subtitles"][0]["lang"] == UpdateStatus.OK.value
 
-        self.assertEqual(200, response.status_code)
-        self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.OK.value, response.json["subtitles"][0]["lang"])
 
-    @patch("app.routes.mal_client.get_anime_details")
-    @patch("app.routes.mal_client.update_watched_status")
-    def test_addon_content_sync_valid_series_no_update(
-        self, _mock_update_watched_status, mock_get_anime_details
-    ):
-        # Mock responses
-        mock_get_anime_details.return_value = {
-            "num_episodes": 3,
-            "my_list_status": {"status": "watching", "num_episodes_watched": 2},
-        }
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_anime_details")
+@patch("app.routes.mal_client.update_watched_status")
+@patch("app.routes.content_sync.get_valid_user")
+async def test_update_untracked_anime_when_disabled(
+    mock_get_user, _, mock_get_anime_details, client
+):
+    mock_get_user.return_value = {"track_unlisted_anime": False}, None
+    mock_get_anime_details.return_value = {
+        "num_episodes": 1,
+        "my_list_status": None,
+    }
 
-        # Test valid movie content ID
-        response = self.test_client.get("123/subtitles/anime/kitsu:12345:2.json")
+    response = await client.get("123/subtitles/anime/kitsu:12345.json")
+    assert response.status_code == 200
 
-        self.assertEqual(200, response.status_code)
-        self.assertIn("message", response.json)
-        self.assertEqual(UpdateStatus.NULL.value, response.json["subtitles"][0]["lang"])
+    data = await response.json
+    assert "message" in data
+    assert data["subtitles"][0]["lang"] == UpdateStatus.NOT_LIST.value
 
-    def test_start_date_set_on_new_watch(self):
-        mock_anime_details = {
-            "num_episodes": 3,
-            "my_list_status": {
-                "status": "watching",
-                "num_episodes_watched": 0,
-                "start_date": None,
-                "finish_date": None,
-            },
-        }
-        my_list_status = mock_anime_details["my_list_status"]
-        current_episode = 1
-        total_episodes = mock_anime_details["num_episodes"]
 
-        start_date, finish_date = determine_watch_dates(
-            my_list_status, current_episode, total_episodes
-        )
-        self.assertEqual(start_date, datetime.now().strftime("%Y-%m-%d"))
-        self.assertEqual(finish_date, None)
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_anime_details")
+@patch("app.routes.mal_client.update_watched_status")
+async def test_addon_content_sync_valid_movie_set_watched(
+    _, mock_get_anime_details, client
+):
+    mock_get_anime_details.return_value = {
+        "num_episodes": 1,
+        "my_list_status": {"status": "watching", "num_episodes_watched": 1},
+    }
 
-    def test_finish_date_set_on_completed(self):
-        mock_anime_details = {
-            "num_episodes": 3,
-            "my_list_status": {
-                "status": "watching",
-                "num_episodes_watched": 0,
-                "start_date": None,
-                "finish_date": None,
-            },
-        }
-        my_list_status = mock_anime_details["my_list_status"]
-        current_episode = 3
-        total_episodes = mock_anime_details["num_episodes"]
+    response = await client.get("123/subtitles/anime/kitsu:12345.json")
+    assert response.status_code == 200
 
-        start_date, finish_date = determine_watch_dates(
-            my_list_status, current_episode, total_episodes
-        )
-        self.assertEqual(start_date, None)
-        self.assertEqual(finish_date, datetime.now().strftime("%Y-%m-%d"))
+    data = await response.json
+    assert "message" in data
+    assert data["subtitles"][0]["lang"] == UpdateStatus.OK.value
 
-    def test_dates_already_set(self):
-        mock_anime_details = {
-            "num_episodes": 3,
-            "my_list_status": {
-                "status": "watching",
-                "num_episodes_watched": 0,
-                "start_date": "2022-01-01",
-                "finish_date": "2022-01-02",
-            },
-        }
-        current_episode = 1
-        total_episodes = mock_anime_details["num_episodes"]
-        my_list_status = mock_anime_details["my_list_status"]
 
-        start_date, finish_date = determine_watch_dates(
-            my_list_status, current_episode, total_episodes
-        )
-        self.assertEqual(start_date, my_list_status["start_date"])
-        self.assertEqual(finish_date, my_list_status["finish_date"])
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_anime_details")
+@patch("app.routes.mal_client.update_watched_status")
+async def test_addon_content_sync_valid_movie_no_update(
+    _, mock_get_anime_details, client
+):
+    mock_get_anime_details.return_value = {
+        "num_episodes": 1,
+        "my_list_status": {"status": "watched", "num_episodes_watched": 1},
+    }
 
-    def test_handle_plan_to_watch_to_no_update(self):
-        status = handle_current_status("plan_to_watch", 0, 0, 3)
-        self.assertEqual(status, None)
+    response = await client.get("123/subtitles/anime/kitsu:12345.json")
+    assert response.status_code == 200
 
-    def test_handle_plan_to_watch_to_watching(self):
-        status = handle_current_status("plan_to_watch", 1, 0, 3)
-        self.assertEqual(status, "watching")
+    data = await response.json
+    assert "message" in data
+    assert data["subtitles"][0]["lang"] == UpdateStatus.NULL.value
 
-    def test_handle_plan_to_watch_to_completed(self):
-        status = handle_current_status("plan_to_watch", 3, 2, 3)
-        self.assertEqual(status, "completed")
 
-    def test_handle_on_hold_to_watching(self):
-        status = handle_current_status("on_hold", 1, 0, 3)
-        self.assertEqual(status, "watching")
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_anime_details")
+@patch("app.routes.mal_client.update_watched_status")
+async def test_addon_content_sync_valid_series_update(
+    _, mock_get_anime_details, client
+):
+    mock_get_anime_details.return_value = {
+        "num_episodes": 3,
+        "my_list_status": {"status": "watching", "num_episodes_watched": 2},
+    }
 
-    def test_handle_on_hold_to_completed(self):
-        status = handle_current_status("on_hold", 3, 2, 3)
-        self.assertEqual(status, "completed")
+    response = await client.get("123/subtitles/anime/kitsu:12345:3.json")
+    assert response.status_code == 200
 
-    def test_handle_watching(self):
-        status = handle_current_status("watching", 2, 1, 3)
-        self.assertEqual(status, "watching")
+    data = await response.json
+    assert "message" in data
+    assert data["subtitles"][0]["lang"] == UpdateStatus.OK.value
 
-    def test_handle_watching_to_completed(self):
-        status = handle_current_status("watching", 3, 2, 3)
-        self.assertEqual(status, "completed")
+
+@pytest.mark.asyncio
+@patch("app.routes.mal_client.get_anime_details")
+@patch("app.routes.mal_client.update_watched_status")
+async def test_addon_content_sync_valid_series_no_update(
+    _, mock_get_anime_details, client
+):
+    mock_get_anime_details.return_value = {
+        "num_episodes": 3,
+        "my_list_status": {"status": "watching", "num_episodes_watched": 2},
+    }
+
+    response = await client.get("123/subtitles/anime/kitsu:12345:2.json")
+    assert response.status_code == 200
+
+    data = await response.json
+    assert "message" in data
+    assert data["subtitles"][0]["lang"] == UpdateStatus.NULL.value
+
+
+# ----- Watch Dates -----
+def test_start_date_set_on_new_watch():
+    my_list_status = {
+        "status": "watching",
+        "num_episodes_watched": 0,
+        "start_date": None,
+        "finish_date": None,
+    }
+
+    start_date, finish_date = determine_watch_dates(my_list_status, 1, 3)
+    assert start_date == datetime.now().strftime("%Y-%m-%d")
+    assert finish_date is None
+
+
+def test_finish_date_set_on_completed():
+    my_list_status = {
+        "status": "watching",
+        "num_episodes_watched": 0,
+        "start_date": None,
+        "finish_date": None,
+    }
+
+    start_date, finish_date = determine_watch_dates(my_list_status, 3, 3)
+    assert start_date is None
+    assert finish_date == datetime.now().strftime("%Y-%m-%d")
+
+
+def test_dates_already_set():
+    my_list_status = {
+        "status": "watching",
+        "num_episodes_watched": 0,
+        "start_date": "2022-01-01",
+        "finish_date": "2022-01-02",
+    }
+
+    start_date, finish_date = determine_watch_dates(my_list_status, 1, 3)
+    assert start_date == "2022-01-01"
+    assert finish_date == "2022-01-02"
+
+
+# ----- Current Status -----
+@pytest.mark.parametrize(
+    "current_status,current_ep,watched,total,expected",
+    [
+        ("plan_to_watch", 0, 0, 3, None),
+        ("plan_to_watch", 1, 0, 3, "watching"),
+        ("plan_to_watch", 3, 2, 3, "completed"),
+        ("on_hold", 1, 0, 3, "watching"),
+        ("on_hold", 3, 2, 3, "completed"),
+        ("watching", 2, 1, 3, "watching"),
+        ("watching", 3, 2, 3, "completed"),
+    ],
+)
+def test_handle_current_status(current_status, current_ep, watched, total, expected):
+    assert handle_current_status(current_status, current_ep, watched, total) == expected

@@ -1,12 +1,11 @@
 import functools
 
 import requests
-from flask import Blueprint, abort
+from quart import Blueprint, abort
 
 import config
 
 from ..db.db import get_kitsu_id_from_mal_id
-from . import IMDB_ID_PREFIX, MAL_ID_PREFIX
 from .auth import get_valid_user
 from .manifest import MANIFEST
 from .utils import handle_api_error, respond_with
@@ -17,7 +16,7 @@ KITSU_API = "https://anime-kitsu.strem.fun/meta"
 
 
 @meta_bp.route("/<_user_id>/meta/<meta_type>/<meta_id>.json")
-def addon_meta(_user_id: str, meta_type: str, meta_id: str):
+async def addon_meta(_user_id: str, meta_type: str, meta_id: str):
     """
     Provides metadata for a specific content
     :param _user_id: The user's MyAnimeList ID (ignored)
@@ -26,8 +25,8 @@ def addon_meta(_user_id: str, meta_type: str, meta_id: str):
     :return: JSON response
     """
     # ignore imdb ids for older versions of mal-stremio
-    if IMDB_ID_PREFIX in meta_id:
-        return respond_with(
+    if config.IMDB_ID_PREFIX in meta_id:
+        return await respond_with(
             {"meta": {}},
             cache_max_age=config.META_ON_INVALID_DURATION,
             stale_revalidate=config.META_ON_INVALID_DURATION,
@@ -40,13 +39,13 @@ def addon_meta(_user_id: str, meta_type: str, meta_id: str):
 
     user, error = get_valid_user(_user_id)
     if error:
-        return respond_with({"meta": {}, "message": error})
+        return await respond_with({"meta": {}, "message": error})
 
     try:
         url = f"{KITSU_API}/{meta_type}/"
         exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
         if not exists:  # if no kitsu id, try with mal id
-            mal_id = meta_id.replace(f"{MAL_ID_PREFIX}_", "")
+            mal_id = meta_id.replace(f"{config.MAL_ID_PREFIX}_", "")
             url += f"mal:{mal_id}.json"
         else:
             url += f"kitsu:{kitsu_id}.json"
@@ -55,7 +54,7 @@ def addon_meta(_user_id: str, meta_type: str, meta_id: str):
         meta = kitsu_to_meta(resp.json())
         meta["id"] = meta_id
         meta["type"] = meta_type
-        return respond_with(
+        return await respond_with(
             {"meta": meta},
             cache_max_age=config.META_ON_SUCCESS_DURATION,
             stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
@@ -64,7 +63,10 @@ def addon_meta(_user_id: str, meta_type: str, meta_id: str):
         )
     except requests.HTTPError as e:
         handle_api_error(e)
-        return respond_with({"meta": {}, "message": str(e)}), e.response.status_code
+        return (
+            await respond_with({"meta": {}, "message": str(e)}),
+            e.response.status_code,
+        )
 
 
 @functools.lru_cache(maxsize=config.META_CACHE_SIZE)

@@ -3,7 +3,7 @@ import re
 import urllib.parse
 
 import requests
-from flask import Blueprint, abort, url_for
+from quart import Blueprint, abort, url_for
 
 import config
 from app.lib.metadata import get_transport_url, mal_to_meta
@@ -29,7 +29,7 @@ catalog_bp = Blueprint("catalog", __name__)
 @catalog_bp.route(
     "/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json&genre=<genre>&search=<search>.json"
 )
-def addon_catalog(
+async def addon_catalog(
     user_id: str,
     catalog_type: str,
     catalog_id: str,
@@ -62,7 +62,7 @@ def addon_catalog(
             }
             for i in range(30)  # 30 metas to keep the UI consistent
         ]
-        return respond_with({"metas": metas}, stremio_response=True)
+        return await respond_with({"metas": metas}, stremio_response=True)
 
     try:
         token = user.get("access_token")
@@ -86,7 +86,7 @@ def addon_catalog(
             for anime_item in filtered_anime_list
         ]
 
-        return respond_with(
+        return await respond_with(
             {"metas": meta_previews},
             private=True,
             cache_max_age=config.CATALOG_ON_SUCCESS_DURATION,
@@ -95,10 +95,10 @@ def addon_catalog(
             stremio_response=True,
         )
     except ValueError as e:
-        return respond_with({"metas": [], "message": str(e)}), 400
+        return await respond_with({"metas": [], "message": str(e)}), 400
     except requests.HTTPError as e:
         handle_api_error(e)
-        return respond_with({"metas": []}), e.response.status_code
+        return await respond_with({"metas": []}), e.response.status_code
 
 
 def _is_valid_catalog(catalog_type: str, catalog_id: str):

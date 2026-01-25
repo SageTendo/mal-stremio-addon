@@ -1,4 +1,8 @@
 import unittest
+from unittest.mock import patch
+
+import pytest
+import pytest_asyncio
 
 from app.routes.meta import kitsu_to_meta
 from run import app
@@ -247,37 +251,49 @@ KITSU_RESPONSE = {
 }
 
 
-class TestMeta(unittest.TestCase):
-    def setUp(self):
-        """Set up the Flask test client"""
-        app.config["TESTING"] = True
-        app.config["SECRET"] = "Testing Secret"
-        self.client = app.test_client()
+@pytest.fixture
+def test_app():
+    """
+    Set up the test class
+    """
+    app.config["SECRET"] = "Testing Secret"
+    app.config["TESTING"] = True
+    return app
 
-    # @unittest.mock.patch("app.routes.meta.requests.get")
-    # def test_meta(self, mock_get=None):
-    #     """Test the /meta endpoint with a mocked Kitsu response"""
-    #     mock_get.return_value.status_code = 200
-    #     mock_get.return_value.json = lambda: KITSU_RESPONSE
 
-    #     response = self.client.get("123/meta/series/mal_28223.json")
-    #     self.assertEqual(response.status_code, 200)
-    #     response_data = response.json
+@pytest_asyncio.fixture
+async def client(test_app):
+    async with test_app.test_client() as client:
+        yield client
 
-    #     self.assertIn("meta", response_data)
-    #     for key in response_data["meta"]:
-    #         self.assertIsNotNone(response_data["meta"][key])
 
-    #     expected = kitsu_to_meta(KITSU_RESPONSE)
-    #     for key in expected:
-    #         self.assertEqual(expected[key], response_data["meta"][key])
+@pytest.mark.asyncio
+@patch("app.routes.meta.requests.get")
+async def test_meta(mock_get, client):
+    """Test the /meta endpoint with a mocked Kitsu response"""
+    mock_get.return_value.status_code = 200
+    mock_get.return_value.json = lambda: KITSU_RESPONSE
 
-    # def test_meta_live(self):
-    #     """Test the /meta endpoint with a live request to Kitsu"""
-    #     response = self.client.get("123/meta/series/mal_28223.json")
-    #     self.assertEqual(response.status_code, 200)
-    #     response_data = response.json
+    response = await client.get("123/meta/series/mal_28223.json")
+    assert response.status_code == 200
+    response_data = await response.json
 
-    #     self.assertIn("meta", response_data)
-    #     for key in response_data["meta"]:
-    #         self.assertIsNotNone(response_data["meta"][key])
+    assert "meta" in response_data
+    for key in response_data["meta"]:
+        assert response_data["meta"][key] is not None
+
+    expected = kitsu_to_meta(KITSU_RESPONSE)
+    for key in expected:
+        assert expected[key] == response_data["meta"][key]
+
+
+@pytest.mark.asyncio
+async def test_meta_live(client):
+    """Test the /meta endpoint with a live request to Kitsu"""
+    response = await client.get("123/meta/series/mal_28223.json")
+    assert response.status_code == 200
+    response_data = await response.json
+
+    assert "meta" in response_data
+    for key in response_data["meta"]:
+        assert response_data["meta"][key] is not None

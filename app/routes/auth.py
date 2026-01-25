@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 import requests
-from flask import Blueprint, flash, request, session, url_for
+from quart import Blueprint, flash, request, session, url_for
 from werkzeug.utils import redirect
 
 from app.db.db import get_user, store_user
@@ -43,13 +43,13 @@ def get_valid_user(
 
 
 @auth_blueprint.route("/authorization", methods=["GET", "POST"])
-def authorize_user():
+async def authorize_user():
     """
     Authorizes a user to access MyAnimeList's API
     :return: redirect response to MyAnimeList's auth page
     """
     if "user" in session:
-        flash("You are already logged in.", "warning")
+        await flash("You are already logged in.", "warning")
         return redirect(url_for("index"))
 
     auth_url, code_verifier = mal_client.get_auth()
@@ -58,7 +58,7 @@ def authorize_user():
 
 
 @auth_blueprint.route("/callback")
-def callback():
+async def callback():
     """
     Callback URL from MyAnimeList
     :return: A webpage response with the manifest URL and Magnet URL
@@ -69,19 +69,19 @@ def callback():
         "Unknown error occurred when trying to access MyAnimeList",
     )
     if request.args.get("error"):
-        flash(error, "danger")
+        await flash(error, "danger")
         return redirect(url_for("index"))
 
     if "user" in session:
-        flash("You are already logged in.", "warning")
+        await flash("You are already logged in.", "warning")
         return redirect(url_for("index"))
 
     if not (auth_code := request.args.get("code")):
-        flash("Invalid callback request. First log in.", "warning")
+        await flash("Invalid callback request. First log in.", "warning")
         return redirect(url_for("index"))
 
     if "code_verifier" not in session:
-        flash("Invalid callback request. First log in.", "warning")
+        await flash("Invalid callback request. First log in.", "warning")
         return redirect(url_for("index"))
 
     try:
@@ -97,26 +97,26 @@ def callback():
         user_details["last_updated"] = datetime.utcnow()
 
         if not store_user(user_details):
-            flash("Failed to store user details.", "danger")
+            await flash("Failed to store user details.", "danger")
             return redirect(url_for("index"))
 
         _store_user_session(
             {"uid": user_details["uid"], "refresh_token": user_details["refresh_token"]}
         )
-        flash("You are now logged in.", "success")
+        await flash("You are now logged in.", "success")
         return redirect(url_for("index"))
     except requests.HTTPError as e:
-        return handle_auth_error(e)
+        return await handle_auth_error(e)
 
 
 @auth_blueprint.route("/refresh")
-def refresh_token():
+async def refresh_token():
     """
     Refreshes the access token for MyAnimeList
     :return: redirect response to the index page of the app
     """
     if not (user_session := session.get("user", None)):
-        flash("Session expired! Please log in to MyAnimeList again.", "danger")
+        await flash("Session expired! Please log in to MyAnimeList again.", "danger")
         return redirect(url_for("index"))
 
     try:
@@ -130,7 +130,7 @@ def refresh_token():
         }
 
         if not store_user(user_details):
-            flash("Failed to update user details.", "danger")
+            await flash("Failed to update user details.", "danger")
             return redirect(url_for("index"))
 
         _store_user_session(
@@ -139,20 +139,20 @@ def refresh_token():
                 "refresh_token": user_auth_data["refresh_token"],
             }
         )
-        flash("MyAnimeList session refreshed.", "success")
+        await flash("MyAnimeList session refreshed.", "success")
         return redirect(url_for("index"))
     except requests.HTTPError as e:
-        return handle_auth_error(e)
+        return await handle_auth_error(e)
 
 
 @auth_blueprint.route("/logout")
-def logout():
+async def logout():
     """
     Logs the user out and clears the session
     :return: redirect response to the index page of the app
     """
     if "user" not in session:
-        flash("You are not logged in.", "warning")
+        await flash("You are not logged in.", "warning")
         return redirect(url_for("index"))
 
     session.pop("user")

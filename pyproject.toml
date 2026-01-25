@@ -4,18 +4,19 @@ version = "0.0.1"
 requires-python = "~=3.9"
 dependencies = [
     "backports.entry-points-selectable",
-    "flask[async]",
     "lxml",
     "pipenv",
     "python-dotenv",
-    "waitress",
-    "flask-compress==1.14",
-    "httpx",
     "pymongo",
     "requests",
-    "gunicorn",
     "kitsu-py",
     "mal-py",
+    "quart>=0.20.0",
+    "quart-compress>=0.2.1",
+    "quart-compress2>=1.1.0",
+    "pytest-asyncio>=1.2.0",
+    "pytest-mock>=3.15.1",
+    "uvicorn>=0.39.0",
 ]
 
 [dependency-groups]
@@ -36,3 +37,6 @@ url = "https://pypi.org/simple"
 [tool.uv.sources]
 kitsu-py = { git = "https://github.com/SageTendo/kitsu.py.git" }
 mal-py = { git = "https://github.com/SageTendo/mal.py.git" }
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
