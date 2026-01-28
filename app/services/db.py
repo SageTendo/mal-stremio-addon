@@ -1,12 +1,10 @@
 import re
-from functools import lru_cache
 from typing import Optional
 
 from pymongo import MongoClient
 from pymongo.synchronous.collection import Collection
 from pymongo.synchronous.database import Database
 
-import config
 from app.routes.utils import log_error
 from config import Config
 
@@ -24,7 +22,10 @@ def get_user(user_id: str) -> Optional[dict]:
     :param user_id: The user's MyAnimeList ID
     :return: The user details
     """
-    return UID_map_collection.find_one({"uid": user_id})
+    user_data = UID_map_collection.find_one({"uid": user_id})
+    if user_data:
+        return user_data
+    return None
 
 
 def store_user(user_details: dict) -> bool:
@@ -41,7 +42,6 @@ def store_user(user_details: dict) -> bool:
     return UID_map_collection.insert_one(data).acknowledged
 
 
-@lru_cache(maxsize=config.ID_CACHE_SIZE)
 def get_kitsu_id_from_mal_id(mal_id) -> tuple[bool, str]:
     """
     Get kitsu_id from mal_id from db
@@ -62,7 +62,6 @@ def get_kitsu_id_from_mal_id(mal_id) -> tuple[bool, str]:
     return False, ""
 
 
-@lru_cache(maxsize=config.ID_CACHE_SIZE)
 def get_mal_id_from_kitsu_id(kitsu_id) -> tuple[bool, str]:
     """
     Get mal_id from kitsu_id from db

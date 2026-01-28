@@ -69,7 +69,7 @@ async def test_user_not_logged_in(client):
 @pytest.mark.asyncio
 @patch("app.routes.mal_client.get_access_token")
 @patch("app.routes.mal_client.get_user_details")
-@patch("app.db.db.store_user")
+@patch("app.services.db.store_user")
 async def test_callback(
     mock_store_user, mock_get_user_details, mock_get_access_token, client
 ):
@@ -103,7 +103,7 @@ async def test_callback(
 
 @pytest.mark.asyncio
 @patch("app.routes.mal_client.refresh_token")
-@patch("app.db.db.store_user")
+@patch("app.services.db.store_user")
 async def test_refresh_token(mock_store_user, mock_refresh_token, client):
     """
     Test that the user's session is refreshed and the user is redirected to the configuration page

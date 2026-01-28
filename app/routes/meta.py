@@ -5,7 +5,7 @@ from quart import Blueprint, abort
 
 import config
 
-from ..db.db import get_kitsu_id_from_mal_id
+from ..services.db import get_kitsu_id_from_mal_id
 from .auth import get_valid_user
 from .manifest import MANIFEST
 from .utils import handle_api_error, respond_with

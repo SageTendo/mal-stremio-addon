@@ -5,9 +5,9 @@ import requests
 from quart import Blueprint, flash, request, session, url_for
 from werkzeug.utils import redirect
 
-from app.db.db import get_user, store_user
 from app.routes import mal_client
 from app.routes.utils import handle_auth_error
+from app.services.db import get_user, store_user
 
 auth_blueprint = Blueprint("auth", __name__)
 
@@ -33,7 +33,12 @@ def get_valid_user(
     if not user:
         return {}, "No user found. Please re-login to MyAnimeList."
 
-    if not user.get("last_updated"):
+    if (
+        not user.get("last_updated")
+        or not user.get("expires_in")
+        or not user.get("access_token")
+        or not user.get("refresh_token")
+    ):
         return {}, "Invalid MAL session. Please refresh or login again."
 
     expiration_date = user["last_updated"] + timedelta(seconds=user["expires_in"])
@@ -50,7 +55,7 @@ async def authorize_user():
     """
     if "user" in session:
         await flash("You are already logged in.", "warning")
-        return redirect(url_for("index"))
+        return redirect(url_for("ui.index"))
 
     auth_url, code_verifier = mal_client.get_auth()
     session["code_verifier"] = code_verifier
@@ -70,19 +75,19 @@ async def callback():
     )
     if request.args.get("error"):
         await flash(error, "danger")
-        return redirect(url_for("index"))
+        return redirect(url_for("ui.index"))
 
     if "user" in session:
         await flash("You are already logged in.", "warning")
-        return redirect(url_for("index"))
+        return redirect(url_for("ui.index"))
 
     if not (auth_code := request.args.get("code")):
         await flash("Invalid callback request. First log in.", "warning")
-        return redirect(url_for("index"))
+        return redirect(url_for("ui.index"))
 
     if "code_verifier" not in session:
         await flash("Invalid callback request. First log in.", "warning")
-        return redirect(url_for("index"))
+        return redirect(url_for("ui.index"))
 
     try:
         user_auth_data = mal_client.get_access_token(
@@ -98,13 +103,13 @@ async def callback():
 
         if not store_user(user_details):
             await flash("Failed to store user details.", "danger")
-            return redirect(url_for("index"))
+            return redirect(url_for("ui.index"))
 
         _store_user_session(
             {"uid": user_details["uid"], "refresh_token": user_details["refresh_token"]}
         )
         await flash("You are now logged in.", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("ui.index"))
     except requests.HTTPError as e:
         return await handle_auth_error(e)
 
@@ -117,7 +122,7 @@ async def refresh_token():
     """
     if not (user_session := session.get("user", None)):
         await flash("Session expired! Please log in to MyAnimeList again.", "danger")
-        return redirect(url_for("index"))
+        return redirect(url_for("ui.index"))
 
     try:
         user_auth_data = mal_client.refresh_token(user_session["refresh_token"])
@@ -131,7 +136,7 @@ async def refresh_token():
 
         if not store_user(user_details):
             await flash("Failed to update user details.", "danger")
-            return redirect(url_for("index"))
+            return redirect(url_for("ui.index"))
 
         _store_user_session(
             {
@@ -140,7 +145,7 @@ async def refresh_token():
             }
         )
         await flash("MyAnimeList session refreshed.", "success")
-        return redirect(url_for("index"))
+        return redirect(url_for("ui.index"))
     except requests.HTTPError as e:
         return await handle_auth_error(e)
 
@@ -153,7 +158,7 @@ async def logout():
     """
     if "user" not in session:
         await flash("You are not logged in.", "warning")
-        return redirect(url_for("index"))
+        return redirect(url_for("ui.index"))
 
     session.pop("user")
-    return redirect(url_for("index"))
+    return redirect(url_for("ui.index"))

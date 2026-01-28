@@ -7,10 +7,10 @@ from quart import Blueprint
 from requests import HTTPError
 
 import config
-from app.db.db import get_mal_id_from_kitsu_id
 from app.routes.auth import get_valid_user
 from app.routes.manifest import MANIFEST
 from app.routes.utils import handle_api_error, respond_with
+from app.services.db import get_mal_id_from_kitsu_id
 
 from . import mal_client
 
