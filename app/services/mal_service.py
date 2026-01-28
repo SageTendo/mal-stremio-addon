@@ -7,6 +7,7 @@ from typing import Optional
 
 import aiohttp
 from mal import (
+    MEDIA_TYPE,
     USER_ANIME_STATUS,
     USER_LIST_SORT,
     Anime,
@@ -16,7 +17,8 @@ from mal import (
     WatchStatus,
 )
 
-from app.lib.metadata import mal_to_meta
+import config
+from app.lib.metadata import parse_background, parse_genres
 from config import Config
 
 MAL_CALLBACK_URL = f"{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback"
@@ -155,27 +157,69 @@ class MalService:
         catalog_id: str = "plan_to_watch",
         transport_url: str = "",
     ):
-        return mal_to_meta(
-            anime,
-            catalog_type=catalog_type,
-            catalog_id=catalog_id,
-            transport_url=transport_url,
+        """
+        Convert MAL anime item to a valid Stremio meta format
+        :param anime: The MAL anime item to convert
+        :param catalog_type: The type of catalog being referenced in the link meta object
+        :param catalog_id: The id of catalog being referenced in the link meta object
+        :param transport_url: The url to the addon's manifest.json
+        :return: Stremio meta format
+        """
+
+        formatted_content_id = None
+        if content_id := anime.id:
+            formatted_content_id = f"{config.MAL_ID_PREFIX}{content_id}"
+
+        title = anime.title.english or anime.title.canonical
+        synopsis = anime.synopsis
+        poster = anime.main_picture() or anime.main_picture("medium")
+
+        genres, links = parse_genres(
+            anime.genres,
+            transport_url,
+            catalog_type,
+            catalog_id,
         )
 
-    def to_stremio_metas(
-        self,
-        *,
-        anime_list: list[Anime],
-        catalog_type: str = "anime",
-        catalog_id: str = "plan_to_watch",
-        transport_url: str = "",
-    ):
-        return [
-            mal_to_meta(
-                anime=anime,
-                catalog_type=catalog_type,
-                catalog_id=catalog_id,
-                transport_url=transport_url,
-            )
-            for anime in anime_list
+        mean_score: Optional[str] = None
+        if score := anime.mean:
+            mean_score = str(score)
+
+        start_date: Optional[str] = None
+        if anime.start_date:
+            start_date = str(anime.start_date.year)
+            start_date += "-"
+
+            if anime.end_date:
+                start_date += str(anime.end_date.year)
+
+        picture_objects = anime.pictures("large") or anime.pictures("medium")
+        background = parse_background(picture_objects)
+
+        valid_series_types: list[MEDIA_TYPE] = [
+            "tv",
+            "ona",
+            "ova",
+            "special",
+            "unknown",
+            "music",
         ]
+        media_type: Optional[str] = None
+        if anime.media_type:
+            if anime.media_type.lower() in valid_series_types:
+                media_type = "series"
+            elif anime.media_type.lower() == "movie":
+                media_type = "movie"
+
+        return {
+            "id": formatted_content_id,
+            "name": title,
+            "type": media_type,
+            "genres": genres,
+            "links": links,
+            "poster": poster,
+            "background": background if background else poster,
+            "imdbRating": mean_score,
+            "releaseInfo": start_date,
+            "description": synopsis,
+        }
