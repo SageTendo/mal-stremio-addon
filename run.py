@@ -1,145 +1,20 @@
 import logging
-from re import A
 
-from quart import (
-    Quart,
-    flash,
-    make_response,
-    redirect,
-    render_template,
-    request,
-    session,
-    url_for,
-)
-from quart_compress import Compress
+from app.factory import create_app
 
-import config
-from app.db.db import get_user, store_user
-from app.routes.auth import auth_blueprint
-from app.routes.catalog import catalog_bp
-from app.routes.content_sync import content_sync_bp
-from app.routes.manifest import manifest_blueprint
-from app.routes.meta import meta_bp
-from config import Config
-
-comppress = Compress()
 logging.basicConfig(format="%(asctime)s %(message)s")
-
-
-def create_app():
-    app = Quart(__name__, template_folder="./templates", static_folder="./static")
-    app.config.from_object("config.Config")
-    app.register_blueprint(auth_blueprint)
-    app.register_blueprint(manifest_blueprint)
-    app.register_blueprint(catalog_bp)
-    app.register_blueprint(meta_bp)
-    app.register_blueprint(content_sync_bp)
-    # comppress.init_app(app)
-    return app
-
 
 app = create_app()
 
 
-@app.route("/")
-async def index():
-    """
-    Render the index page
-    """
-    if session.get("user", None):
-        return redirect(url_for("configure"))
-    response = await make_response(await render_template("index.html"))
-    response.headers["Cache-Control"] = (
-        "private, max-age=3600, stale-while-revalidate=600"
-    )
-    return response
+@app.before_serving
+async def startup():
+    await app.mal.start()
 
 
-@app.route("/configure", methods=["GET", "POST"])
-@app.route("/<user_id>/configure")
-async def configure(user_id: str = ""):
-    """
-    Render the configure page
-    :param user_id: The user's MyAnimeList ID (ignored, as this is sent by Stremio when redirecting to the configure
-    page)
-    """
-    if not (user_session := session.get("user")):
-        return redirect(url_for("index"))
-
-    if not (user := get_user(user_session["uid"])):
-        await flash("User not found.", "danger")
-        return redirect(url_for("index"))
-
-    user_id = user["uid"]
-    uri = f"{Config.REDIRECT_URL}/{user_id}/manifest.json"
-    manifest_url = f"{Config.PROTOCOL}://{uri}"
-    manifest_magnet = f"stremio://{uri}"
-
-    # Handle form submission
-    if request.method == "POST":
-        user |= __handle_addon_options(await request.form)
-        if not store_user(user):
-            await flash("Failed to update user configurations.", "danger")
-            return redirect(url_for("index"))
-
-        await flash("Addon options configured.", "success")
-        r = await make_response(
-            await render_template(
-                "configure.html",
-                user=user,
-                sort_options=config.SORT_OPTIONS,
-                manifest_url=manifest_url,
-                manifest_magnet=manifest_magnet,
-            )
-        )
-        r.headers["Cache-Control"] = "private, max-age=3600, stale-while-revalidate=600"
-        return r
-
-    r = await make_response(
-        await render_template(
-            "configure.html",
-            user=user,
-            sort_options=config.SORT_OPTIONS,
-            manifest_url=manifest_url,
-            manifest_magnet=manifest_magnet,
-        )
-    )
-    r.headers["Cache-Control"] = "private, max-age=3600, stale-while-revalidate=600"
-    return r
-
-
-def __handle_addon_options(addon_config_options):
-    """
-    Handle addon configuration parameters that are provided by the user through the configuration page
-    """
-    options = {}
-    if addon_config_options.get("sort_watchlist") in config.SORT_OPTIONS.values():
-        options["sort_watchlist"] = addon_config_options.get("sort_watchlist")
-    else:
-        options["sort_watchlist"] = config.DEFAULT_SORT_OPTION
-
-    if addon_config_options.get("track_unlisted_anime", "") == "true":
-        options["track_unlisted_anime"] = True
-    else:
-        options["track_unlisted_anime"] = False
-
-    if addon_config_options.get("nsfw_enabled", "") == "true":
-        options["nsfw_enabled"] = True
-    else:
-        options["nsfw_enabled"] = False
-
-    options["catalogs"] = []
-    if addon_config_options.get("include_plan_to_watch"):
-        options["catalogs"].append("plan_to_watch")
-    if addon_config_options.get("include_watching"):
-        options["catalogs"].append("watching")
-    if addon_config_options.get("include_completed"):
-        options["catalogs"].append("completed")
-    if addon_config_options.get("include_on_hold"):
-        options["catalogs"].append("on_hold")
-    if addon_config_options.get("include_dropped"):
-        options["catalogs"].append("dropped")
-    return options
+@app.after_serving
+async def shutdown():
+    await app.mal.stop()
 
 
 if __name__ == "__main__":

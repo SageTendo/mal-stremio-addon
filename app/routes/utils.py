@@ -15,7 +15,7 @@ async def handle_auth_error(err: HTTPError):
             "danger",
         )
         log_error("INVALID_RESPONSE", str(err), "No valid response from MAL", 500)
-        return redirect(url_for("index"))
+        return redirect(url_for("ui.index"))
 
     code = err.response.status_code
     body = err.response.text.strip()
@@ -32,7 +32,7 @@ async def handle_auth_error(err: HTTPError):
     except ValueError:
         await flash("Invalid response received from MyAnimeList.", "danger")
         log_error("INVALID_JSON", "Empty or invalid JSON response from MAL", body, code)
-    return redirect(url_for("index"))
+    return redirect(url_for("ui.index"))
 
 
 def handle_api_error(err: HTTPError):
