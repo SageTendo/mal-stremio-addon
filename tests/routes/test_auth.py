@@ -4,28 +4,12 @@ from unittest.mock import patch
 import pytest
 import pytest_asyncio
 
-from app.routes.auth import get_valid_user
+from app.services.db import get_valid_user
 from run import app
 
 
-@pytest.fixture
-def test_app():
-    """
-    Set up the test class
-    """
-    app.config["SECRET"] = "Testing Secret"
-    app.config["TESTING"] = True
-    return app
-
-
-@pytest_asyncio.fixture
-async def client(test_app):
-    async with test_app.test_client() as client:
-        yield client
-
-
 @pytest.mark.asyncio
-@patch("app.routes.auth.get_user")
+@patch("app.services.db.get_user")
 async def test_get_token(mock_get_user, client):
     mock_get_user.return_value = {
         "uid": "123",

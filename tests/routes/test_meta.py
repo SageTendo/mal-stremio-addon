@@ -251,22 +251,6 @@ KITSU_RESPONSE = {
 }
 
 
-@pytest.fixture
-def test_app():
-    """
-    Set up the test class
-    """
-    app.config["SECRET"] = "Testing Secret"
-    app.config["TESTING"] = True
-    return app
-
-
-@pytest_asyncio.fixture
-async def client(test_app):
-    async with test_app.test_client() as client:
-        yield client
-
-
 @pytest.mark.asyncio
 @patch("app.routes.meta.requests.get")
 async def test_meta(mock_get, client):

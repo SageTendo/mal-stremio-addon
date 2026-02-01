@@ -7,22 +7,6 @@ from app.routes.manifest import MANIFEST
 from run import app
 
 
-@pytest.fixture
-def test_app():
-    """
-    Set up the test class
-    """
-    app.config["SECRET"] = "Testing Secret"
-    app.config["TESTING"] = True
-    return app
-
-
-@pytest_asyncio.fixture
-async def client(test_app):
-    async with test_app.test_client() as client:
-        yield client
-
-
 @pytest.mark.asyncio
 async def test_manifest(client):
     response = await client.get("/123/manifest.json")
