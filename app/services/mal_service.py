@@ -3,7 +3,7 @@ import asyncio
 import os
 import re
 import urllib.parse
-from typing import Optional
+from typing import Optional, cast, get_args
 
 import aiohttp
 from mal import (
@@ -18,6 +18,11 @@ from mal import (
 )
 
 import config
+from app.lib.content_sync import (
+    UpdateStatus,
+    determine_watch_dates,
+    handle_current_status,
+)
 from app.lib.metadata import parse_background, parse_genres
 from config import Config
 
@@ -60,15 +65,18 @@ class MalService:
         return self.client.get_auth()
 
     async def get_access_token(self, code: str, code_verifier: str) -> Auth:
-        assert self.client is not None, "MAL Client not initialized"
+        if not self.client:
+            raise RuntimeError("MAL client not initialized")
         return await self.client.get_access_token(code, code_verifier)
 
     async def refresh_token(self, refresh_token: str) -> Auth:
-        assert self.client is not None, "MAL Client not initialized"
+        if not self.client:
+            raise RuntimeError("MAL client not initialized")
         return await self.client.refresh_token(refresh_token)
 
     async def get_user_details(self, token: str) -> User:
-        assert self.client is not None, "MAL Client not initialized"
+        if not self.client:
+            raise RuntimeError("MAL client not initialized")
         return await self.client.get_user_details(token=token)
 
     async def search_anime(
@@ -79,7 +87,8 @@ class MalService:
         offset: int = 0,
         nsfw: bool = False,
     ) -> list[Anime]:
-        assert self.client is not None, "MAL Client not initialized"
+        if not self.client:
+            raise RuntimeError("MAL client not initialized")
 
         if query and len(query) < 3:
             raise ValueError("Search query must be at least 3 characters long")
@@ -94,11 +103,21 @@ class MalService:
         token: str,
         limit: int = 100,
         offset: int = 0,
-        sort: USER_LIST_SORT = "list_updated_at",
-        status: USER_ANIME_STATUS = "plan_to_watch",
+        sort: str = "list_updated_at",
+        status: str = "plan_to_watch",
         nsfw: bool = False,
     ) -> list[Anime]:
-        assert self.client is not None, "MAL Client not initialized"
+        if not self.client:
+            raise RuntimeError("MAL client not initialized")
+
+        sort = cast(USER_LIST_SORT, sort)
+        if sort not in get_args(USER_LIST_SORT):
+            raise ValueError("Invalid sort value")
+
+        status = cast(USER_ANIME_STATUS, status)
+        if status not in get_args(USER_ANIME_STATUS):
+            raise ValueError("Invalid status value")
+
         return await self.client.get_user_anime_list(
             token=token,
             limit=limit,
@@ -108,23 +127,28 @@ class MalService:
             nsfw=nsfw,
         )
 
-    async def get_anime_details(self, token: str, anime_id: str) -> Anime:
-        assert self.client is not None, "MAL Client not initialized"
+    async def get_anime_details(self, *, anime_id: str, token: str = "") -> Anime:
+        if not self.client:
+            raise RuntimeError("MAL client not initialized")
+
         return await self.client.get_anime_details(
             token=token,
             anime_id=anime_id,
         )
 
-    async def update_watched_status(
+    async def update_watch_status(
         self,
+        *,
         token: str,
         anime_id: str,
         episode: int,
-        status: USER_ANIME_STATUS = "watching",
+        status: USER_ANIME_STATUS,
         start_date: str = "",
         finish_date: str = "",
     ) -> WatchStatus:
-        assert self.client is not None, "MAL Client not initialized"
+        if not self.client:
+            raise RuntimeError("MAL client not initialized")
+
         return await self.client.update_watch_status(
             token=token,
             anime_id=anime_id,
@@ -133,6 +157,66 @@ class MalService:
             start_date=start_date,
             finish_date=finish_date,
         )
+
+    async def sync_anime_status(
+        self,
+        *,
+        token: str,
+        anime_id: str,
+        episode: int,
+        sync_unlisted: bool = False,
+    ) -> UpdateStatus:
+        """
+        Synchronize watched status for a specific anime with MyAnimeList.
+        :param token: The user's access token
+        :param anime_id: The ID of the anime
+        :param episode: The current episode
+        :param sync_unlisted: Whether to sync unlisted anime
+        :return: UpdateStatus
+        """
+        if not self.client:
+            raise RuntimeError("MAL client not initialized")
+
+        anime = await self.get_anime_details(anime_id=anime_id)
+        if not anime:
+            raise ValueError("Invalid anime ID")
+
+        total_episodes = anime.num_episodes or 0
+        num_episodes_watched = (
+            anime.my_list_status.num_episodes_watched if anime.my_list_status else 0
+        )
+
+        current_watch_status = str(
+            anime.my_list_status.status if anime.my_list_status else ""
+        )
+
+        if not sync_unlisted and not current_watch_status:
+            return UpdateStatus.NOT_LIST
+
+        if sync_unlisted and not current_watch_status:
+            # Treat unlisted anime as watching if user wants it tracked
+            current_watch_status = "watching"
+
+        new_watch_status = handle_current_status(
+            current_watch_status, episode, num_episodes_watched, total_episodes
+        )
+        new_watch_status = cast(USER_ANIME_STATUS, new_watch_status)
+        if not new_watch_status:
+            return UpdateStatus.NULL
+
+        start_date, finish_date = determine_watch_dates(
+            anime.my_list_status, episode, total_episodes
+        )
+
+        await self.update_watch_status(
+            token=token,
+            anime_id=anime_id,
+            episode=episode,
+            status=new_watch_status,
+            start_date=start_date,
+            finish_date=finish_date,
+        )
+        return UpdateStatus.OK
 
     def filter_anime(self, anime_list: list[Anime], genre: str = "") -> list[Anime]:
         if not genre:

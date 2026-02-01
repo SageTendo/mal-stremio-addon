@@ -1,4 +1,5 @@
 import re
+from datetime import datetime, timedelta
 from typing import Optional
 
 from pymongo import MongoClient
@@ -83,3 +84,29 @@ def get_mal_id_from_kitsu_id(kitsu_id) -> tuple[bool, str]:
     except ValueError:
         log_error("VALUE ERROR", f"Invalid Kitsu ID: {kitsu_id}", "Invalid Kitsu ID")
     return False, ""
+
+
+def get_valid_user(
+    user_id: str,
+) -> tuple[dict, Optional[str]]:
+    """
+    Verify the access token for the user 'user_id' from the database
+    :param user_id: The user's MyAnimeList ID
+    :return: A tuple of the user details if valid, and an error message if invalid
+    """
+    user = get_user(user_id)
+    if not user:
+        return {}, "No user found. Please re-login to MyAnimeList."
+
+    if (
+        not user.get("last_updated")
+        or not user.get("expires_in")
+        or not user.get("access_token")
+        or not user.get("refresh_token")
+    ):
+        return {}, "Invalid MAL session. Please refresh or login again."
+
+    expiration_date = user["last_updated"] + timedelta(seconds=user["expires_in"])
+    if datetime.utcnow() > expiration_date:
+        return {}, "MAL session expired. Please refresh or login again."
+    return user, None

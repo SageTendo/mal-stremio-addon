@@ -1,5 +1,4 @@
-from datetime import datetime, timedelta
-from typing import Optional
+from datetime import datetime
 
 import requests
 from quart import Blueprint, flash, request, session, url_for
@@ -7,7 +6,7 @@ from werkzeug.utils import redirect
 
 from app.routes import mal_client
 from app.routes.utils import handle_auth_error
-from app.services.db import get_user, store_user
+from app.services.db import store_user
 
 auth_blueprint = Blueprint("auth", __name__)
 
@@ -19,32 +18,6 @@ def _store_user_session(user_details: dict):
     """
     session["user"] = user_details
     session.permanent = True
-
-
-def get_valid_user(
-    user_id: str,
-) -> tuple[dict, Optional[str]]:
-    """
-    Verify the access token for the user 'user_id' from the database
-    :param user_id: The user's MyAnimeList ID
-    :return: A tuple of the user details if valid, and an error message if invalid
-    """
-    user = get_user(user_id)
-    if not user:
-        return {}, "No user found. Please re-login to MyAnimeList."
-
-    if (
-        not user.get("last_updated")
-        or not user.get("expires_in")
-        or not user.get("access_token")
-        or not user.get("refresh_token")
-    ):
-        return {}, "Invalid MAL session. Please refresh or login again."
-
-    expiration_date = user["last_updated"] + timedelta(seconds=user["expires_in"])
-    if datetime.utcnow() > expiration_date:
-        return {}, "MAL session expired. Please refresh or login again."
-    return user, None
 
 
 @auth_blueprint.route("/authorization", methods=["GET", "POST"])

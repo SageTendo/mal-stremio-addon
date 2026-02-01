@@ -1,14 +1,11 @@
-import logging
-
 import requests
-from mal import USER_ANIME_STATUS
 from quart import Blueprint, abort, url_for
 
 import config
 from app.app import get_app
 from app.lib.metadata import get_transport_url
 
-from .auth import get_valid_user
+from ..services.db import get_valid_user
 from .manifest import MANIFEST
 from .utils import handle_api_error, log_error, respond_with
 
@@ -31,7 +28,7 @@ catalog_bp = Blueprint("catalog", __name__)
 async def addon_catalog(
     user_id: str,
     catalog_type: str,
-    catalog_id: USER_ANIME_STATUS,
+    catalog_id: str,
     offset: str = "",
     genre: str = "",
     search: str = "",
