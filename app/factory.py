@@ -5,6 +5,7 @@ from app.routes.content_sync import content_sync_bp
 from app.routes.manifest import manifest_blueprint
 from app.routes.meta import meta_bp
 from app.routes.ui import ui_bp
+from app.services.kitsu_service import KitsuService
 from app.services.mal_service import MalService
 
 
@@ -19,4 +20,5 @@ def create_app() -> App:
     app_.register_blueprint(ui_bp)
 
     app_.mal = MalService()
+    app_.kitsu = KitsuService()
     return app_

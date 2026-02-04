@@ -10,11 +10,13 @@ app = create_app()
 @app.before_serving
 async def startup():
     await app.mal.start()
+    await app.kitsu.start()
 
 
 @app.after_serving
 async def shutdown():
     await app.mal.stop()
+    await app.kitsu.stop()
 
 
 if __name__ == "__main__":
