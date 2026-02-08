@@ -89,7 +89,7 @@ MANIFEST: dict[str, Any] = {
         },
     ],
     "behaviorHints": {"configurable": True},
-    "resources": ["catalog", "subtitles"],
+    "resources": ["catalog", "meta", "subtitles"],
     "idPrefixes": ["mal", "kitsu"],
 }
 
