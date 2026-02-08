@@ -40,16 +40,12 @@ class MalService:
         if self.client:
             return self
 
-        async with self._lock:
-            if self.client:
-                return self
-
-            self.client = Client(
-                client_id=MAL_CLIENT_ID,
-                client_secret=MAL_CLIENT_SECRET,
-                callback_url=MAL_CALLBACK_URL,
-                session=aiohttp.ClientSession(),
-            )
+        self.client = Client(
+            client_id=MAL_CLIENT_ID,
+            client_secret=MAL_CLIENT_SECRET,
+            callback_url=MAL_CALLBACK_URL,
+            session=aiohttp.ClientSession(),
+        )
 
         if not self.client:
             raise RuntimeError("MAL client not initialized")
@@ -131,6 +127,7 @@ class MalService:
         if not self.client:
             raise RuntimeError("MAL client not initialized")
 
+        anime_id = re.sub(r"[^0-9]", "", anime_id)
         return await self.client.get_anime_details(
             token=token,
             anime_id=anime_id,
