@@ -179,7 +179,7 @@ class KitsuService:
         :param transport_url: The url to the addon's manifest.json
         :return: Stremio meta format
         """
-        title = anime.canonical_title or anime.title
+        title = anime.title or anime.canonical_title
         synopsis = anime.synopsis
         poster = anime.poster_image()
 
