@@ -23,7 +23,7 @@ from app.lib.content_sync import (
     determine_watch_dates,
     handle_current_status,
 )
-from app.lib.metadata import parse_background, parse_genres
+from app.lib.metadata import parse_background, to_stremio_genres
 from config import Config
 
 MAL_CALLBACK_URL = f"{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback"
@@ -255,7 +255,7 @@ class MalService:
         synopsis = anime.synopsis
         poster = anime.main_picture() or anime.main_picture("medium")
 
-        genres, links = parse_genres(
+        genres, links = to_stremio_genres(
             anime.genres,
             transport_url,
             catalog_type,
