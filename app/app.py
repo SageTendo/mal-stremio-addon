@@ -10,5 +10,6 @@ class App(Quart):
     mal: MalService
     kitsu: KitsuService
 
+
 def get_app() -> App:
     return cast(App, current_app)
