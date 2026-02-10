@@ -497,7 +497,7 @@ wheels = [
 [[package]]
 name = "kitsu-py"
 version = "1.0.0"
-source = { git = "https://github.com/SageTendo/kitsu.py.git#d429172beb23895ef9f1e67f16392bbae82c998f" }
+source = { git = "https://github.com/SageTendo/kitsu.py.git#1a5e5a56f5ad3bf4779d20f24623ee885fe1e80f" }
 dependencies = [
     { name = "aiohttp" },
     { name = "python-dateutil" },
