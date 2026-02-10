@@ -30,7 +30,18 @@ def handle_current_status(
     return None
 
 
-def handle_content_id(content_id: str):
+def _parse_id_and_episode(content_id: str) -> tuple[str, int]:
+    current_episode = 1
+    parts = content_id.split(":")
+
+    if len(parts) >= 2:
+        content_id, current_episode_str = parts[:2]
+        if current_episode_str.isdigit():
+            current_episode = int(current_episode_str)
+    return content_id, current_episode
+
+
+def handle_content_id(content_id: str) -> tuple[Optional[str], int]:
     """
     Extract the ID of the content and the current episode.
     If ID is a Kitsu ID, get the relevant MAL ID from the database.
@@ -38,19 +49,15 @@ def handle_content_id(content_id: str):
     :return: The ID of the content and the current episode
     """
     if content_id.startswith(config.MAL_ID_PREFIX):
-        return content_id.replace(config.MAL_ID_PREFIX, ""), 1  # Assume episode
+        return _parse_id_and_episode(content_id.replace(config.MAL_ID_PREFIX, ""))
 
-    if content_id.startswith("kitsu:"):
-        content_id = content_id.replace("kitsu:", "")
-        current_episode = 1
-
-        if content_id.count(":") == 1:  # Handle series
-            content_id, current_episode_str = content_id.split(":")
-            current_episode = int(current_episode_str)
-
-        exists, mal_id = get_mal_id_from_kitsu_id(content_id)
+    if content_id.startswith(config.KITSU_ID_PREFIX):
+        kitsu_id, current_episode = _parse_id_and_episode(
+            content_id.replace(config.KITSU_ID_PREFIX, "")
+        )
+        exists, mal_id = get_mal_id_from_kitsu_id(kitsu_id)
         if exists:
-            return mal_id, int(current_episode)
+            return mal_id, current_episode
     return None, -1
 
 
