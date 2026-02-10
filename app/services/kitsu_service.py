@@ -8,6 +8,7 @@ import kitsu
 import Levenshtein
 from mal import MEDIA_TYPE
 
+import config
 from app.lib.metadata import to_stremio_genres
 from app.routes import manifest
 
@@ -73,7 +74,7 @@ class KitsuService:
         if anime.subtype == "movie":
             return [
                 await self._populate_video_metadata(
-                    video_id=f"kitsu:{anime.id}",
+                    video_id=f"{config.KITSU_ID_PREFIX}{anime.id}",
                     title=anime.canonical_title or anime.title or "Episode 1",
                     episode_number=1,
                     season=1,
@@ -92,7 +93,7 @@ class KitsuService:
 
             return [
                 await self._populate_video_metadata(
-                    video_id=f"kitsu:{anime.id}:{episode_number}",
+                    video_id=f"{config.KITSU_ID_PREFIX}{anime.id}:{episode_number}",
                     title=f"Episode {episode_number}",
                     episode_number=episode_number,
                     season=1,
@@ -113,7 +114,7 @@ class KitsuService:
 
             episodes.append(
                 await self._populate_video_metadata(
-                    video_id=f"kitsu:{anime.id}:{episode.number}",
+                    video_id=f"{config.KITSU_ID_PREFIX}{anime.id}:{episode.number}",
                     title=title,
                     episode_number=episode.number or 0,
                     thumbnail=episode.thumbnail,
