@@ -15,9 +15,11 @@ content_sync_bp = Blueprint("content_sync", __name__)
 
 
 @content_sync_bp.route(
-    "/<user_id>/subtitles/<content_type>/<content_id>/<_video_hash>.json"
+    "/<user_id>/subtitles/<string:content_type>/<string:content_id>/<string:_video_hash>.json"
 )
-@content_sync_bp.route("/<user_id>/subtitles/<content_type>/<content_id>.json")
+@content_sync_bp.route(
+    "/<user_id>/subtitles/<string:content_type>/<string:content_id>.json"
+)
 async def addon_content_sync(
     user_id: str, content_type: str, content_id: str, _video_hash: str = ""
 ):
@@ -30,6 +32,8 @@ async def addon_content_sync(
     :param content_id: The ID of the content
     :param _video_hash: The hash of the video (ignored)
     :return: JSON response
+
+    TODO: Handle service errors
     """
     mal_service = get_app().mal
 

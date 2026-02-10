@@ -12,24 +12,30 @@ from .utils import handle_api_error, log_error, respond_with
 catalog_bp = Blueprint("catalog", __name__)
 
 
-@catalog_bp.route("/<user_id>/catalog/<catalog_type>/<catalog_id>.json")
-@catalog_bp.route("/<user_id>/catalog/<catalog_type>/<catalog_id>/search=<search>.json")
-@catalog_bp.route("/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json")
-@catalog_bp.route("/<user_id>/catalog/<catalog_type>/<catalog_id>/genre=<genre>.json")
+@catalog_bp.route("/<user_id>/catalog/<string:catalog_type>/<string:catalog_id>.json")
 @catalog_bp.route(
-    "/<user_id>/catalog/<catalog_type>/<catalog_id>/genre=<genre>&search=<search>.json"
+    "/<user_id>/catalog/<string:catalog_type>/<string:catalog_id>/search=<string:search>.json"
 )
 @catalog_bp.route(
-    "/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>&search=<search>.json"
+    "/<user_id>/catalog/<string:catalog_type>/<string:catalog_id>/skip=<int:offset>.json"
 )
 @catalog_bp.route(
-    "/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json&genre=<genre>&search=<search>.json"
+    "/<user_id>/catalog/<string:catalog_type>/<string:catalog_id>/genre=<string:genre>.json"
+)
+@catalog_bp.route(
+    "/<user_id>/catalog/<string:catalog_type>/<catalog_id>/genre=<string:genre>&search=<string:search>.json"
+)
+@catalog_bp.route(
+    "/<user_id>/catalog/<string:catalog_type>/<catalog_id>/skip=<int:offset>&search=<string:search>.json"
+)
+@catalog_bp.route(
+    "/<user_id>/catalog/<string:catalog_type>/<catalog_id>/skip=<int:offset>&genre=<string:genre>&search=<string:search>.json"
 )
 async def addon_catalog(
     user_id: str,
     catalog_type: str,
     catalog_id: str,
-    offset: str = "",
+    offset: int = 0,
     genre: str = "",
     search: str = "",
 ):
@@ -43,6 +49,8 @@ async def addon_catalog(
     :param genre: The genre to filter by
     :param search: Used to search globally for an anime on MyAnimeList
     :return: JSON response
+
+    TODO: Handle service errors
     """
     current_app = get_app()
     mal_service = current_app.mal
@@ -71,14 +79,13 @@ async def addon_catalog(
     )
 
     try:
-        offset_int = int(offset) if offset.isalnum() else 0
         if search:
-            anime_list = await mal_service.search_anime(query=search, offset=offset_int)
+            anime_list = await mal_service.search_anime(query=search, offset=offset)
         else:
             anime_list = await mal_service.get_user_anime_list(
                 token=token,
                 status=catalog_id,
-                offset=offset_int,
+                offset=offset,
                 sort=sort,
                 nsfw=nsfw_enabled,
             )

@@ -1,7 +1,6 @@
 import sys
 from datetime import datetime
-from tkinter import W
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from mal import Anime, WatchStatus
 import pytest
