@@ -1,0 +1,42 @@
+[project]
+name = ""
+version = "0.0.1"
+requires-python = ">=3.12"
+dependencies = [
+    "backports.entry-points-selectable",
+    "lxml",
+    "python-dotenv",
+    "pymongo",
+    "requests",
+    "kitsu-py",
+    "mal-py",
+    "quart>=0.20.0",
+    "pytest-asyncio>=1.2.0",
+    "pytest-mock>=3.15.1",
+    "uvicorn>=0.39.0",
+    "quart-compress2",
+    "python-levenshtein>=0.27.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-order",
+    "ruff==0.12.4",
+    "pytest-watcher",
+]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+
+[tool.uv.sources]
+quart-compress2 = { git = "https://github.com/searinminecraft/quart-compress.git", rev = "import-fix" }
+mal-py = { git = "https://github.com/SageTendo/mal.py.git" }
+kitsu-py = { git = "https://github.com/SageTendo/kitsu.py.git" }
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

@@ -1,10 +1,10 @@
 from typing import Any
 
-from flask import Blueprint
+from quart import Blueprint
 
 import config
 
-from ..db.db import get_user
+from ..services.db import get_user
 from .utils import respond_with
 
 manifest_blueprint = Blueprint("manifest", __name__)
@@ -12,24 +12,35 @@ manifest_blueprint = Blueprint("manifest", __name__)
 genres = [
     "Action",
     "Adventure",
+    "Anthropomorphic",
     "Avant Garde",
     "Award Winning",
-    "Boys Love",
     "Comedy",
     "Drama",
+    "Ecchi",
+    "Educational",
+    "Erotica",
     "Fantasy",
-    "Girls Love",
-    "Gourmet",
+    "Hentai",
+    "Historical",
     "Horror",
+    "Josei",
+    "Kids",
     "Mystery",
+    "Military",
+    "Music",
+    "Mythology",
+    "Psychological",
     "Romance",
+    "School",
     "Sci-Fi",
+    "Seinen",
+    "Shoujo",
+    "Shounen",
     "Slice of Life",
     "Sports",
     "Supernatural",
-    "Ecchi",
-    "Hentai",
-    "Erotica",
+    "Suspense",
 ]
 
 MANIFEST: dict[str, Any] = {
@@ -89,13 +100,13 @@ MANIFEST: dict[str, Any] = {
         },
     ],
     "behaviorHints": {"configurable": True},
-    "resources": ["catalog", "subtitles"],
+    "resources": ["catalog", "meta", "subtitles"],
     "idPrefixes": ["mal", "kitsu"],
 }
 
 
 @manifest_blueprint.route("/manifest.json")
-def addon_unconfigured_manifest():
+async def addon_unconfigured_manifest():
     """
     Provides the initial manifest for the addon before the user has authenticated with MyAnimeList
     The user is required to configure the addon before they can use it
@@ -106,7 +117,7 @@ def addon_unconfigured_manifest():
         "configurable": True,
         "configurationRequired": True,
     }
-    return respond_with(
+    return await respond_with(
         unconfigured_manifest,
         cache_max_age=config.MANIFEST_DURATION,
         stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
@@ -115,7 +126,7 @@ def addon_unconfigured_manifest():
 
 
 @manifest_blueprint.route("/<user_id>/manifest.json")
-def addon_configured_manifest(user_id: str):
+async def addon_configured_manifest(user_id: str):
     """
     Provides the manifest for the addon after the user has authenticated with MyAnimeList
     :param user_id: The user's MyAnimeList ID
@@ -123,7 +134,7 @@ def addon_configured_manifest(user_id: str):
     """
     user = get_user(user_id)
     if not user:
-        return respond_with(
+        return await respond_with(
             {"error": f"User ID: {user_id} not found"}, private=True, cache_max_age=1800
         )
 
@@ -136,5 +147,5 @@ def addon_configured_manifest(user_id: str):
                 MANIFEST["catalogs"],
             )
         )
-        return respond_with(user_manifest)
-    return respond_with(MANIFEST)
+        return await respond_with(user_manifest)
+    return await respond_with(MANIFEST)
