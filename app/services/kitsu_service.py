@@ -1,4 +1,3 @@
-import asyncio
 import os
 import re
 from datetime import datetime
@@ -18,47 +17,52 @@ KITSU_CLIENT_SECRET = os.environ.get("KITSU_SECRET")
 
 class KitsuService:
     def __init__(self):
-        self.client: Optional[kitsu.Client] = None
-        self._lock = asyncio.Lock()
+        self._client: Optional[kitsu.Client] = None
 
     async def start(self):
-        if self.client:
+        if self._client:
             return self
 
-        self.client = kitsu.Client(
+        self._client = kitsu.Client(
             client_id=KITSU_CLIENT_ID, client_secret=KITSU_CLIENT_SECRET
         )
 
-        if not self.client:
+        if not self._client:
             raise RuntimeError("Kitsu client not initialized")
         return self
 
     async def stop(self):
-        if self.client:
-            await self.client.close()
-            self.client = None
+        if self._client:
+            await self._client.close()
+            self._client = None
 
     async def get_anime_by_id(
         self, kitsu_id: str, *, include_nsfw: bool = False
     ) -> kitsu.Anime:
-        if not self.client:
+        if not self._client:
             raise RuntimeError("Kitsu client not initialized")
 
         kitsu_id = re.sub(r"[^0-9]", "", str(kitsu_id))
         if not kitsu_id.isdigit():
             raise ValueError("Invalid Kitsu ID")
-        return await self.client.get_anime(
-            int(kitsu_id), include_nsfw=include_nsfw, params={"include": "episodes,genres"}
+
+        return await self._client.get_anime(
+            int(kitsu_id),
+            include_nsfw=include_nsfw,
+            params={"include": "episodes,genres"},
         )
 
     async def get_anime_by_title(
         self, query: str, *, include_nsfw: bool = False
     ) -> Optional[kitsu.Anime]:
-        if not self.client:
+        if not self._client:
             raise RuntimeError("Kitsu client not initialized")
 
-        results = await self.client.search_anime(
-            query, include_nsfw=include_nsfw, limit=20, params={"include": "episodes,genres"}
+        results = await self._client.search_anime(
+            query,
+            include_nsfw=include_nsfw,
+            limit=20,
+            params={"include": "episodes,genres"},
         )
 
         if len(results) == 1:
@@ -183,13 +187,9 @@ class KitsuService:
         synopsis = anime.synopsis
         poster = anime.poster_image()
 
-        genres = list(
-            filter(
-                lambda x: x in manifest.genres, [genre.name for genre in anime.genres]
-            )
-        )
-        genres, links = to_stremio_genres(
-            genres or [],
+        genres = [x.name for x in anime.genres if x.name and x.name in manifest.genres]
+        stremio_genres, stremio_links = to_stremio_genres(
+            genres,
             transport_url,
             catalog_type,
             catalog_id,
@@ -228,8 +228,8 @@ class KitsuService:
             "id": mal_id,
             "name": title,
             "type": media_type,
-            "genres": genres,
-            "links": links,
+            "genres": stremio_genres,
+            "links": stremio_links,
             "poster": poster,
             "background": background if background else poster,
             "imdbRating": mean_score,

@@ -1,5 +1,4 @@
 import ast
-import asyncio
 import os
 import re
 import urllib.parse
@@ -24,6 +23,7 @@ from app.lib.content_sync import (
     handle_current_status,
 )
 from app.lib.metadata import parse_background, to_stremio_genres
+from app.routes import manifest
 from config import Config
 
 MAL_CALLBACK_URL = f"{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback"
@@ -33,47 +33,46 @@ MAL_CLIENT_SECRET = os.environ.get("MAL_SECRET")
 
 class MalService:
     def __init__(self):
-        self._lock = asyncio.Lock()
-        self.client: Optional[Client] = None
+        self._client: Optional[Client] = None
 
     async def start(self):
-        if self.client:
+        if self._client:
             return self
 
-        self.client = Client(
+        self._client = Client(
             client_id=MAL_CLIENT_ID,
             client_secret=MAL_CLIENT_SECRET,
             callback_url=MAL_CALLBACK_URL,
             session=aiohttp.ClientSession(),
         )
 
-        if not self.client:
+        if not self._client:
             raise RuntimeError("MAL client not initialized")
         return self
 
     async def stop(self):
-        if self.client:
-            await self.client.close()
+        if self._client:
+            await self._client.close()
 
     def get_auth(self):
-        if not self.client:
+        if not self._client:
             raise RuntimeError("MAL client not initialized")
-        return self.client.get_auth()
+        return self._client.get_auth()
 
     async def get_access_token(self, code: str, code_verifier: str) -> Auth:
-        if not self.client:
+        if not self._client:
             raise RuntimeError("MAL client not initialized")
-        return await self.client.get_access_token(code, code_verifier)
+        return await self._client.get_access_token(code, code_verifier)
 
     async def refresh_token(self, refresh_token: str) -> Auth:
-        if not self.client:
+        if not self._client:
             raise RuntimeError("MAL client not initialized")
-        return await self.client.refresh_token(refresh_token)
+        return await self._client.refresh_token(refresh_token)
 
     async def get_user_details(self, token: str) -> User:
-        if not self.client:
+        if not self._client:
             raise RuntimeError("MAL client not initialized")
-        return await self.client.get_user_details(token=token)
+        return await self._client.get_user_details(token=token)
 
     async def search_anime(
         self,
@@ -83,13 +82,13 @@ class MalService:
         offset: int = 0,
         nsfw: bool = False,
     ) -> list[Anime]:
-        if not self.client:
+        if not self._client:
             raise RuntimeError("MAL client not initialized")
 
         if query and len(query) < 3:
             raise ValueError("Search query must be at least 3 characters long")
 
-        return await self.client.search_anime(
+        return await self._client.search_anime(
             query=query, limit=limit, offset=offset, nsfw=nsfw
         )
 
@@ -103,7 +102,7 @@ class MalService:
         status: str = "plan_to_watch",
         nsfw: bool = False,
     ) -> list[Anime]:
-        if not self.client:
+        if not self._client:
             raise RuntimeError("MAL client not initialized")
 
         sort = cast(USER_LIST_SORT, sort)
@@ -114,7 +113,7 @@ class MalService:
         if status not in get_args(USER_ANIME_STATUS):
             raise ValueError("Invalid status value")
 
-        return await self.client.get_user_anime_list(
+        return await self._client.get_user_anime_list(
             token=token,
             limit=limit,
             offset=offset,
@@ -124,11 +123,11 @@ class MalService:
         )
 
     async def get_anime_details(self, *, anime_id: str, token: str = "") -> Anime:
-        if not self.client:
+        if not self._client:
             raise RuntimeError("MAL client not initialized")
 
-        anime_id = re.sub(r"[^0-9]", "", anime_id)
-        return await self.client.get_anime_details(
+        anime_id = re.sub(r"[^0-9]", "", str(anime_id))
+        return await self._client.get_anime_details(
             token=token,
             anime_id=anime_id,
         )
@@ -143,10 +142,10 @@ class MalService:
         start_date: str = "",
         finish_date: str = "",
     ) -> WatchStatus:
-        if not self.client:
+        if not self._client:
             raise RuntimeError("MAL client not initialized")
 
-        return await self.client.update_watch_status(
+        return await self._client.update_watch_status(
             token=token,
             anime_id=anime_id,
             episode=episode,
@@ -171,13 +170,10 @@ class MalService:
         :param sync_unlisted: Whether to sync unlisted anime
         :return: UpdateStatus
         """
-        if not self.client:
+        if not self._client:
             raise RuntimeError("MAL client not initialized")
 
-        anime = await self.get_anime_details(anime_id=anime_id)
-        if not anime:
-            raise ValueError("Invalid anime ID")
-
+        anime = await self.get_anime_details(anime_id=anime_id, token=token)
         total_episodes = anime.num_episodes or 0
         num_episodes_watched = (
             anime.my_list_status.num_episodes_watched if anime.my_list_status else 0
@@ -222,13 +218,17 @@ class MalService:
 
     @staticmethod
     def _has_genre_tag(anime: Anime, genre: str = ""):
-        decoded_string = urllib.parse.unquote(genre)
-        if re.search(r"\{.*}", decoded_string):
-            formatted_genre = ast.literal_eval(decoded_string)["name"]
-        else:
-            formatted_genre = genre
+        decoded = urllib.parse.unquote(genre)
 
-        return any(formatted_genre.lower() == genre.lower() for genre in anime.genres)
+        try:
+            if decoded.startswith("{") and decoded.endswith("}"):
+                formatted = ast.literal_eval(decoded).get("name", decoded)
+            else:
+                formatted = decoded
+        except (ValueError, SyntaxError):
+            formatted = decoded
+
+        return any(g and g.lower() == formatted.lower() for g in anime.genres)
 
     def to_stremio_meta(
         self,
@@ -255,8 +255,9 @@ class MalService:
         synopsis = anime.synopsis
         poster = anime.main_picture() or anime.main_picture("medium")
 
-        genres, links = to_stremio_genres(
-            anime.genres,
+        genres = [g for g in anime.genres if g and g in manifest.genres]
+        stremio_genres, stremio_links = to_stremio_genres(
+            genres,
             transport_url,
             catalog_type,
             catalog_id,
@@ -296,8 +297,8 @@ class MalService:
             "id": formatted_content_id,
             "name": title,
             "type": media_type,
-            "genres": genres,
-            "links": links,
+            "genres": stremio_genres,
+            "links": stremio_links,
             "poster": poster,
             "background": background if background else poster,
             "imdbRating": mean_score,
