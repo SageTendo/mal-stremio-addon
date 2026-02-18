@@ -45,7 +45,7 @@ genres = [
 
 MANIFEST: dict[str, Any] = {
     "id": "com.sagetendo.mal-stremio-addon",
-    "version": "4.0.0-alpha",
+    "version": "4.0.0",
     "name": "MAL-Stremio Addon",
     "logo": "https://i.imgur.com/zVYdffr.png",
     "description": "Provides users with watchlist content from MyAnimeList within Stremio. "
