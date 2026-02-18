@@ -50,7 +50,7 @@ async def addon_meta(user_id: str, meta_type: str, meta_id: str):
 
     try:
         kitsu_anime = None
-        if meta_id.startswith("kitsu:"):
+        if meta_id.startswith(config.KITSU_ID_PREFIX):
             kitsu_anime = await kitsu_service.get_anime_by_id(meta_id)
         elif meta_id.startswith(config.MAL_ID_PREFIX):
             exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
