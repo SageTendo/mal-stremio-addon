@@ -23,7 +23,7 @@ def handle_current_status(
     status: str, current_episode: int, watched_episodes: int, total_episodes: int
 ) -> Optional[str]:
     if status in {"watching", "plan_to_watch", "on_hold"}:
-        if current_episode == total_episodes:
+        if current_episode >= total_episodes:
             return "completed"
         if current_episode > watched_episodes:
             return "watching"
