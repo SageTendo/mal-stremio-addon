@@ -1,14 +1,20 @@
 import urllib.parse
 from typing import Optional
 
+from mal import (
+    BadRequestError,
+    ForbiddenError,
+    HTTPError,
+    NotFoundError,
+    UnauthorizedError,
+)
 from quart import Blueprint
-from requests import HTTPError
 
 import config
 from app.app import get_app
 from app.lib.content_sync import UpdateStatus, handle_content_id
 from app.routes.manifest import MANIFEST
-from app.routes.utils import handle_api_error, respond_with
+from app.routes.utils import log_error, respond_with
 from app.services.db import get_valid_user
 
 content_sync_bp = Blueprint("content_sync", __name__)
@@ -32,8 +38,6 @@ async def addon_content_sync(
     :param content_id: The ID of the content
     :param _video_hash: The hash of the video (ignored)
     :return: JSON response
-
-    TODO: Handle service errors
     """
     mal_service = get_app().mal
 
@@ -73,11 +77,11 @@ async def addon_content_sync(
             sync_unlisted=track_unlisted_anime,
         )
         return await respond_with(_create_sync_response(status=update_status))
-    except HTTPError as err:
-        handle_api_error(err)
-        return await respond_with(
-            _create_sync_response(status=UpdateStatus.FAIL),
-        )
+    except (BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError) as e:
+        return await respond_with({"metas": [], "message": e.message}), e.code
+    except HTTPError as e:
+        log_error("HTTP_ERROR", str(e), e.message, e.code)
+        return await respond_with({"metas": [], "message": str(e)}), 500
 
 
 def _create_sync_response(status: UpdateStatus, message: Optional[str] = None):
