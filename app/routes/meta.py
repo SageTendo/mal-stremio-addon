@@ -1,4 +1,11 @@
-import requests
+import kitsu
+from mal import (
+    BadRequestError,
+    ForbiddenError,
+    HTTPError,
+    NotFoundError,
+    UnauthorizedError,
+)
 from quart import Blueprint, abort, url_for
 
 import config
@@ -7,7 +14,7 @@ from app.lib.metadata import get_transport_url
 
 from ..services.db import get_kitsu_id_from_mal_id, get_valid_user
 from .manifest import MANIFEST
-from .utils import handle_api_error, respond_with
+from .utils import log_error, respond_with
 
 meta_bp = Blueprint("meta", __name__)
 
@@ -20,8 +27,6 @@ async def addon_meta(user_id: str, meta_type: str, meta_id: str):
     :param meta_type: The type of metadata to return
     :param meta_id: The ID of the content
     :return: JSON response
-
-    TODO: Handle service errors
     """
     mal_service = get_app().mal
     kitsu_service = get_app().kitsu
@@ -81,9 +86,19 @@ async def addon_meta(user_id: str, meta_type: str, meta_id: str):
             stale_error=config.META_ON_SUCCESS_DURATION,
             stremio_response=True,
         )
-    except requests.HTTPError as e:
-        handle_api_error(e)
-        return (
-            await respond_with({"meta": {}, "message": str(e)}),
-            e.response.status_code,
-        )
+    except (BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError) as e:
+        return await respond_with({"meta": {}, "message": str(e)}), e.code
+    except (
+        kitsu.errors.BadRequest,
+        kitsu.errors.Unauthorized,
+        kitsu.errors.Forbidden,
+    ) as e:
+        code = e.response_code or 400
+        return (await respond_with({"meta": {}, "message": e.message}), code)
+    except HTTPError as e:
+        log_error("MAL_ERROR", str(e), e.message, e.code)
+        return await respond_with({"meta": {}, "message": str(e)}), 500
+    except kitsu.errors.HTTPException as e:
+        code = e.response_code or 500
+        log_error("KITSU_ERROR", str(e), e.message, code)
+        return (await respond_with({"meta": {}, "message": str(e)}), 500)

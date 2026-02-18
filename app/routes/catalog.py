@@ -1,4 +1,10 @@
-import requests
+from mal import (
+    BadRequestError,
+    ForbiddenError,
+    HTTPError,
+    NotFoundError,
+    UnauthorizedError,
+)
 from quart import Blueprint, abort, url_for
 
 import config
@@ -7,7 +13,7 @@ from app.lib.metadata import get_transport_url
 
 from ..services.db import get_valid_user
 from .manifest import MANIFEST
-from .utils import handle_api_error, log_error, respond_with
+from .utils import log_error, respond_with
 
 catalog_bp = Blueprint("catalog", __name__)
 
@@ -49,8 +55,6 @@ async def addon_catalog(
     :param genre: The genre to filter by
     :param search: Used to search globally for an anime on MyAnimeList
     :return: JSON response
-
-    TODO: Handle service errors
     """
     current_app = get_app()
     mal_service = current_app.mal
@@ -110,11 +114,12 @@ async def addon_catalog(
             stremio_response=True,
         )
     except ValueError as e:
-        log_error("VALUE ERROR", str(e), __name__)
         return await respond_with({"metas": [], "message": str(e)}), 400
-    except requests.HTTPError as e:
-        handle_api_error(e)
-        return await respond_with({"metas": []}), e.response.status_code
+    except (BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError) as e:
+        return await respond_with({"metas": [], "message": e.message}), e.code
+    except HTTPError as e:
+        log_error("HTTP_ERROR", str(e), e.message, e.code)
+        return await respond_with({"metas": [], "message": str(e)}), 500
 
 
 def _is_valid_catalog(catalog_type: str, catalog_id: str):
