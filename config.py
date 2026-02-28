@@ -50,11 +50,6 @@ REQ_HEADERS = {
     "Accept": "application/json",
 }
 
-# LRU Cache sizes
-META_CACHE_SIZE = 25000
-ID_CACHE_SIZE = 50000
-STREAM_CACHE_SIZE = 20000
-
 # Cache durations
 DEFAULT_STALE_WHILE_REVALIDATE = 600  # 10 minutes
 DEFAULT_STALE_IF_ERROR = 300  # 5 minutes
