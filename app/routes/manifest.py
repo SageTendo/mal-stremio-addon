@@ -147,5 +147,10 @@ async def addon_configured_manifest(user_id: str):
                 MANIFEST["catalogs"],
             )
         )
-        return await respond_with(user_manifest)
+        return await respond_with(
+            user_manifest,
+            cache_max_age=config.MANIFEST_DURATION,
+            stale_revalidate=config.DEFAULT_STALE_WHILE_REVALIDATE,
+            stremio_response=True,
+        )
     return await respond_with(MANIFEST)
