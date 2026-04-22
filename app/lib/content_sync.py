@@ -23,7 +23,7 @@ def handle_current_status(
     status: str, current_episode: int, watched_episodes: int, total_episodes: int
 ) -> Optional[str]:
     if status in {"watching", "plan_to_watch", "on_hold"}:
-        if current_episode >= total_episodes:
+        if total_episodes > 0 and current_episode >= total_episodes:
             return "completed"
         if current_episode > watched_episodes:
             return "watching"
@@ -71,7 +71,7 @@ def determine_watch_dates(
     set before.The start date is set to the current date if the user is watching the first episode. The finish date
     is set to the current date if the user is watching the last episode.
     :param anime_listing_status: The listing status of the anime in the user's watchlist (if it exists or has been
-    faked for unlisted anime tracking)
+                                    faked for unlisted anime tracking)
     :param current_episode: The current episode being watched
     :param total_episodes: The total number of episodes in the anime
     :return: A tuple of (start_date, finish_date)

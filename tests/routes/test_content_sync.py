@@ -373,6 +373,18 @@ def test_dates_already_set():
         ("on_hold", 3, 2, 3, "completed"),
         ("watching", 2, 1, 3, "watching"),
         ("watching", 3, 2, 3, "completed"),
+        ("plan_to_watch", 0, 0, 0, None),
+        ("watching", 0, 0, 0, None),
+        ("on_hold", 0, 0, 0, None),
+        ("completed", 0, 0, 0, None),
+        ("completed", 1, 1, 0, None),
+        ("on_hold", 1, 1, 0, None),
+        ("watching", 1, 1, 0, None),
+        ("plan_to_watch", 1, 1, 0, None),
+        ("completed", 1, 0, 0, None),
+        ("plan_to_watch", 1, 0, 0, "watching"),
+        ("watching", 1, 0, 0, "watching"),
+        ("on_hold", 1, 0, 0, "watching"),
     ],
 )
 def test_handle_current_status(current_status, current_ep, watched, total, expected):
