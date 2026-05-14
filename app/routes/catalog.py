@@ -60,7 +60,6 @@ async def addon_catalog(
         return await respond_with({"metas": metas}, stremio_response=True)
 
     token = user.get("access_token", "")
-    sort = user.get("sort_watchlist", config.DEFAULT_SORT_OPTION)
     nsfw_enabled = user.get("nsfw_enabled", False)
     transport_url = get_transport_url(
         url_for("manifest.addon_configured_manifest", user_id=user_id),
@@ -80,7 +79,18 @@ async def addon_catalog(
 
         if search:
             anime_list = await mal_service.search_anime(query=search, offset=offset)
+        elif catalog_id == "seasonal":
+            sort = user.get("sort_seasonal", config.DEFAULT_SEASONAL_SORT_OPTION)
+            anime_list = await mal_service.get_seasonal_anime_list(
+                token=token,
+                offset=offset,
+                sort=sort,
+                nsfw=nsfw_enabled,
+                year=filters.get("year", 2026),
+                season=filters.get("season", "summer"),
+            )
         else:
+            sort = user.get("sort_watchlist", config.DEFAULT_SORT_OPTION)
             anime_list = await mal_service.get_user_anime_list(
                 token=token,
                 status=catalog_id,

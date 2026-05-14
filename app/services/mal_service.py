@@ -2,7 +2,7 @@ import ast
 import os
 import re
 import urllib.parse
-from typing import Optional, cast, get_args
+from typing import Optional, Literal, cast, get_args
 
 import aiohttp
 from mal import (
@@ -29,6 +29,10 @@ from config import Config
 MAL_CALLBACK_URL = f"{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback"
 MAL_CLIENT_ID = os.environ.get("MAL_ID")
 MAL_CLIENT_SECRET = os.environ.get("MAL_SECRET")
+
+SEASONAL_LIST_SORT = Literal[
+    "anime_score", "anime_num_list_users"
+]
 
 
 class MalService:
@@ -120,6 +124,34 @@ class MalService:
             sort=sort,
             status=status,
             nsfw=nsfw,
+        )
+
+    async def get_seasonal_anime_list(
+        self,
+        *,
+        token: str,
+        limit: int = 100,
+        offset: int = 0,
+        sort: str = "list_updated_at",
+        nsfw: bool = False,
+        year: int = 2026,
+        season: str = "summer",
+    ) -> list[Anime]:
+        if not self._client:
+            raise RuntimeError("MAL client not initialized")
+
+        sort = cast(SEASONAL_LIST_SORT, sort)
+        if sort not in get_args(SEASONAL_LIST_SORT):
+            raise ValueError("Invalid sort value")
+
+        return await self._client.get_seasonal_anime_list(
+            token=token,
+            limit=limit,
+            offset=offset,
+            sort=sort,
+            nsfw=nsfw,
+            year=year,
+            season=season,
         )
 
     async def get_anime_details(self, *, anime_id: str, token: str = "") -> Anime:

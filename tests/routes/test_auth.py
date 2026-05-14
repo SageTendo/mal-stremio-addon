@@ -34,14 +34,17 @@ async def test_user_logged_in(client):
         sess["user"] = {"uid": "123", "refresh_token": "test_refresh_token"}
 
     # Call the authorization route
-    await client.get("/authorization")
+    autorization_response = await client.get("/authorization")
+    assert 302 == autorization_response.status_code # Redirected to the home page
+
+    # Check that the session was updated with the flash messages
+    async with client.session_transaction() as sess:
+        flashes = sess.get("_flashes", [])
+    assert ("warning", "You are already logged in.") in flashes
 
     # Assert that the user is redirected to the home page with a warning flash
     configure_response = await client.get("/configure")
     assert 200 == configure_response.status_code
-
-    data = await configure_response.data
-    assert "You are already logged in." in data.decode()
 
 
 @pytest.mark.asyncio
