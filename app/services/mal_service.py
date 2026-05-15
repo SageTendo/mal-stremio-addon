@@ -7,6 +7,8 @@ from typing import Optional, Literal, cast, get_args
 import aiohttp
 from mal import (
     MEDIA_TYPE,
+    SEASONAL_LIST_SORT,
+    SEASONS,
     USER_ANIME_STATUS,
     USER_LIST_SORT,
     Anime,
@@ -29,11 +31,6 @@ from config import Config
 MAL_CALLBACK_URL = f"{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback"
 MAL_CLIENT_ID = os.environ.get("MAL_ID")
 MAL_CLIENT_SECRET = os.environ.get("MAL_SECRET")
-
-SEASONAL_LIST_SORT = Literal[
-    "anime_score", "anime_num_list_users"
-]
-
 
 class MalService:
     def __init__(self):
@@ -143,6 +140,11 @@ class MalService:
         sort = cast(SEASONAL_LIST_SORT, sort)
         if sort not in get_args(SEASONAL_LIST_SORT):
             raise ValueError("Invalid sort value")
+        
+        season = season.lower()
+        season = cast(SEASONS, season)
+        if season not in get_args(SEASONS):
+            raise ValueError("Invalid season value")
 
         return await self._client.get_seasonal_anime_list(
             token=token,
