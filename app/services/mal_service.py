@@ -2,7 +2,7 @@ import ast
 import os
 import re
 import urllib.parse
-from typing import Optional, Literal, cast, get_args
+from typing import Optional, cast, get_args
 
 import aiohttp
 from mal import (
