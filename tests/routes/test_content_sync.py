@@ -23,13 +23,13 @@ def test_handle_mal_id():
 
 def test_handle_kitsu_id():
     content_id, episode = handle_content_id("kitsu:1")
-    assert content_id == 1
+    assert content_id == "1"
     assert episode == 1
 
 
 def test_handle_kitsu_id_with_episode():
     content_id, episode = handle_content_id("kitsu:1:2")
-    assert content_id == 1
+    assert content_id == "1"
     assert episode == 2
 
 

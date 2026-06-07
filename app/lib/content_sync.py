@@ -57,7 +57,7 @@ def handle_content_id(content_id: str) -> tuple[Optional[str], int]:
         )
         exists, mal_id = get_mal_id_from_kitsu_id(kitsu_id)
         if exists:
-            return mal_id, current_episode
+            return str(mal_id), current_episode
     return None, -1
 
 
