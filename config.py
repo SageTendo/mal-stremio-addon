@@ -35,6 +35,7 @@ class Config:
         PROTOCOL = "https"
         REDIRECT_URL = f"{FLASK_HOST}"
 
+
 # Directories
 ROOT_DIR = Path(__file__).parent.resolve()
 ANIME_MAPPING_JSON = ROOT_DIR / "data" / "anime-list-mini.json"
