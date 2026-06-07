@@ -70,8 +70,6 @@ jobs:
           export MAL_SECRET="${{ env.MAL_SECRET }}"
           export MONGO_DB="${{ vars.MONGO_DB }}"
           export MONGO_UID_MAP_COLLECTION="${{ vars.MONGO_UID_MAP_COLLECTION }}"
-          export MONGO_ANIME_MAP_COLLECTION="${{ vars.MONGO_ANIME_MAP_COLLECTION }}"
-          export MONGO_ANIME_DATABASE="${{ vars.MONGO_ANIME_DATABASE }}"
           uv run pytest
 
       # - name: Minimize uv cache

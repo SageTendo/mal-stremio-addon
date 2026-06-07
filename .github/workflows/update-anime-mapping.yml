@@ -1,0 +1,55 @@
+name: Update Anime Mapping
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # every Monday at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Fetch and Commit Anime Mapping
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Fetch anime-list-mini.json
+        run: |
+          curl -fsSL \
+            "https://raw.githubusercontent.com/Fribb/anime-lists/master/anime-list-mini.json" \
+            -o data/anime-list-mini.json
+
+      - name: Validate JSON
+        run: |
+          python - <<'EOF'
+          import json, sys
+
+          with open("data/anime-list-mini.json") as f:
+              data = json.load(f)
+
+          if not isinstance(data, list) or len(data) == 0:
+              print("ERROR: expected a non-empty JSON array", file=sys.stderr)
+              sys.exit(1)
+
+          required = {"mal_id", "kitsu_id"}
+          sample = [e for e in data if required.issubset(e)]
+          if not sample:
+              print("ERROR: no entries contain both mal_id and kitsu_id", file=sys.stderr)
+              sys.exit(1)
+
+          print(f"OK: {len(data)} entries, {len(sample)} with mal_id+kitsu_id")
+          EOF
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/anime-list-mini.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update anime mapping from Fribb"
+            git push
+          fi

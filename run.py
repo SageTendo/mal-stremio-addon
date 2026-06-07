@@ -1,9 +1,13 @@
 import logging
 
+import uvicorn
+
 from app.factory import create_app
+from app.services.anime_mapping import load_mapping_db
 
 logging.basicConfig(format="%(asctime)s %(message)s")
 
+load_mapping_db()
 app = create_app()
 
 
@@ -20,6 +24,4 @@ async def shutdown():
 
 
 if __name__ == "__main__":
-    import uvicorn
-
     uvicorn.run(app, host="0.0.0.0", port=5000)

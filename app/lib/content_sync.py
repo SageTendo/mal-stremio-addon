@@ -5,7 +5,7 @@ from typing import Optional
 from mal import WatchStatus
 
 import config
-from app.services.db import get_mal_id_from_kitsu_id
+from app.services.anime_mapping import get_mal_id_from_kitsu_id
 
 
 class UpdateStatus(Enum):
