@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -26,9 +27,6 @@ class Config:
     MONGO_URI = os.getenv("MONGO_URI", "")
     MONGO_DB = os.getenv("MONGO_DB", "")
     MONGO_UID_MAP = os.getenv("MONGO_UID_MAP_COLLECTION", "")
-    MONGO_ANIME_DB = os.getenv("MONGO_ANIME_DATABASE", "")
-    MONGO_ANIME_MAP = os.getenv("MONGO_ANIME_MAP_COLLECTION", "")
-
     # Env dependent configs
     if DEBUG in ["1", True, "True"]:  # Local development
         PROTOCOL = "http"
@@ -37,6 +35,10 @@ class Config:
         PROTOCOL = "https"
         REDIRECT_URL = f"{FLASK_HOST}"
 
+
+# Directories
+ROOT_DIR = Path(__file__).parent.resolve()
+ANIME_MAPPING_JSON = ROOT_DIR / "data" / "anime-list-mini.json"
 
 # Catalog and Meta Prefixes
 MAL_ID_PREFIX = "mal:"

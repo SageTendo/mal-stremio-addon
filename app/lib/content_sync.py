@@ -5,7 +5,7 @@ from typing import Optional
 from mal import WatchStatus
 
 import config
-from app.services.db import get_mal_id_from_kitsu_id
+from app.services.anime_mapping import get_mal_id_from_kitsu_id
 
 
 class UpdateStatus(Enum):
@@ -57,7 +57,7 @@ def handle_content_id(content_id: str) -> tuple[Optional[str], int]:
         )
         exists, mal_id = get_mal_id_from_kitsu_id(kitsu_id)
         if exists:
-            return mal_id, current_episode
+            return str(mal_id), current_episode
     return None, -1
 
 

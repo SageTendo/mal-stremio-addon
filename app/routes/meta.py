@@ -12,7 +12,8 @@ import config
 from app.app import get_app
 from app.lib.metadata import get_transport_url
 
-from ..services.db import get_kitsu_id_from_mal_id, get_valid_user
+from ..services.anime_mapping import get_kitsu_id_from_mal_id
+from ..services.db import get_valid_user
 from .manifest import MANIFEST
 from .utils import log_error, respond_with
 
