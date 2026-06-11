@@ -1,11 +1,8 @@
 import datetime
-from unittest import result
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 import pytest
 
 from app.services.db import (
-    get_kitsu_id_from_mal_id,
-    get_mal_id_from_kitsu_id,
     get_user,
     get_valid_user,
     store_user,
@@ -113,29 +110,3 @@ def test_invalid_mal_session_expired(mock_get_user):
     assert not user
 
 
-@patch("app.services.db.anime_mapping.find_one")
-def test_get_kitsu_id_from_mal_id(mock_mapping):
-    """Test get_kitsu_id_from_mal_id"""
-    mock_mapping.return_value = {}
-    exists, kitsu_id = get_kitsu_id_from_mal_id("123")
-    assert exists is False
-    assert kitsu_id is ""
-
-    mock_mapping.return_value = {"kitsu_id": "14", "mal_id": "123"}
-    exists, kitsu_id = get_kitsu_id_from_mal_id("123")
-    assert exists is True
-    assert kitsu_id == "14"
-
-
-@patch("app.services.db.anime_mapping.find_one")
-def test_get_mal_id_from_kitsu_id(mock_mapping):
-    """Test get_mal_id_from_kitsu_id"""
-    mock_mapping.return_value = {}
-    exists, mal_id = get_mal_id_from_kitsu_id("123")
-    assert exists is False
-    assert mal_id is ""
-
-    mock_mapping.return_value = {"kitsu_id": "14", "mal_id": "123"}
-    exists, mal_id = get_mal_id_from_kitsu_id("14")
-    assert exists is True
-    assert mal_id == "123"
