@@ -1,42 +1,35 @@
-import ast
-import random
-import re
-import urllib.parse
-from typing import Optional
-
-import requests
-from flask import Blueprint, Request, abort, request, url_for
+from mal import (
+    BadRequestError,
+    ForbiddenError,
+    HTTPError,
+    NotFoundError,
+    UnauthorizedError,
+)
+from quart import Blueprint, abort, url_for
 
 import config
+from app.app import get_app
+from app.lib.metadata import get_transport_url
 
-from . import MAL_ID_PREFIX, mal_client
-from .auth import get_valid_user
+from ..services.db import get_valid_user
 from .manifest import MANIFEST
-from .utils import handle_api_error, respond_with
+from .utils import log_error, respond_with
 
 catalog_bp = Blueprint("catalog", __name__)
 
 
-@catalog_bp.route("/<user_id>/catalog/<catalog_type>/<catalog_id>.json")
-@catalog_bp.route("/<user_id>/catalog/<catalog_type>/<catalog_id>/search=<search>.json")
-@catalog_bp.route("/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json")
-@catalog_bp.route("/<user_id>/catalog/<catalog_type>/<catalog_id>/genre=<genre>.json")
 @catalog_bp.route(
-    "/<user_id>/catalog/<catalog_type>/<catalog_id>/genre=<genre>&search=<search>.json"
+    "/<user_id>/catalog/<string:catalog_type>/<string:catalog_id>.json",
+    defaults={"extras": ""},
 )
 @catalog_bp.route(
-    "/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>&search=<search>.json"
+    "/<user_id>/catalog/<string:catalog_type>/<string:catalog_id>/<path:extras>.json"
 )
-@catalog_bp.route(
-    "/<user_id>/catalog/<catalog_type>/<catalog_id>/skip=<offset>.json&genre=<genre>&search=<search>.json"
-)
-def addon_catalog(
+async def addon_catalog(
     user_id: str,
     catalog_type: str,
     catalog_id: str,
-    offset: str = "",
-    genre: str = "",
-    search: str = "",
+    extras: str,
 ):
     """
     Provides a list of anime from MyAnimeList
@@ -44,11 +37,12 @@ def addon_catalog(
     :param catalog_type: The type of catalog to return
     :param catalog_id: The ID of the catalog to return, MAL divides a user's anime list into different categories
            (e.g. plan to watch, watching, completed, on hold, dropped)
-    :param offset: The number of items to skip
-    :param genre: The genre to filter by
-    :param search: Used to search globally for an anime on MyAnimeList
+    :param extras: A string of extra parameters to filter the results
     :return: JSON response
     """
+    current_app = get_app()
+    mal_service = current_app.mal
+
     if not _is_valid_catalog(catalog_type, catalog_id):
         abort(404)
 
@@ -63,30 +57,51 @@ def addon_catalog(
             }
             for i in range(30)  # 30 metas to keep the UI consistent
         ]
-        return respond_with({"metas": metas}, stremio_response=True)
+        return await respond_with({"metas": metas}, stremio_response=True)
+
+    token = user.get("access_token", "")
+    sort = user.get("sort_watchlist", config.DEFAULT_SORT_OPTION)
+    nsfw_enabled = user.get("nsfw_enabled", False)
+    transport_url = get_transport_url(
+        url_for("manifest.addon_configured_manifest", user_id=user_id),
+    )
 
     try:
-        token = user.get("access_token")
-        sort = user.get("sort_watchlist", config.DEFAULT_SORT_OPTION)
-        nsfw_enabled = user.get("nsfw_enabled", False)
-        response_data = _fetch_anime_list(
-            token, search, catalog_id, offset, sort=sort, nsfw=nsfw_enabled
-        )
+        filters = _parse_stremio_filters(extras)
+        offset = int(filters.get("skip", 0))
+        genre = filters.get("genre", "")
+        search = filters.get("search", "")
 
-        anime_list = [x["node"] for x in response_data.get("data", [])]
-        filtered_anime_list = filter(lambda x: _has_genre_tag(x, genre), anime_list)
-        meta_previews = [
-            _mal_to_meta(
-                anime_item,
-                catalog_type=catalog_type,
-                catalog_id=catalog_id,
-                transport_url=_get_transport_url(request, user_id),
+        if 0 < offset < 10:
+            # Early return if offset less than 10
+            # Stremio Web will spam the addon with requests for metas
+            # to try and autofill with metas to fit the viewport
+            return await respond_with({"metas": []}, stremio_response=True)
+
+        if search:
+            anime_list = await mal_service.search_anime(query=search, offset=offset)
+        else:
+            anime_list = await mal_service.get_user_anime_list(
+                token=token,
+                status=catalog_id,
+                offset=offset,
+                sort=sort,
+                nsfw=nsfw_enabled,
             )
-            for anime_item in filtered_anime_list
-        ]
 
-        return respond_with(
-            {"metas": meta_previews},
+        filtered_anime_list = mal_service.filter_anime(anime_list, genre)
+        return await respond_with(
+            {
+                "metas": [
+                    mal_service.to_stremio_meta(
+                        anime=anime,
+                        catalog_type=catalog_type,
+                        catalog_id=catalog_id,
+                        transport_url=transport_url,
+                    )
+                    for anime in filtered_anime_list
+                ]
+            },
             private=True,
             cache_max_age=config.CATALOG_ON_SUCCESS_DURATION,
             stale_revalidate=config.CATALOG_STALE_WHILE_REVALIDATE,
@@ -94,17 +109,12 @@ def addon_catalog(
             stremio_response=True,
         )
     except ValueError as e:
-        return respond_with({"metas": [], "message": str(e)}), 400
-    except requests.HTTPError as e:
-        handle_api_error(e)
-        return respond_with({"metas": []}), e.response.status_code
-
-
-def _get_transport_url(req: Request, user_id: str, parameters: str = ""):
-    url = req.url[:-1] + url_for(
-        "manifest.addon_configured_manifest", user_id=user_id, parameters=parameters
-    )
-    return urllib.parse.quote_plus(url)
+        return await respond_with({"metas": [], "message": str(e)}), 400
+    except (BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError) as e:
+        return await respond_with({"metas": [], "message": e.message}), e.code or 400
+    except HTTPError as e:
+        log_error("HTTP_ERROR", str(e), e.message, e.code)
+        return await respond_with({"metas": [], "message": str(e)}), 500
 
 
 def _is_valid_catalog(catalog_type: str, catalog_id: str):
@@ -113,144 +123,20 @@ def _is_valid_catalog(catalog_type: str, catalog_id: str):
     return any(catalog["id"] == catalog_id for catalog in MANIFEST["catalogs"])
 
 
-def _has_genre_tag(meta: dict, genre: str = ""):
-    if not genre:
-        return True
-
-    # Handle stremio link object
-    decoded_string = urllib.parse.unquote(genre)
-    if re.search(r"\{.*}", decoded_string):
-        formatted_genre = ast.literal_eval(decoded_string)["name"]
-    else:
-        formatted_genre = genre
-
-    return any(
-        formatted_genre.lower() == genre["name"].lower()
-        for genre in meta.get("genres", [])
-    )
-
-
-def _fetch_anime_list(token, search, catalog_id, offset, nsfw=False, **kwargs):
-    if search and len(search) < 3:
-        raise ValueError("Search query must be at least 3 characters long")
-
-    return_fields = "media_type,genres,mean,start_date,end_date,synopsis"
-    if search:
-        return mal_client.get_anime_list(
-            token,
-            query=search,
-            offset=offset,
-            fields=return_fields,
-            nsfw=nsfw,
-            **kwargs,
-        )
-
-    return mal_client.get_user_anime_list(
-        token,
-        status=catalog_id,
-        offset=offset,
-        fields=return_fields,
-        nsfw=nsfw,
-        **kwargs,
-    )
-
-
-def _mal_to_meta(
-    anime_item: dict, catalog_type: str, catalog_id: str, transport_url: str
-):
+def _parse_stremio_filters(extra: str | None) -> dict:
     """
-    Convert MAL anime item to a valid Stremio meta format
-    :param anime_item: The MAL anime item to convert
-    :param catalog_type: The type of catalog being referenced in the link meta object
-    :param catalog_id: The id of catalog being referenced in the link meta object
-    :param transport_url: The url to the addon's manifest.json
-    :return: Stremio meta format
+    Converts:
+        "genre=Action&search=batman&skip=20"
+    into:
+        {"genre": "Action", "search": "batman", "skip": "20"}
     """
-    formatted_content_id = None
-    if content_id := anime_item.get("id"):
-        formatted_content_id = f"{MAL_ID_PREFIX}_{content_id}"
+    if not extra:
+        return {}
 
-    title = anime_item.get("title")
-    synopsis = anime_item.get("synopsis")
-    poster = _handle_poster_object(anime_item.get("main_picture", {}))
-
-    anime_item_genres = anime_item.get("genres")
-    genres, links = _handle_genres_with_links(
-        anime_item_genres, transport_url, catalog_type, catalog_id
-    )
-
-    mean_score: Optional[str] = None
-    if score := anime_item.get("mean"):
-        mean_score = str(score)
-
-    if start_date := anime_item.get("start_date"):
-        start_date = start_date[:4]  # Get the year only
-        start_date += "-"
-
-        if end_date := anime_item.get("end_date"):
-            start_date += end_date[:4]
-
-    picture_objects = anime_item.get("pictures", [])
-    background = _handle_background_object(picture_objects)
-
-    if media_type := anime_item.get("media_type"):
-        if media_type in ["ona", "ova", "special", "tv", "unknown"]:
-            media_type = "series"
-        elif media_type != "movie":
-            media_type = None
-
-    return {
-        "id": formatted_content_id,
-        "name": title,
-        "type": media_type,
-        "genres": genres,
-        "links": links,
-        "poster": poster,
-        "background": background,
-        "imdbRating": mean_score,
-        "releaseInfo": start_date,
-        "description": synopsis,
-    }
-
-
-def _handle_poster_object(poster_object):
-    """
-    Handle the poster object from MAL
-    """
-    if not poster_object:
-        return None
-    return poster_object.get("medium") or poster_object.get("large")
-
-
-def _handle_genres_with_links(genres, transport_url, catalog_type, catalog_id):
-    """Handle the genres from MAL and create Stremio genre links for them"""
-    if not genres:
-        return [], []
-
-    formatted_genres = [genre["name"] for genre in genres]
-    links = [
-        {
-            "name": genre["name"],
-            "category": "Genres",
-            "url": f"stremio:///discover/{transport_url}/{catalog_type}/{catalog_id}"
-            f"?genre={genre}",
-        }
-        for genre in genres
-    ]
-    return formatted_genres, links
-
-
-def _handle_background_object(background_objects):
-    """
-    Handle the background object from MAL
-    """
-    if not background_objects:
-        return None
-
-    index = (
-        random.randint(0, len(background_objects) - 1)
-        if len(background_objects) > 1
-        else 0
-    )
-    random_image = background_objects[index]
-    return random_image.get("medium") or random_image.get("large")
+    filters = {}
+    for part in extra.split("&"):
+        if "=" not in part:
+            continue
+        key, value = part.split("=", 1)
+        filters[key] = value
+    return filters
