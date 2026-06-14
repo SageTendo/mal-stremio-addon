@@ -1,19 +1,19 @@
-version: '3'
 services:
   backend:
     build: .
-    container_name: backend
+    container_name: mal-stremio-addon
     restart: unless-stopped
     ports:
-      - "${FLASK_PORT}:${FLASK_PORT}"
+      - "${FLASK_PORT:-5000}:5000"
     env_file:
       - .env
-    depends_on:
-      - mongo
     environment:
-      - MONGO_URI=${MONGO_URI}
-      - MONGO_DB=${MONGO_DB}
+      - SQLITE_PATH=/app/data/app.db
+    volumes:
+      - sqlite_data:/app/data
+
   mongo:
+    profiles: ["mongo"]
     image: mongo:latest
     container_name: mongo
     restart: unless-stopped
@@ -23,4 +23,5 @@ services:
       - mongo_data:/data/db
 
 volumes:
+  sqlite_data:
   mongo_data:

@@ -23,10 +23,15 @@ class Config:
     COMPRESS_BR_LEVEL = 4
     DEBUG = os.getenv("FLASK_DEBUG", False)
 
-    # MongoDB
+    # Database backend: "sqlite" (default) or "mongo"
+    DB_BACKEND = os.getenv("DB_BACKEND", "sqlite")
+    SQLITE_PATH = os.getenv("SQLITE_PATH", "app.db")
+
+    # MongoDB (only required when DB_BACKEND=mongo)
     MONGO_URI = os.getenv("MONGO_URI", "")
     MONGO_DB = os.getenv("MONGO_DB", "")
     MONGO_UID_MAP = os.getenv("MONGO_UID_MAP_COLLECTION", "")
+
     # Env dependent configs
     if DEBUG in ["1", True, "True"]:  # Local development
         PROTOCOL = "http"

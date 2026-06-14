@@ -79,7 +79,7 @@ async def callback():
             return redirect(url_for("ui.index"))
 
         _store_user_session(
-            {"uid": user_details["uid"], "refresh_token": user_details["refresh_token"]}
+            {"uid": user_details["id"], "refresh_token": user_details["refresh_token"]}
         )
         await flash("You are now logged in.", "success")
         return redirect(url_for("ui.index"))
