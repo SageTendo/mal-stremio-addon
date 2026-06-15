@@ -52,6 +52,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "chore: update anime mapping from Fribb"
+            git push origin --delete anime-mapping-update || true
             git push origin HEAD:refs/heads/anime-mapping-update
           fi
 
