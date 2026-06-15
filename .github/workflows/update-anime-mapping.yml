@@ -51,5 +51,12 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "chore: update anime mapping from Fribb"
-            git push
+            git push origin HEAD:refs/heads/anime-mapping-update
           fi
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: anime-mapping-update
+          title: "chore: update anime mapping from Fribb"
+          body: "Automated anime mapping update"
