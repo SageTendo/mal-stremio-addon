@@ -4,6 +4,9 @@ on:
   push:
     branches-ignore:
       - main
+  pull_request:
+    branches:
+      - dev
 
 env:
   SECRET_KEY: ${{ secrets.SECRET_KEY }}
