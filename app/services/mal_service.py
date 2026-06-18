@@ -148,12 +148,12 @@ class MalService:
 
         return await self._client.get_seasonal_anime_list(
             token=token,
+            year=year,
+            season=season,
             limit=limit,
             offset=offset,
             sort=sort,
             nsfw=nsfw,
-            year=year,
-            season=season,
         )
 
     async def get_anime_details(self, *, anime_id: str, token: str = "") -> Anime:

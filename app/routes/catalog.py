@@ -84,11 +84,11 @@ async def addon_catalog(
             sort = user.get("sort_seasonal", config.DEFAULT_SEASONAL_SORT_OPTION)
             anime_list = await mal_service.get_seasonal_anime_list(
                 token=token,
-                year=datetime.datetime.now().year,
-                season=filters.get("season", "summer"),
                 offset=offset,
                 sort=sort,
                 nsfw=nsfw_enabled,
+                year=datetime.datetime.now().year,
+                season=filters.get("season", "summer"),
             )
         else:
             sort = user.get("sort_watchlist", config.DEFAULT_SORT_OPTION)
