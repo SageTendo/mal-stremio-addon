@@ -7,6 +7,7 @@ from mal import (
 )
 from quart import Blueprint, abort, url_for
 
+import datetime
 import config
 from app.app import get_app
 from app.lib.metadata import get_transport_url
@@ -83,7 +84,7 @@ async def addon_catalog(
             sort = user.get("sort_seasonal", config.DEFAULT_SEASONAL_SORT_OPTION)
             anime_list = await mal_service.get_seasonal_anime_list(
                 token=token,
-                year=filters.get("year", 2026),
+                year=datetime.datetime.now().year,
                 season=filters.get("season", "summer"),
                 offset=offset,
                 sort=sort,
