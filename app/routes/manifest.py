@@ -43,7 +43,7 @@ genres = [
     "Suspense",
 ]
 
-seasons = [ "Winter", "Spring", "Summer", "Fall"]
+seasons = ["Winter", "Spring", "Summer", "Fall"]
 
 MANIFEST: dict[str, Any] = {
     "id": "com.sagetendo.mal-stremio-addon",
@@ -89,7 +89,7 @@ MANIFEST: dict[str, Any] = {
             "id": "seasonal",
             "name": "MAL: Seasonal",
             "extra": [
-                {"name": "skip"}, 
+                {"name": "skip"},
                 {"name": "season", "options": seasons},
                 {"name": "genre", "options": genres},
             ],
@@ -103,7 +103,7 @@ MANIFEST: dict[str, Any] = {
                 {"name": "skip"},
                 {"name": "genre", "options": genres, "isRequired": False},
             ],
-        }
+        },
     ],
     "behaviorHints": {"configurable": True},
     "resources": ["catalog", "meta", "subtitles"],

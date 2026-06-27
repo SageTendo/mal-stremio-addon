@@ -1,3 +1,5 @@
+import datetime
+
 from mal import (
     BadRequestError,
     ForbiddenError,
@@ -7,7 +9,6 @@ from mal import (
 )
 from quart import Blueprint, abort, url_for
 
-import datetime
 import config
 from app.app import get_app
 from app.lib.metadata import get_transport_url

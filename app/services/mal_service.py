@@ -32,6 +32,7 @@ MAL_CALLBACK_URL = f"{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback"
 MAL_CLIENT_ID = os.environ.get("MAL_ID")
 MAL_CLIENT_SECRET = os.environ.get("MAL_SECRET")
 
+
 class MalService:
     def __init__(self):
         self._client: Optional[Client] = None
@@ -140,7 +141,7 @@ class MalService:
         sort = cast(SEASONAL_LIST_SORT, sort)
         if sort not in get_args(SEASONAL_LIST_SORT):
             raise ValueError("Invalid sort value")
-        
+
         season = season.lower()
         season = cast(SEASONS, season)
         if season not in get_args(SEASONS):

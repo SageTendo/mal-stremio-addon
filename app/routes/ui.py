@@ -95,7 +95,10 @@ def __handle_addon_options(addon_config_options):
     else:
         options["sort_watchlist"] = config.DEFAULT_SORT_OPTION
 
-    if addon_config_options.get("sort_seasonal") in config.SEASONAL_SORT_OPTIONS.values():
+    if (
+        addon_config_options.get("sort_seasonal")
+        in config.SEASONAL_SORT_OPTIONS.values()
+    ):
         options["sort_seasonal"] = addon_config_options.get("sort_seasonal")
     else:
         options["sort_seasonal"] = config.DEFAULT_SEASONAL_SORT_OPTION

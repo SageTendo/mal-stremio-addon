@@ -77,4 +77,3 @@ SEASONAL_SORT_OPTIONS = {
     "Score": "anime_score",
     "List of Users": "anime_num_list_users",
 }
-
