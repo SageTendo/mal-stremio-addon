@@ -25,7 +25,7 @@ class Config:
 
     # Database backend: "sqlite" (default) or "mongo"
     DB_BACKEND = os.getenv("DB_BACKEND", "sqlite")
-    SQLITE_PATH = os.getenv("SQLITE_PATH", "app.db")
+    SQLITE_PATH = os.getenv("SQLITE_PATH", "./data/app.db")
 
     # MongoDB (only required when DB_BACKEND=mongo)
     MONGO_URI = os.getenv("MONGO_URI", "")
