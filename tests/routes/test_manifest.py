@@ -33,6 +33,7 @@ async def test_manifest(client):
             "completed",
             "on_hold",
             "dropped",
+            "seasonal",
         ]
         assert catalog["name"] in [
             "MAL",
@@ -41,10 +42,11 @@ async def test_manifest(client):
             "MAL: Completed",
             "MAL: On Hold",
             "MAL: Dropped",
+            "MAL: Seasonal",
         ]
 
         for extra in catalog["extra"]:
-            assert extra["name"] in ["skip", "genre", "search"]
+            assert extra["name"] in ["skip", "genre", "search", "season"]
 
             if extra.get("isRequired") is not None:
                 if extra["name"] == "genre":

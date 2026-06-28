@@ -43,6 +43,8 @@ genres = [
     "Suspense",
 ]
 
+seasons = ["Winter", "Spring", "Summer", "Fall"]
+
 MANIFEST: dict[str, Any] = {
     "id": "com.sagetendo.mal-stremio-addon",
     "version": "4.0.0",
@@ -57,35 +59,40 @@ MANIFEST: dict[str, Any] = {
             "id": "plan_to_watch",
             "name": "MAL: Plan To Watch",
             "extra": [{"name": "skip"}, {"name": "genre", "options": genres}],
-            "genre": genres,
         },
         {
             "type": "anime",
             "id": "watching",
             "name": "MAL: Watching",
             "extra": [{"name": "skip"}, {"name": "genre", "options": genres}],
-            "genre": genres,
         },
         {
             "type": "anime",
             "id": "completed",
             "name": "MAL: Completed",
             "extra": [{"name": "skip"}, {"name": "genre", "options": genres}],
-            "genre": genres,
         },
         {
             "type": "anime",
             "id": "on_hold",
             "name": "MAL: On Hold",
             "extra": [{"name": "skip"}, {"name": "genre", "options": genres}],
-            "genre": genres,
         },
         {
             "type": "anime",
             "id": "dropped",
             "name": "MAL: Dropped",
             "extra": [{"name": "skip"}, {"name": "genre", "options": genres}],
-            "genre": genres,
+        },
+        {
+            "type": "anime",
+            "id": "seasonal",
+            "name": "MAL: Seasonal",
+            "extra": [
+                {"name": "skip"},
+                {"name": "season", "options": seasons},
+                {"name": "genre", "options": genres},
+            ],
         },
         {
             "type": "anime",
@@ -96,7 +103,6 @@ MANIFEST: dict[str, Any] = {
                 {"name": "skip"},
                 {"name": "genre", "options": genres, "isRequired": False},
             ],
-            "genre": genres,
         },
     ],
     "behaviorHints": {"configurable": True},

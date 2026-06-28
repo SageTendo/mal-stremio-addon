@@ -48,7 +48,7 @@ async def test_user_logged_in(mock_get_user, client):
 
     # Call the authorization route
     autorization_response = await client.get("/authorization")
-    assert 302 == autorization_response.status_code  # Redirected to the home page
+    assert 302 == autorization_response.status_code # Redirected to the home page
 
     # Check that the session was updated with the flash messages
     async with client.session_transaction() as sess:

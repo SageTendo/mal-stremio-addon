@@ -64,6 +64,7 @@ async def configure(user_id: str = ""):
                 "configure.html",
                 user=user,
                 sort_options=config.SORT_OPTIONS,
+                seasonal_sort_options=config.SEASONAL_SORT_OPTIONS,
                 manifest_url=manifest_url,
                 manifest_magnet=manifest_magnet,
             )
@@ -76,6 +77,7 @@ async def configure(user_id: str = ""):
             "configure.html",
             user=user,
             sort_options=config.SORT_OPTIONS,
+            seasonal_sort_options=config.SEASONAL_SORT_OPTIONS,
             manifest_url=manifest_url,
             manifest_magnet=manifest_magnet,
         )
@@ -93,6 +95,14 @@ def __handle_addon_options(addon_config_options):
         options["sort_watchlist"] = addon_config_options.get("sort_watchlist")
     else:
         options["sort_watchlist"] = config.DEFAULT_SORT_OPTION
+
+    if (
+        addon_config_options.get("sort_seasonal")
+        in config.SEASONAL_SORT_OPTIONS.values()
+    ):
+        options["sort_seasonal"] = addon_config_options.get("sort_seasonal")
+    else:
+        options["sort_seasonal"] = config.DEFAULT_SEASONAL_SORT_OPTION
 
     if addon_config_options.get("track_unlisted_anime", "") == "true":
         options["track_unlisted_anime"] = True
@@ -115,4 +125,6 @@ def __handle_addon_options(addon_config_options):
         options["catalogs"].append("on_hold")
     if addon_config_options.get("include_dropped"):
         options["catalogs"].append("dropped")
+    if addon_config_options.get("include_seasonal"):
+        options["catalogs"].append("seasonal")
     return options

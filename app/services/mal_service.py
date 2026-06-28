@@ -7,6 +7,8 @@ from typing import Optional, cast, get_args
 import aiohttp
 from mal import (
     MEDIA_TYPE,
+    SEASONAL_LIST_SORT,
+    SEASONS,
     USER_ANIME_STATUS,
     USER_LIST_SORT,
     Anime,
@@ -119,6 +121,39 @@ class MalService:
             offset=offset,
             sort=sort,
             status=status,
+            nsfw=nsfw,
+        )
+
+    async def get_seasonal_anime_list(
+        self,
+        *,
+        token: str,
+        limit: int = 100,
+        offset: int = 0,
+        sort: str = "list_updated_at",
+        nsfw: bool = False,
+        year: int = 2026,
+        season: str = "summer",
+    ) -> list[Anime]:
+        if not self._client:
+            raise RuntimeError("MAL client not initialized")
+
+        sort = cast(SEASONAL_LIST_SORT, sort)
+        if sort not in get_args(SEASONAL_LIST_SORT):
+            raise ValueError("Invalid sort value")
+
+        season = season.lower()
+        season = cast(SEASONS, season)
+        if season not in get_args(SEASONS):
+            raise ValueError("Invalid season value")
+
+        return await self._client.get_seasonal_anime_list(
+            token=token,
+            year=year,
+            season=season,
+            limit=limit,
+            offset=offset,
+            sort=sort,
             nsfw=nsfw,
         )
 

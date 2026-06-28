@@ -58,7 +58,10 @@ async def addon_meta(user_id: str, meta_type: str, meta_id: str):
             if exists:
                 kitsu_anime = await kitsu_service.get_anime_by_id(kitsu_id)
             else:
-                anime = await mal_service.get_anime_details(anime_id=meta_id)
+                token = user.get("access_token", "")
+                anime = await mal_service.get_anime_details(
+                    anime_id=meta_id, token=token
+                )
                 kitsu_anime = await kitsu_service.get_anime_by_title(
                     anime.title.english or anime.title.japanese or ""
                 )

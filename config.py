@@ -77,3 +77,8 @@ SORT_OPTIONS = {
     "Release Date": "anime_start_date",
     "Score": "list_score",
 }
+DEFAULT_SEASONAL_SORT_OPTION = "anime_num_list_users"
+SEASONAL_SORT_OPTIONS = {
+    "Score": "anime_score",
+    "Popularity": "anime_num_list_users",
+}
