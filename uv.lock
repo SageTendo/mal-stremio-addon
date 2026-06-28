@@ -599,7 +599,7 @@ wheels = [
 [[package]]
 name = "mal-py"
 version = "0.1.0"
-source = { git = "https://github.com/SageTendo/mal.py.git#b38dfdbdeeedbfc645ab989adc23aabe7f48ffc3" }
+source = { git = "https://github.com/SageTendo/mal.py.git#da821c22f4f3cb731afc5c2a8c2324eb2dc8040e" }
 dependencies = [
     { name = "aiohttp" },
 ]
