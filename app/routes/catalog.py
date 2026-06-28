@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from mal import (
     BadRequestError,
@@ -88,7 +88,7 @@ async def addon_catalog(
                 offset=offset,
                 sort=sort,
                 nsfw=nsfw_enabled,
-                year=datetime.datetime.now().year,
+                year=datetime.now().year,
                 season=filters.get("season", "summer"),
             )
         else:
