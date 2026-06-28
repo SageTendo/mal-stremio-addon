@@ -11,7 +11,7 @@ class _MongoBackend(DBBackend):
         client = MongoClient(Config.MONGO_URI)
         db = client.get_database(Config.MONGO_DB)
         self._col = db.get_collection(Config.MONGO_UID_MAP)
-        self._col.create_index([("uid", ASCENDING)], unique=True)
+        self._col.create_index([("uid", ASCENDING)], unique=True, name="uid")
 
     def get_user(self, user_id: str) -> Optional[dict]:
         return self._col.find_one({"uid": user_id})
@@ -21,6 +21,6 @@ class _MongoBackend(DBBackend):
         data = user_details.copy()
         data["uid"] = user_id
 
-        if user := self._col.find_one({"uid": user_id}):
-            return self._col.update_one(user, {"$set": data}).acknowledged
-        return self._col.insert_one(data).acknowledged
+        return self._col.update_one(
+            {"uid": user_id}, {"$set": data}, upsert=True
+        ).acknowledged
