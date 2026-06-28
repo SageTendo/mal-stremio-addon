@@ -214,7 +214,7 @@
         </div>
 
         <!-- Sorting -->
-        <label for="sort_watchlist">Sort watchlists by:</label>
+        <label for="sort_watchlist">Sort User Watchlists By:</label>
         <select id="sort_watchlist" name="sort_watchlist" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default select example">
             {% set selected_value = user.get('sort_watchlist', config.DEFAULT_SORT_OPTION) %}
@@ -227,7 +227,7 @@
 
         <br>
         <!-- Seasonal Sorting -->
-        <label for="sort_seasonal">Sort seasonal watchlists by:</label>
+        <label for="sort_seasonal">Sort Seasonal Anime List By:</label>
         <select id="sort_seasonal" name="sort_seasonal" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default select example">
             {% set selected_value = user.get('sort_seasonal', config.DEFAULT_SEASONAL_SORT_OPTION) %}

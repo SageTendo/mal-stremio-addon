@@ -80,5 +80,5 @@ SORT_OPTIONS = {
 DEFAULT_SEASONAL_SORT_OPTION = "anime_num_list_users"
 SEASONAL_SORT_OPTIONS = {
     "Score": "anime_score",
-    "List of Users": "anime_num_list_users",
+    "Popularity": "anime_num_list_users",
 }
