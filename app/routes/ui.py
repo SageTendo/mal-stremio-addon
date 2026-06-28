@@ -42,7 +42,8 @@ async def configure(user_id: str = ""):
         return redirect(url_for("ui.index"))
 
     if not (user := get_user(user_session["uid"])):
-        await flash("User not found.", "danger")
+        session.pop("user")
+        await flash("User not found. Please log in again.", "danger")
         return redirect(url_for("ui.index"))
 
     user_id = user["uid"]

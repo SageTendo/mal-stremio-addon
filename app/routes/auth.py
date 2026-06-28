@@ -79,8 +79,10 @@ async def callback():
             return redirect(url_for("ui.index"))
 
         _store_user_session(
-            {"uid": user_details["uid"], "refresh_token": user_details["refresh_token"]}
+            {"uid": user_details["id"], "refresh_token": user_details["refresh_token"]}
         )
+        session.pop("code_verifier")
+
         await flash("You are now logged in.", "success")
         return redirect(url_for("ui.index"))
     except requests.HTTPError as e:
@@ -133,5 +135,5 @@ async def logout():
         await flash("You are not logged in.", "warning")
         return redirect(url_for("ui.index"))
 
-    session.pop("user")
+    session.clear()
     return redirect(url_for("ui.index"))

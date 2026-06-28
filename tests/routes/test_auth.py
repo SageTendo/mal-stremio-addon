@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from unittest.mock import patch
 
 import pytest
@@ -25,13 +25,26 @@ async def test_get_token(mock_get_user, client):
 
 
 @pytest.mark.asyncio
-async def test_user_logged_in(client):
+@patch("app.routes.ui.get_user")
+async def test_user_logged_in(mock_get_user, client):
     """
     Test that the user is redirected to the configuration page if they are already logged in
     """
+    mock_get_user.return_value = {
+        "uid": "123",
+        "access_token": "test_access_token",
+        "refresh_token": "test_refresh_token",
+        "expires_in": 9999999999,
+        "last_updated": datetime.utcnow(),
+    }
+
     # Simulate user already logged in
     async with client.session_transaction() as sess:
-        sess["user"] = {"uid": "123", "refresh_token": "test_refresh_token"}
+        sess["user"] = {
+            "uid": "123",
+            "access_token": "test_access_token",
+            "refresh_token": "test_refresh_token",
+        }
 
     # Call the authorization route
     autorization_response = await client.get("/authorization")

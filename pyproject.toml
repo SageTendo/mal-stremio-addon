@@ -24,6 +24,7 @@ dev = [
     "pytest-order",
     "ruff==0.12.4",
     "pytest-watcher",
+    "mongomock>=4.3.0",
 ]
 
 [tool.uv]
