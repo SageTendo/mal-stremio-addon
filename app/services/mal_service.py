@@ -26,6 +26,7 @@ from app.lib.content_sync import (
 )
 from app.lib.metadata import parse_background, to_stremio_genres
 from app.routes import manifest
+from app.services.anime_mapping import get_cinemeta_from_mal_id
 from config import Config
 
 MAL_CALLBACK_URL = f"{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback"
@@ -265,7 +266,7 @@ class MalService:
 
         return any(g and g.lower() == formatted.lower() for g in anime.genres)
 
-    def to_stremio_meta(
+    async def to_stremio_meta(
         self,
         *,
         anime: Anime,
@@ -281,10 +282,11 @@ class MalService:
         :param transport_url: The url to the addon's manifest.json
         :return: Stremio meta format
         """
-
         formatted_content_id = None
-        if content_id := anime.id:
-            formatted_content_id = f"{config.MAL_ID_PREFIX}{content_id}"
+        if cinemeta := self._resolve_to_cinemeta_id(anime.id):
+            formatted_content_id = cinemeta
+        else:  # fallback to MAL ID for Kitsu service to resolve
+            formatted_content_id = f"{config.MAL_ID_PREFIX}{anime.id}"
 
         title = anime.title.english or anime.title.canonical
         synopsis = anime.synopsis
@@ -340,3 +342,19 @@ class MalService:
             "releaseInfo": start_date,
             "description": synopsis,
         }
+
+    def _resolve_to_cinemeta_id(self, mal_id: str) -> Optional[str]:
+        """
+        Resolves a MAL ID to a Cinemeta compatible media ID
+        :param mal_id: The MAL ID to resolve
+        :return: The Cinemeta compatible media ID
+        """
+        if not self._client:
+            raise RuntimeError("MAL client not initialized")
+
+        exists, (key, local_mapping_id) = get_cinemeta_from_mal_id(mal_id)
+        if exists:
+            if key == "imdb":
+                return local_mapping_id
+            return f"{key}:{local_mapping_id}"
+        return None

@@ -105,7 +105,7 @@ async def addon_catalog(
         return await respond_with(
             {
                 "metas": [
-                    mal_service.to_stremio_meta(
+                    await mal_service.to_stremio_meta(
                         anime=anime,
                         catalog_type=catalog_type,
                         catalog_id=catalog_id,
