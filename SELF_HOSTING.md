@@ -17,7 +17,7 @@ This guide covers running your own instance of the MAL-Stremio Addon using Docke
    - **App Type**: `web`
    - **App Redirect URL**: `https://your-domain.com/callback`
      - Use `http://localhost:5000/callback` for local testing
-    - **Homepage URL**: `https://your-domain.com`
+   - **Homepage URL**: `https://your-domain.com`
 3. Submit — you'll receive a **Client ID** and **Client Secret**.
 
 > The redirect URL must exactly match your hosted instance's callback endpoint. If you change your domain later, update it here.
@@ -34,11 +34,13 @@ cp .env.example .env
 
 Edit `.env` with the required values:
 
+- Ref. [Random Key Generator](https://randomkeygen.com/secret-key)
+
 ```dotenv
-# Flask
-FLASK_RUN_HOST=your-domain.com   # or localhost for local testing
-FLASK_PORT=5000                  # host port the service is exposed on
-SECRET_KEY=change-me-to-something-random
+# Application configuration
+HOST=your-domain.com       # or localhost for local testing
+PORT=5000                  # host port the service is exposed on
+SECRET_KEY=change-me-to-something-random  # App session secret (refer to Random Key Generator)
 
 # MyAnimeList API
 MAL_ID=your_mal_client_id
@@ -114,16 +116,16 @@ Add `--profile mongo` to any of the above commands if you are using MongoDB.
 
 ## Environment Variable Reference
 
-| Variable | Required | Default | Description |
-|---|---|---|---|
-| `SECRET_KEY` | Yes | — | Flask session secret — set to a long random string |
-| `MAL_ID` | Yes | — | MAL API client ID |
-| `MAL_SECRET` | Yes | — | MAL API client secret |
-| `FLASK_RUN_HOST` | Yes | `localhost` | Your public hostname (used to build the OAuth redirect URL) |
-| `FLASK_PORT` | No | `5000` | Host port the service is exposed on |
-| `DB_BACKEND` | No | `sqlite` | Database backend: `sqlite` or `mongo` |
-| `SQLITE_PATH` | No | `/app/data/app.db` | Path inside the container for the SQLite file |
-| `MONGO_URI` | If mongo | — | MongoDB connection string |
-| `MONGO_DB` | If mongo | — | MongoDB database name |
-| `MONGO_UID_MAP_COLLECTION` | If mongo | — | Collection name for user token storage |
-| `FLASK_DEBUG` | No | `False` | Set to `True` to enable debug mode (do not use in production) |
+| Variable                   | Required | Default            | Description                                                                                         |
+| -------------------------- | -------- | ------------------ | --------------------------------------------------------------------------------------------------- |
+| `SECRET_KEY`               | Yes      | —                  | Application's session secret (refer to [Random Key Generator](https://randomkeygen.com/secret-key)) |
+| `MAL_ID`                   | Yes      | —                  | MAL API client ID                                                                                   |
+| `MAL_SECRET`               | Yes      | —                  | MAL API client secret                                                                               |
+| `HOST`                     | Yes      | `localhost`        | Your public hostname (used to build the OAuth redirect URL)                                         |
+| `PORT`                     | No       | `5000`             | Host port the service is exposed on                                                                 |
+| `DB_BACKEND`               | No       | `sqlite`           | Database backend: `sqlite` or `mongo`                                                               |
+| `SQLITE_PATH`              | No       | `/app/data/app.db` | Path inside the container for the SQLite file                                                       |
+| `MONGO_URI`                | If mongo | —                  | MongoDB connection string                                                                           |
+| `MONGO_DB`                 | If mongo | —                  | MongoDB database name                                                                               |
+| `MONGO_UID_MAP_COLLECTION` | If mongo | —                  | Collection name for user token storage                                                              |
+| `DEBUG`                    | No       | `False`            | Set to `True` to enable debug mode (do not use in production)                                       |

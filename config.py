@@ -13,15 +13,15 @@ class Config:
     """
 
     JSON_SORT_KEYS = False
-    FLASK_HOST = os.getenv("FLASK_RUN_HOST", "localhost")
-    FLASK_PORT = os.getenv("FLASK_RUN_PORT", "5000")
+    HOST = os.getenv("HOST", "localhost")
+    PORT = os.getenv("RUN_PORT", "5000")
     SECRET_KEY = os.getenv("SECRET_KEY", "this is not a secret key")
     SESSION_TYPE = os.getenv("SESSION_TYPE", "filesystem")
     SEND_FILE_MAX_AGE_DEFAULT = timedelta(days=7)
     PERMANENT_SESSION_LIFETIME = timedelta(days=30)
     COMPRESS_ALGORITHM = ["gzip"]
     COMPRESS_BR_LEVEL = 4
-    DEBUG = os.getenv("FLASK_DEBUG", False)
+    DEBUG = os.getenv("DEBUG", False)
 
     # Database backend: "sqlite" (default) or "mongo"
     DB_BACKEND = os.getenv("DB_BACKEND", "sqlite")
@@ -35,10 +35,10 @@ class Config:
     # Env dependent configs
     if DEBUG in ["1", True, "True"]:  # Local development
         PROTOCOL = "http"
-        REDIRECT_URL = f"{FLASK_HOST}:{FLASK_PORT}"
+        REDIRECT_URL = f"{HOST}:{PORT}"
     else:  # Production environment
         PROTOCOL = "https"
-        REDIRECT_URL = f"{FLASK_HOST}"
+        REDIRECT_URL = HOST
 
 
 # Directories

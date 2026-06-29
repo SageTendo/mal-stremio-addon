@@ -1,4 +1,4 @@
-# Ruff config for Flask + clean code practices
+# Ruff config for Flask/Quart + clean code practices
 # Compatible with Ruff v0.9.3
 
 # Target Python version
