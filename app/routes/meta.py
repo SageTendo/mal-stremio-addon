@@ -56,6 +56,32 @@ async def addon_meta(user_id: str, meta_type: str, meta_id: str):
     if meta_type not in MANIFEST["types"]:
         abort(404)
 
+    # Resolved before touching the DB: a cinemeta-style id with no mapping
+    # (the common case for non-anime movie/series ids Stremio routes here,
+    # since our manifest can't scope idPrefixes to anime-only) is a pure
+    # in-memory miss and shouldn't cost a user lookup.
+    resolution = None
+    if (
+        not meta_id.startswith(config.KITSU_ID_PREFIX)
+        and not meta_id.startswith(config.MAL_ID_PREFIX)
+        and (parsed := parse_cinemeta_id(meta_id)) is not None
+    ):
+        identifier_type, identifier, season, episode = parsed
+        resolution = resolve_inbound(
+            identifier_type=identifier_type,
+            identifier=identifier,
+            season=season if season is not None else 1,
+            episode=episode if episode is not None else 1,
+        )
+        if resolution is None:
+            return await respond_with(
+                {"meta": {}},
+                cache_max_age=config.META_ON_INVALID_DURATION,
+                stale_revalidate=config.META_ON_INVALID_DURATION,
+                stale_error=config.META_ON_INVALID_DURATION,
+                stremio_response=True,
+            )
+
     user, error = get_valid_user(user_id)
     if error:
         return await respond_with({"meta": {}, "message": error})
@@ -68,22 +94,7 @@ async def addon_meta(user_id: str, meta_type: str, meta_id: str):
             kitsu_anime = await _resolve_kitsu_anime_by_mal_id(
                 meta_id, user, mal_service, kitsu_service
             )
-        elif (parsed := parse_cinemeta_id(meta_id)) is not None:
-            identifier_type, identifier, season, episode = parsed
-            resolution = resolve_inbound(
-                identifier_type=identifier_type,
-                identifier=identifier,
-                season=season if season is not None else 1,
-                episode=episode if episode is not None else 1,
-            )
-            if resolution is None:
-                return await respond_with(
-                    {"meta": {}},
-                    cache_max_age=config.META_ON_INVALID_DURATION,
-                    stale_revalidate=config.META_ON_INVALID_DURATION,
-                    stale_error=config.META_ON_INVALID_DURATION,
-                    stremio_response=True,
-                )
+        elif resolution is not None:
             kitsu_anime = await _resolve_kitsu_anime_by_mal_id(
                 f"{config.MAL_ID_PREFIX}{resolution.mal_id}",
                 user,
