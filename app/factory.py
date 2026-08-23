@@ -5,6 +5,7 @@ from app.routes.content_sync import content_sync_bp
 from app.routes.manifest import manifest_blueprint
 from app.routes.meta import meta_bp
 from app.routes.ui import ui_bp
+from app.services.cinemeta_service import CinemetaService
 from app.services.kitsu_service import KitsuService
 from app.services.mal_service import MalService
 
@@ -21,4 +22,5 @@ def create_app() -> App:
 
     app_.mal = MalService()
     app_.kitsu = KitsuService()
+    app_.cinemeta = CinemetaService()
     return app_

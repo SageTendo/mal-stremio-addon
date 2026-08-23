@@ -26,7 +26,7 @@ from app.lib.content_sync import (
 )
 from app.lib.metadata import parse_background, to_stremio_genres
 from app.routes import manifest
-from app.services.anime_mapping import get_cinemeta_from_mal_id
+from app.services.anime_mapping import format_cinemeta_id, resolve_outbound
 from config import Config
 
 MAL_CALLBACK_URL = f"{Config.PROTOCOL}://{Config.REDIRECT_URL}/callback"
@@ -352,9 +352,13 @@ class MalService:
         if not self._client:
             raise RuntimeError("MAL client not initialized")
 
-        exists, (key, local_mapping_id) = get_cinemeta_from_mal_id(mal_id)
-        if exists:
-            if key == "imdb":
-                return local_mapping_id
-            return f"{key}:{local_mapping_id}"
+        mal_id = re.sub(r"[^0-9]", "", str(mal_id))
+        if not mal_id:
+            return None
+
+        mapping = resolve_outbound(mal_id=int(mal_id))
+        if mapping.source in ("imdb", "tvdb", "tmdb"):
+            return format_cinemeta_id(mapping.source, mapping.identifier)
+        if mapping.source == "kitsu":
+            return f"{config.KITSU_ID_PREFIX}{mapping.identifier}"
         return None

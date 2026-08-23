@@ -11,6 +11,17 @@ from mal import MEDIA_TYPE
 import config
 from app.lib.metadata import to_stremio_genres
 from app.routes import manifest
+from app.services.anime_mapping import (
+    ResolvedMapping,
+    compute_flat_season_episode,
+    format_cinemeta_id,
+    resolve_outbound,
+)
+from app.services.cinemeta_service import (
+    CinemetaService,
+    compute_per_season_counts,
+    place_episode,
+)
 
 KITSU_CLIENT_ID = os.environ.get("KITSU_ID")
 KITSU_CLIENT_SECRET = os.environ.get("KITSU_SECRET")
@@ -70,14 +81,38 @@ class KitsuService:
             return results[0]
         return self._best_match_by_title(results, query)
 
-    async def _get_video_metadata(self, anime: kitsu.Anime) -> Optional[list[dict]]:
+    async def _get_video_metadata(
+        self, anime: kitsu.Anime, cinemeta_service: Optional[CinemetaService] = None
+    ) -> Optional[list[dict]]:
+        mapping = resolve_outbound(kitsu_id=int(anime.id))
+        season_episode_for = await self._season_episode_resolver(
+            mapping, cinemeta_service
+        )
+        is_cinemeta_id = mapping.source in ("imdb", "tvdb", "tmdb")
+
+        if is_cinemeta_id:
+            id_prefix = format_cinemeta_id(mapping.source, mapping.identifier)
+        else:
+            id_prefix = f"{config.KITSU_ID_PREFIX}{anime.id}"
+
+        def video_id_for(
+            absolute_episode: int, season: int, episode_number: int
+        ) -> str:
+            # Cinemeta-style ids are season-aware (id:season:episode); the
+            # kitsu/mal fallback keeps the flat id:episode shape that
+            # content_sync.py's absolute-numbering parser expects.
+            if is_cinemeta_id:
+                return f"{id_prefix}:{season}:{episode_number}"
+            return f"{id_prefix}:{absolute_episode}"
+
         if anime.subtype == "movie":
+            season, episode_number = season_episode_for(1)
             return [
                 await self._populate_video_metadata(
-                    video_id=f"{config.KITSU_ID_PREFIX}{anime.id}",
+                    video_id=video_id_for(1, season, episode_number),
                     title=anime.canonical_title or anime.title or "Episode 1",
-                    episode_number=1,
-                    season=1,
+                    episode_number=episode_number,
+                    season=season,
                     thumbnail=anime.poster_image("large") or anime.poster_image(),
                     overview=anime.synopsis,
                     release=anime.start_date,
@@ -91,18 +126,21 @@ class KitsuService:
                 else 0
             )
 
-            return [
-                await self._populate_video_metadata(
-                    video_id=f"{config.KITSU_ID_PREFIX}{anime.id}:{episode_number}",
-                    title=f"Episode {episode_number}",
-                    episode_number=episode_number,
-                    season=1,
-                    thumbnail=anime.cover_image("tiny") or "",
-                    overview="",
-                    release=None,
+            videos = []
+            for absolute_episode in range(1, episode_count + 1):
+                season, episode_number = season_episode_for(absolute_episode)
+                videos.append(
+                    await self._populate_video_metadata(
+                        video_id=video_id_for(absolute_episode, season, episode_number),
+                        title=f"Episode {absolute_episode}",
+                        episode_number=episode_number,
+                        season=season,
+                        thumbnail=anime.cover_image("tiny") or "",
+                        overview="",
+                        release=None,
+                    )
                 )
-                for episode_number in range(1, episode_count + 1)
-            ]
+            return videos
 
         episodes = []
         for episode in anime.episodes:
@@ -112,17 +150,59 @@ class KitsuService:
                 or f"Episode {episode.number}"
             )
 
+            absolute_episode = episode.number or 0
+            season, episode_number = season_episode_for(absolute_episode)
             episodes.append(
                 await self._populate_video_metadata(
-                    video_id=f"{config.KITSU_ID_PREFIX}{anime.id}:{episode.number}",
+                    video_id=video_id_for(absolute_episode, season, episode_number),
                     title=title,
-                    episode_number=episode.number or 0,
+                    episode_number=episode_number,
+                    season=season,
                     thumbnail=episode.thumbnail,
                     overview=episode.synopsis,
                     release=episode.air_date,
                 )
             )
         return episodes
+
+    async def _season_episode_resolver(
+        self,
+        mapping: ResolvedMapping,
+        cinemeta_service: Optional[CinemetaService],
+    ):
+        """
+        Returns a function placing an absolute (Kitsu-numbered) episode into
+        its season/in-season episode, using real per-season Cinemeta episode
+        counts when available for the IMDB branch, falling back to the flat
+        starting-episode-offset rule otherwise.
+        """
+        per_season_counts: Optional[list[int]] = None
+        if mapping.source == "imdb" and cinemeta_service is not None:
+            videos = await cinemeta_service.get_season_episode_videos(
+                mapping.identifier
+            )
+            if videos:
+                per_season_counts = compute_per_season_counts(
+                    videos=videos,
+                    from_season=mapping.from_season,
+                    from_episode=mapping.from_episode,
+                    next_from_season=mapping.next_from_season,
+                )
+
+        def resolver(absolute_episode: int) -> tuple[int, int]:
+            if per_season_counts:
+                placed = place_episode(
+                    from_season=mapping.from_season,
+                    from_episode=mapping.from_episode,
+                    per_season_counts=per_season_counts,
+                    non_imdb_episodes=mapping.non_imdb_episodes,
+                    absolute_episode=absolute_episode,
+                )
+                if placed is not None:
+                    return placed
+            return compute_flat_season_episode(mapping, absolute_episode)
+
+        return resolver
 
     def _best_match_by_title(
         self, results: list[kitsu.Anime], query: str
@@ -175,6 +255,7 @@ class KitsuService:
         catalog_type: str = "anime",
         catalog_id: str = "plan_to_watch",
         transport_url: str = "",
+        cinemeta_service: Optional[CinemetaService] = None,
     ):
         """
         Convert kitsu anime item to a valid Stremio meta format
@@ -182,6 +263,7 @@ class KitsuService:
         :param catalog_type: The type of catalog being referenced in the link meta object
         :param catalog_id: The id of catalog being referenced in the link meta object
         :param transport_url: The url to the addon's manifest.json
+        :param cinemeta_service: Optional Cinemeta client for real per-season episode counts
         :return: Stremio meta format
         """
         title = anime.title or anime.canonical_title
@@ -224,7 +306,9 @@ class KitsuService:
             elif anime.subtype.lower() == "movie":
                 media_type = "movie"
 
-        videos = await self._get_video_metadata(anime)
+        videos = await self._get_video_metadata(
+            anime, cinemeta_service=cinemeta_service
+        )
         return {
             "id": mal_id,
             "name": title,

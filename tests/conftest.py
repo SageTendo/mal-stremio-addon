@@ -5,6 +5,7 @@ from kitsu import Anime as KitsuAnime
 import pytest
 import pytest_asyncio
 from app.factory import create_app
+from app.services.cinemeta_service import CinemetaService
 from app.services.kitsu_service import KitsuService
 from app.services.mal_service import MalService
 
@@ -323,6 +324,21 @@ class MockKitsuService(KitsuService):
         return KitsuAnime(self.DUMMY_KITSU_RESPONSE)
 
 
+class MockCinemetaService(CinemetaService):
+    def __init__(self):
+        super().__init__()
+        self._client = MagicMock()
+
+    async def start(self):
+        pass
+
+    async def stop(self):
+        pass
+
+    async def get_season_episode_videos(self, imdb_id: str):
+        return None
+
+
 @pytest.fixture
 def test_app():
     """
@@ -335,6 +351,7 @@ def test_app():
     app.mal._client = AsyncMock()
     app.kitsu = MockKitsuService()
     app.kitsu._client = AsyncMock()
+    app.cinemeta = MockCinemetaService()
     return app
 
 

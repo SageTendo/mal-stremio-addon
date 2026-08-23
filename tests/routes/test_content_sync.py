@@ -1,10 +1,11 @@
 import sys
 from datetime import datetime
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 from mal import Anime, WatchStatus
 import pytest
 
+import app.services.anime_mapping as mapping_module
 from app.lib.content_sync import (
     UpdateStatus,
     handle_content_id,
@@ -15,34 +16,101 @@ from config import MAL_ID_PREFIX
 
 
 # ----- ID Handling -----
-def test_handle_mal_id():
-    content_id, episode = handle_content_id(f"{MAL_ID_PREFIX}12345")
+@pytest.mark.asyncio
+async def test_handle_mal_id():
+    content_id, episode = await handle_content_id(f"{MAL_ID_PREFIX}12345")
     assert content_id == "12345"
     assert episode == 1
 
 
-def test_handle_kitsu_id():
-    content_id, episode = handle_content_id("kitsu:1")
+@pytest.mark.asyncio
+async def test_handle_kitsu_id():
+    content_id, episode = await handle_content_id("kitsu:1")
     assert content_id == "1"
     assert episode == 1
 
 
-def test_handle_kitsu_id_with_episode():
-    content_id, episode = handle_content_id("kitsu:1:2")
+@pytest.mark.asyncio
+async def test_handle_kitsu_id_with_episode():
+    content_id, episode = await handle_content_id("kitsu:1:2")
     assert content_id == "1"
     assert episode == 2
 
 
-def test_handle_no_mal_id():
-    content_id, episode = handle_content_id(f"kitsu:{sys.maxsize}")
+@pytest.mark.asyncio
+async def test_handle_no_mal_id():
+    content_id, episode = await handle_content_id(f"kitsu:{sys.maxsize}")
     assert content_id is None
     assert episode == -1
 
 
-def test_handle_invalid_id():
-    content_id, episode = handle_content_id("12345")
+@pytest.mark.asyncio
+async def test_handle_invalid_id():
+    content_id, episode = await handle_content_id("12345")
     assert content_id is None
     assert episode == -1
+
+
+@pytest.mark.asyncio
+async def test_handle_imdb_id_without_season_episode_is_invalid():
+    content_id, episode = await handle_content_id("tt0123456")
+    assert content_id is None
+    assert episode == -1
+
+
+def _stub_single_kitsu_entry(monkeypatch, *, identifier_type, identifier):
+    """Isolate a single fake kitsu-keyed mapping entry for the duration of a
+    test, without disturbing the real mapping data other tests in this file
+    rely on (loaded as a side effect of `test_auth`/`test_catalog` importing
+    `run`)."""
+    entry = mapping_module.MappingEntry(
+        identifier_type=identifier_type,
+        identifier=identifier,
+        kitsu_id=42,
+        from_season=1,
+        from_episode=1,
+    )
+    monkeypatch.setattr(mapping_module, "_kitsu_forward", {42: {identifier_type: entry}})
+    reverse = {t: {} for t in mapping_module.PRIORITY}
+    reverse[identifier_type][identifier] = [entry]
+    monkeypatch.setattr(mapping_module, "_kitsu_reverse", reverse)
+    monkeypatch.setattr(mapping_module, "_mal_forward", {})
+    monkeypatch.setattr(
+        mapping_module, "_mal_reverse", {t: {} for t in mapping_module.PRIORITY}
+    )
+    monkeypatch.setattr(mapping_module, "_kitsu_to_mal", {42: 99})
+
+
+@pytest.mark.asyncio
+async def test_handle_imdb_id_resolves_via_flat_offset(monkeypatch):
+    _stub_single_kitsu_entry(monkeypatch, identifier_type="imdb", identifier="tt0123456")
+
+    content_id, episode = await handle_content_id("tt0123456:1:5")
+    assert content_id == "99"
+    assert episode == 5
+
+
+@pytest.mark.asyncio
+async def test_handle_imdb_id_refines_via_cinemeta_full_fidelity(monkeypatch):
+    _stub_single_kitsu_entry(monkeypatch, identifier_type="imdb", identifier="tt0123456")
+
+    cinemeta_service = AsyncMock()
+    cinemeta_service.get_season_episode_videos.return_value = [
+        {"season": 1, "episode": e} for e in range(1, 13)
+    ] + [{"season": 2, "episode": e} for e in range(1, 14)]
+
+    content_id, episode = await handle_content_id("tt0123456:2:1", cinemeta_service)
+    assert content_id == "99"
+    assert episode == 13
+
+
+@pytest.mark.asyncio
+async def test_handle_tvdb_id_resolves_via_flat_offset(monkeypatch):
+    _stub_single_kitsu_entry(monkeypatch, identifier_type="tvdb", identifier="12345")
+
+    content_id, episode = await handle_content_id("tvdb:12345:1:3")
+    assert content_id == "99"
+    assert episode == 3
 
 
 # ----- Content Sync / Route Tests -----

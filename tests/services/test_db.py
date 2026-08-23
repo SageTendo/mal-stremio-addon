@@ -52,6 +52,28 @@ def test_backend_get_nonexistent_user(backend):
     assert backend.get_user("nonexistent") is None
 
 
+# ── Cache tests (run against both SQLite and Mongo) ────────────────────────────
+
+def test_cache_miss(backend):
+    assert backend.get_cache("missing-key") is None
+
+
+def test_cache_hit(backend):
+    assert backend.set_cache("key", {"a": 1}, 3600) is True
+    assert backend.get_cache("key") == {"a": 1}
+
+
+def test_cache_overwrite(backend):
+    backend.set_cache("key", {"a": 1}, 3600)
+    backend.set_cache("key", {"a": 2}, 3600)
+    assert backend.get_cache("key") == {"a": 2}
+
+
+def test_cache_expiry(backend):
+    backend.set_cache("key", {"a": 1}, -1)
+    assert backend.get_cache("key") is None
+
+
 # ── Service-layer tests (mock db_backend) ─────────────────────────────────────
 
 @patch("app.services.db.db_backend")
