@@ -645,7 +645,7 @@ requires-dist = [
     { name = "python-dotenv" },
     { name = "python-levenshtein", specifier = ">=0.27.1" },
     { name = "quart", specifier = ">=0.20.0" },
-    { name = "quart-compress2", git = "https://github.com/searinminecraft/quart-compress.git?rev=import-fix" },
+    { name = "quart-compress2", git = "https://github.com/SageTendo/quart-compress.git" },
     { name = "requests" },
     { name = "uvicorn", specifier = ">=0.39.0" },
 ]
@@ -1136,7 +1136,7 @@ wheels = [
 [[package]]
 name = "quart-compress2"
 version = "1.1.0"
-source = { git = "https://github.com/searinminecraft/quart-compress.git?rev=import-fix#74306d3d895b103b49c220d1397ed9bc305fdcd9" }
+source = { git = "https://github.com/SageTendo/quart-compress.git#3e3f0886c13fdabf467e2412fbf036e524714d95" }
 dependencies = [
     { name = "quart" },
 ]

@@ -13,9 +13,9 @@ dependencies = [
     "pytest-asyncio>=1.2.0",
     "pytest-mock>=3.15.1",
     "uvicorn>=0.39.0",
-    "quart-compress2",
     "python-levenshtein>=0.27.1",
     "mal-py",
+    "quart-compress2",
 ]
 
 [dependency-groups]
@@ -35,9 +35,9 @@ name = "pypi"
 url = "https://pypi.org/simple"
 
 [tool.uv.sources]
-quart-compress2 = { git = "https://github.com/searinminecraft/quart-compress.git", rev = "import-fix" }
 kitsu-py = { git = "https://github.com/SageTendo/kitsu.py.git" }
 mal-py = { git = "https://github.com/SageTendo/mal.py.git" }
+quart-compress2 = { git = "https://github.com/SageTendo/quart-compress.git" }
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

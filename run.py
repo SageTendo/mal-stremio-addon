@@ -16,12 +16,14 @@ app = create_app()
 async def startup():
     await app.mal.start()
     await app.kitsu.start()
+    await app.cinemeta.start()
 
 
 @app.after_serving
 async def shutdown():
     await app.mal.stop()
     await app.kitsu.stop()
+    await app.cinemeta.stop()
 
 
 if __name__ == "__main__":

@@ -31,6 +31,7 @@ class Config:
     MONGO_URI = os.getenv("MONGO_URI", "")
     MONGO_DB = os.getenv("MONGO_DB", "")
     MONGO_UID_MAP = os.getenv("MONGO_UID_MAP_COLLECTION", "")
+    MONGO_CACHE_COLLECTION = os.getenv("MONGO_CACHE_COLLECTION", "cache")
 
     # Env dependent configs
     if DEBUG in ["1", True, "True"]:  # Local development
@@ -45,10 +46,19 @@ class Config:
 ROOT_DIR = Path(__file__).parent.resolve()
 ANIME_MAPPING_JSON = ROOT_DIR / "data" / "anime-list-mini.json"
 
+# Source: https://raw.githubusercontent.com/TheBeastLT/stremio-kitsu-anime/master/static/data/imdb_mapping.json
+IMDB_MAPPING_JSON = ROOT_DIR / "data" / "imdb_mapping.json"
+IMDB_MAPPING_SOURCE_URL = "https://raw.githubusercontent.com/TheBeastLT/stremio-kitsu-anime/master/static/data/imdb_mapping.json"
+
 # Catalog and Meta Prefixes
 MAL_ID_PREFIX = "mal:"
 KITSU_ID_PREFIX = "kitsu:"
 IMDB_ID_PREFIX = "tt"
+TVDB_ID_PREFIX = "tvdb"
+TMDB_ID_PREFIX = "tmdb"
+
+# Cinemeta
+CINEMETA_BASE_URL = os.getenv("CINEMETA_BASE_URL", "https://v3-cinemeta.strem.io")
 
 # headers for external API requests
 REQ_HEADERS = {
@@ -68,6 +78,7 @@ META_ON_SUCCESS_DURATION = 43200  # 12 hours
 META_ON_INVALID_DURATION = 86400  # 1 day
 CONTENT_SYNC_NO_UPDATE_DURATION = 86400  # 1 day
 CONTENT_SYNC_ON_INVALID_DURATION = 86400  # 1 day
+CINEMETA_CACHE_TTL = 86400  # 1 day
 
 # Addon configuration options
 DEFAULT_SORT_OPTION = "list_updated_at"

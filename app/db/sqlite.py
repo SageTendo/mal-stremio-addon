@@ -1,6 +1,6 @@
 import json
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 
 from app.db import DBBackend
@@ -8,6 +8,14 @@ from config import Config
 
 
 class _SQLiteBackend(DBBackend):
+    _CREATE_CACHE_TABLE = """
+        CREATE TABLE IF NOT EXISTS cache (
+            key TEXT PRIMARY KEY,
+            value TEXT NOT NULL,
+            expires_at TEXT NOT NULL
+        )
+    """
+
     _COLS = (
         "uid",
         "access_token",
@@ -45,6 +53,7 @@ class _SQLiteBackend(DBBackend):
         self._path = Config.SQLITE_PATH
         with self._connect() as con:
             con.execute(self._CREATE_USER_TABLE)
+            con.execute(self._CREATE_CACHE_TABLE)
 
     def _connect(self):
         con = sqlite3.connect(self._path)
@@ -83,6 +92,32 @@ class _SQLiteBackend(DBBackend):
         try:
             with self._connect() as con:
                 con.execute(self._UPSERT_USER, values)
+            return True
+        except sqlite3.Error:
+            return False
+
+    def get_cache(self, key: str) -> Optional[dict]:
+        with self._connect() as con:
+            row = con.execute(
+                "SELECT value, expires_at FROM cache WHERE key = ?", (key,)
+            ).fetchone()
+
+        if not row:
+            return None
+        if datetime.utcnow() > datetime.fromisoformat(row["expires_at"]):
+            return None
+        return json.loads(row["value"])
+
+    def set_cache(self, key: str, value: dict, ttl_seconds: int) -> bool:
+        expires_at = (datetime.utcnow() + timedelta(seconds=ttl_seconds)).isoformat()
+        try:
+            with self._connect() as con:
+                con.execute(
+                    "INSERT INTO cache (key, value, expires_at) VALUES (?, ?, ?) "
+                    "ON CONFLICT(key) DO UPDATE SET value = excluded.value, "
+                    "expires_at = excluded.expires_at",
+                    (key, json.dumps(value), expires_at),
+                )
             return True
         except sqlite3.Error:
             return False

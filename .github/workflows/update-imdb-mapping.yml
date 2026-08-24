@@ -1,0 +1,69 @@
+name: Update IMDB Mapping
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # first of every month at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Fetch and Commit IMDB Mapping
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Fetch imdb_mapping.json
+        run: |
+          curl -fsSL \
+            "https://raw.githubusercontent.com/TheBeastLT/stremio-kitsu-anime/master/static/data/imdb_mapping.json" \
+            -o data/imdb_mapping.json
+
+      - name: Validate JSON
+        run: |
+          python - <<'EOF'
+          import json, sys
+
+          with open("data/imdb_mapping.json") as f:
+              data = json.load(f)
+
+          if not isinstance(data, list) or len(data) == 0:
+              print("ERROR: expected a non-empty JSON array", file=sys.stderr)
+              sys.exit(1)
+
+          required = {"kitsu_id", "imdb_id"}
+          sample = [e for e in data if required.issubset(e)]
+          if not sample:
+              print("ERROR: no entries contain both kitsu_id and imdb_id", file=sys.stderr)
+              sys.exit(1)
+
+          print(f"OK: {len(data)} entries, {len(sample)} with kitsu_id+imdb_id")
+          EOF
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/imdb_mapping.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update imdb mapping from stremio-kitsu-anime
+
+
+            skip-checks: true"
+            git push origin --delete imdb-mapping-update || true
+            git push origin HEAD:refs/heads/imdb-mapping-update
+          fi
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: imdb-mapping-update
+          title: "chore: update imdb mapping from stremio-kitsu-anime"
+          body: "Automated IMDB mapping update. A bad update here can corrupt real users' watch-status syncs — please review before merging."
+          draft: false

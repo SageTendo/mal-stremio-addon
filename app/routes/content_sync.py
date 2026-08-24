@@ -40,6 +40,7 @@ async def addon_content_sync(
     :return: JSON response
     """
     mal_service = get_app().mal
+    cinemeta_service = get_app().cinemeta
 
     content_id = urllib.parse.unquote(content_id)
     if content_type not in MANIFEST["types"]:
@@ -51,7 +52,7 @@ async def addon_content_sync(
             stremio_response=True,
         )
 
-    mal_id, current_episode = handle_content_id(content_id)
+    mal_id, current_episode = await handle_content_id(content_id, cinemeta_service)
     if mal_id is None:
         return await respond_with(
             _create_sync_response(status=UpdateStatus.INVALID_ID),

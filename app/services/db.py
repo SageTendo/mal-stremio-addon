@@ -12,6 +12,14 @@ def store_user(user_details: dict) -> bool:
     return db_backend.store_user(user_details)
 
 
+def get_cache(key: str) -> Optional[dict]:
+    return db_backend.get_cache(key)
+
+
+def set_cache(key: str, value: dict, ttl_seconds: int) -> bool:
+    return db_backend.set_cache(key, value, ttl_seconds)
+
+
 def get_valid_user(user_id: str) -> tuple[dict, Optional[str]]:
     user = get_user(user_id)
     if not user:

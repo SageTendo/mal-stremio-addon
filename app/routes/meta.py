@@ -12,12 +12,32 @@ import config
 from app.app import get_app
 from app.lib.metadata import get_transport_url
 
-from ..services.anime_mapping import get_kitsu_id_from_mal_id
+from ..services.anime_mapping import (
+    get_kitsu_id_from_mal_id,
+    parse_cinemeta_id,
+    resolve_inbound,
+)
 from ..services.db import get_valid_user
+from ..services.kitsu_service import KitsuService
+from ..services.mal_service import MalService
 from .manifest import MANIFEST
 from .utils import log_error, respond_with
 
 meta_bp = Blueprint("meta", __name__)
+
+
+async def _resolve_kitsu_anime_by_mal_id(
+    mal_meta_id: str, user: dict, mal_service: MalService, kitsu_service: KitsuService
+):
+    exists, kitsu_id = get_kitsu_id_from_mal_id(mal_meta_id)
+    if exists:
+        return await kitsu_service.get_anime_by_id(kitsu_id)
+
+    token = user.get("access_token", "")
+    anime = await mal_service.get_anime_details(anime_id=mal_meta_id, token=token)
+    return await kitsu_service.get_anime_by_title(
+        anime.title.english or anime.title.japanese or ""
+    )
 
 
 @meta_bp.route("/<user_id>/meta/<string:meta_type>/<string:meta_id>.json")
@@ -31,19 +51,36 @@ async def addon_meta(user_id: str, meta_type: str, meta_id: str):
     """
     mal_service = get_app().mal
     kitsu_service = get_app().kitsu
-
-    # ignore imdb ids for older versions of mal-stremio
-    if config.IMDB_ID_PREFIX in meta_id:
-        return await respond_with(
-            {"meta": {}},
-            cache_max_age=config.META_ON_INVALID_DURATION,
-            stale_revalidate=config.META_ON_INVALID_DURATION,
-            stale_error=config.META_ON_INVALID_DURATION,
-            stremio_response=True,
-        )
+    cinemeta_service = get_app().cinemeta
 
     if meta_type not in MANIFEST["types"]:
         abort(404)
+
+    # Resolved before touching the DB: a cinemeta-style id with no mapping
+    # (the common case for non-anime movie/series ids Stremio routes here,
+    # since our manifest can't scope idPrefixes to anime-only) is a pure
+    # in-memory miss and shouldn't cost a user lookup.
+    resolution = None
+    if (
+        not meta_id.startswith(config.KITSU_ID_PREFIX)
+        and not meta_id.startswith(config.MAL_ID_PREFIX)
+        and (parsed := parse_cinemeta_id(meta_id)) is not None
+    ):
+        identifier_type, identifier, season, episode = parsed
+        resolution = resolve_inbound(
+            identifier_type=identifier_type,
+            identifier=identifier,
+            season=season if season is not None else 1,
+            episode=episode if episode is not None else 1,
+        )
+        if resolution is None:
+            return await respond_with(
+                {"meta": {}},
+                cache_max_age=config.META_ON_INVALID_DURATION,
+                stale_revalidate=config.META_ON_INVALID_DURATION,
+                stale_error=config.META_ON_INVALID_DURATION,
+                stremio_response=True,
+            )
 
     user, error = get_valid_user(user_id)
     if error:
@@ -54,17 +91,16 @@ async def addon_meta(user_id: str, meta_type: str, meta_id: str):
         if meta_id.startswith(config.KITSU_ID_PREFIX):
             kitsu_anime = await kitsu_service.get_anime_by_id(meta_id)
         elif meta_id.startswith(config.MAL_ID_PREFIX):
-            exists, kitsu_id = get_kitsu_id_from_mal_id(meta_id)
-            if exists:
-                kitsu_anime = await kitsu_service.get_anime_by_id(kitsu_id)
-            else:
-                token = user.get("access_token", "")
-                anime = await mal_service.get_anime_details(
-                    anime_id=meta_id, token=token
-                )
-                kitsu_anime = await kitsu_service.get_anime_by_title(
-                    anime.title.english or anime.title.japanese or ""
-                )
+            kitsu_anime = await _resolve_kitsu_anime_by_mal_id(
+                meta_id, user, mal_service, kitsu_service
+            )
+        elif resolution is not None:
+            kitsu_anime = await _resolve_kitsu_anime_by_mal_id(
+                f"{config.MAL_ID_PREFIX}{resolution.mal_id}",
+                user,
+                mal_service,
+                kitsu_service,
+            )
 
         if not kitsu_anime:
             return (
@@ -81,6 +117,7 @@ async def addon_meta(user_id: str, meta_type: str, meta_id: str):
             mal_id=meta_id,
             anime=kitsu_anime,
             transport_url=transport_url,
+            cinemeta_service=cinemeta_service,
         )
 
         return await respond_with(
