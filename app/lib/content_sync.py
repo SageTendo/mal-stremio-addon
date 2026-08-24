@@ -79,9 +79,12 @@ async def handle_content_id(
     if parsed is None:
         return None, -1
 
-    identifier_type, identifier, season, episode = parsed
-    if season is None or episode is None:
-        return None, -1
+    identifier_type, identifier, parsed_season, parsed_episode = parsed
+    # Movies have no per-episode video ids, so Stremio's subtitle-fetch
+    # callback echoes back the bare meta id with no :season:episode suffix
+    # (see kitsu_service.py's video_id_for) - treat that as episode 1.
+    season = parsed_season if parsed_season is not None else 1
+    episode = parsed_episode if parsed_episode is not None else 1
 
     resolution = resolve_inbound(
         identifier_type=identifier_type,

@@ -52,7 +52,7 @@ async def test_handle_invalid_id():
 
 
 @pytest.mark.asyncio
-async def test_handle_imdb_id_without_season_episode_is_invalid():
+async def test_handle_unmapped_imdb_id_without_season_episode_is_invalid():
     content_id, episode = await handle_content_id("tt0123456")
     assert content_id is None
     assert episode == -1
@@ -111,6 +111,20 @@ async def test_handle_tvdb_id_resolves_via_flat_offset(monkeypatch):
     content_id, episode = await handle_content_id("tvdb:12345:1:3")
     assert content_id == "99"
     assert episode == 3
+
+
+@pytest.mark.asyncio
+async def test_handle_mapped_movie_imdb_id_without_season_episode_resolves_as_episode_one(
+    monkeypatch,
+):
+    """Movies have no per-episode video ids, so Stremio's subtitle-fetch
+    callback echoes back the bare meta id with no :season:episode suffix.
+    That must resolve as episode 1, not be treated as invalid."""
+    _stub_single_kitsu_entry(monkeypatch, identifier_type="imdb", identifier="tt0123456")
+
+    content_id, episode = await handle_content_id("tt0123456")
+    assert content_id == "99"
+    assert episode == 1
 
 
 # ----- Content Sync / Route Tests -----
