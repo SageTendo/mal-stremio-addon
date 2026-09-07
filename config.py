@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -22,12 +23,15 @@ class Config:
     COMPRESS_BR_LEVEL = 4
     DEBUG = os.getenv("FLASK_DEBUG", False)
 
-    # MongoDB
+    # Database backend: "sqlite" (default) or "mongo"
+    DB_BACKEND = os.getenv("DB_BACKEND", "sqlite")
+    SQLITE_PATH = os.getenv("SQLITE_PATH", "./data/app.db")
+
+    # MongoDB (only required when DB_BACKEND=mongo)
     MONGO_URI = os.getenv("MONGO_URI", "")
     MONGO_DB = os.getenv("MONGO_DB", "")
     MONGO_UID_MAP = os.getenv("MONGO_UID_MAP_COLLECTION", "")
-    MONGO_ANIME_DB = os.getenv("MONGO_ANIME_DATABASE", "")
-    MONGO_ANIME_MAP = os.getenv("MONGO_ANIME_MAP_COLLECTION", "")
+    MONGO_CACHE_COLLECTION = os.getenv("MONGO_CACHE_COLLECTION", "cache")
 
     # Env dependent configs
     if DEBUG in ["1", True, "True"]:  # Local development
@@ -38,6 +42,24 @@ class Config:
         REDIRECT_URL = f"{FLASK_HOST}"
 
 
+# Directories
+ROOT_DIR = Path(__file__).parent.resolve()
+ANIME_MAPPING_JSON = ROOT_DIR / "data" / "anime-list-mini.json"
+
+# Source: https://raw.githubusercontent.com/TheBeastLT/stremio-kitsu-anime/master/static/data/imdb_mapping.json
+IMDB_MAPPING_JSON = ROOT_DIR / "data" / "imdb_mapping.json"
+IMDB_MAPPING_SOURCE_URL = "https://raw.githubusercontent.com/TheBeastLT/stremio-kitsu-anime/master/static/data/imdb_mapping.json"
+
+# Catalog and Meta Prefixes
+MAL_ID_PREFIX = "mal:"
+KITSU_ID_PREFIX = "kitsu:"
+IMDB_ID_PREFIX = "tt"
+TVDB_ID_PREFIX = "tvdb"
+TMDB_ID_PREFIX = "tmdb"
+
+# Cinemeta
+CINEMETA_BASE_URL = os.getenv("CINEMETA_BASE_URL", "https://v3-cinemeta.strem.io")
+
 # headers for external API requests
 REQ_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0",
@@ -45,27 +67,18 @@ REQ_HEADERS = {
     "Accept": "application/json",
 }
 
-# LRU Cache sizes
-META_CACHE_SIZE = 25000
-ID_CACHE_SIZE = 50000
-STREAM_CACHE_SIZE = 20000
-
 # Cache durations
 DEFAULT_STALE_WHILE_REVALIDATE = 600  # 10 minutes
 DEFAULT_STALE_IF_ERROR = 300  # 5 minutes
-MANIFEST_DURATION = 3600  # 1 hour
+MANIFEST_DURATION = 3600 * 3  # 3 hours
 CATALOG_ON_SUCCESS_DURATION = 900  # 15 minutes
 CATALOG_STALE_WHILE_REVALIDATE = 300  # 5 minutes
 CATALOG_STALE_IF_ERROR = 86400  # 1 day
-META_ON_SUCCESS_DURATION = 86400 * 30  # 30 days
-META_ON_INVALID_DURATION = 86400 * 365  # 1 year
-STREAM_ON_SUCCESS_DURATION = 3600 * 3  # 3 hours
-STREAM_ON_FAIL_TO_FETCH_DURATION = 3600  # 1 hour
-STREAM_ON_INVALID_DURATION = 86400 * 365  # 1 year
-STREAM_ON_NO_KITSU_ID_DURATION = 86400  # 1 day
-STREAM_STALE_WHILE_REVALIDATE = 5  # 5 seconds
+META_ON_SUCCESS_DURATION = 43200  # 12 hours
+META_ON_INVALID_DURATION = 86400  # 1 day
 CONTENT_SYNC_NO_UPDATE_DURATION = 86400  # 1 day
-CONTENT_SYNC_ON_INVALID_DURATION = 86400 * 365  # 1 year
+CONTENT_SYNC_ON_INVALID_DURATION = 86400  # 1 day
+CINEMETA_CACHE_TTL = 86400  # 1 day
 
 # Addon configuration options
 DEFAULT_SORT_OPTION = "list_updated_at"
@@ -74,4 +87,9 @@ SORT_OPTIONS = {
     "Title": "anime_title",
     "Release Date": "anime_start_date",
     "Score": "list_score",
+}
+DEFAULT_SEASONAL_SORT_OPTION = "anime_num_list_users"
+SEASONAL_SORT_OPTIONS = {
+    "Score": "anime_score",
+    "Popularity": "anime_num_list_users",
 }
