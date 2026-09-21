@@ -95,6 +95,29 @@
                 </div>
             </div>
 
+            <!-- Sort Seasonal Anime -->
+            <div class="accordion-item bg-dark text-white border-secondary">
+                <h2 class="accordion-header" id="headingSeasonalSort">
+                    <button class="accordion-button bg-dark text-white fw-semibold collapsed" type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapseSeasonalSort" aria-expanded="false"
+                            aria-controls="collapseSeasonalSort">
+                        <i class="fa-solid fa-brands fa-pagelines me-2" style="color:#C79EEA"></i>Sort Seasonal Anime List By
+                    </button>
+                </h2>
+                <div id="collapseSeasonalSort" class="accordion-collapse collapse"
+                     aria-labelledby="headingSeasonalSort"
+                     data-bs-parent="#addonOptionsAccordion">
+                    <div class="accordion-body small">
+                        Choose how the seasonal anime catalogue is ordered:
+                        <ul class="ms-3 mb-0">
+                            <li><b>Popularity:</b> Ranked by number of people who added it to their watchlists.</li>
+                            <li><b>Score:</b> Highest rated first</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <!-- Track Unlisted Anime -->
             <div class="accordion-item bg-dark text-white border-secondary">
                 <h2 class="accordion-header" id="headingTrack">
@@ -150,7 +173,7 @@
                     <label
                             class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 mb-2 hover-glow">
                         <span>
-                            <i class="fa-solid fa-clock text-warning me-2"></i>
+                            <i class="fa-solid fa-fw fa-clock text-warning me-2"></i>
                             Show <span class="text-warning fw-semibold">Plan to Watch</span>
                         </span>
                         <input class="form-check-input ms-2" type="checkbox" id="include_plan_to_watch"
@@ -161,7 +184,7 @@
                     <label
                             class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 mb-2 hover-glow">
                         <div>
-                            <i class="fa-solid fa-eye text-success me-2"></i>
+                            <i class="fa-solid fa-fw fa-eye text-success me-2"></i>
                             Show <span class="text-success fw-semibold">Watching</span>
                         </div>
                         <input class="form-check-input ms-2" type="checkbox" id="include_watching"
@@ -172,7 +195,7 @@
                     <label
                             class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 mb-2 hover-glow">
                         <div>
-                            <i class="fa-solid fa-circle-check text-primary me-2"></i>
+                            <i class="fa-solid fa-fw fa-circle-check text-primary me-2"></i>
                             Show <span class="text-primary fw-semibold">Completed</span>
                         </div>
                         <input class="form-check-input ms-2" type="checkbox" id="include_completed"
@@ -183,7 +206,7 @@
                     <label
                             class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 mb-2 hover-glow">
                         <div>
-                            <i class="fa-solid fa-pause-circle text-info me-2"></i>
+                            <i class="fa-solid fa-fw fa-pause-circle text-info me-2"></i>
                             Show <span class="text-info fw-semibold">On-Hold</span>
                         </div>
                         <input class="form-check-input ms-2" type="checkbox" id="include_on_hold" name="include_on_hold"
@@ -191,24 +214,47 @@
                     </label>
 
                     <label
-                            class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 hover-glow">
+                            class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 mb-2 hover-glow">
                         <div>
-                            <i class="fa-solid fa-xmark-circle text-danger me-2"></i>
+                            <i class="fa-solid fa-fw fa-xmark-circle text-danger me-2"></i>
                             Show <span class="text-danger fw-semibold">Dropped</span>
                         </div>
                         <input class="form-check-input ms-2" type="checkbox" id="include_dropped" name="include_dropped"
                                {% if no_catalogs or ("dropped" in user_catalogs) %}checked{% endif %}>
+                    </label>
+
+                    <label
+                            class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center rounded-2 hover-glow">
+                        <div>
+                            <i class="fa-solid fa-fw fa-brands fa-pagelines bg-purple me-2" style="color:#C79EEA"></i>
+                            Show <span class="bg-purple fw-semibold" style="color:#C79EEA">Seasonal</span>
+                        </div>
+                        <input class="form-check-input ms-2" type="checkbox" id="include_seasonal" name="include_seasonal"
+                               {% if no_catalogs or ("seasonal" in user_catalogs) %}checked{% endif %}>
                     </label>
                 </div>
             </div>
         </div>
 
         <!-- Sorting -->
-        <label for="sort_watchlist">Sort watchlists by:</label>
+        <label for="sort_watchlist">Sort User Watchlists By:</label>
         <select id="sort_watchlist" name="sort_watchlist" class="form-control-plaintext bg-dark text-white"
                 aria-label="Default select example">
             {% set selected_value = user.get('sort_watchlist', config.DEFAULT_SORT_OPTION) %}
             {% for key, value in sort_options.items() %}
+                <option value="{{ value }}" {% if value == selected_value %}selected{% endif %}>
+                    {{ key }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <br>
+        <!-- Seasonal Sorting -->
+        <label for="sort_seasonal">Sort Seasonal Anime List By:</label>
+        <select id="sort_seasonal" name="sort_seasonal" class="form-control-plaintext bg-dark text-white"
+                aria-label="Default select example">
+            {% set selected_value = user.get('sort_seasonal', config.DEFAULT_SEASONAL_SORT_OPTION) %}
+            {% for key, value in seasonal_sort_options.items() %}
                 <option value="{{ value }}" {% if value == selected_value %}selected{% endif %}>
                     {{ key }}
                 </option>

@@ -1,21 +1,21 @@
 import datetime
 import logging
 
-from flask import Response, flash, jsonify, make_response, redirect, request, url_for
+from quart import Response, flash, jsonify, redirect, request, url_for
 from requests import HTTPError
 
 
-def handle_auth_error(err: HTTPError) -> Response:
+async def handle_auth_error(err: HTTPError):
     """
     Handles auth related errors from MyAnimeList and notify the user
     """
     if not err.response:
-        flash(
+        await flash(
             "No valid response received from MyAnimeList. The service might be down, please try again later.",
             "danger",
         )
         log_error("INVALID_RESPONSE", str(err), "No valid response from MAL", 500)
-        return make_response(redirect(url_for("index")))
+        return redirect(url_for("ui.index"))
 
     code = err.response.status_code
     body = err.response.text.strip()
@@ -27,12 +27,12 @@ def handle_auth_error(err: HTTPError) -> Response:
             "message", "Unknown error occurred when tyring to access MyAnimeList"
         )
         hint = response.get("hint", "No hint field in response")
-        flash(message, "danger")
+        await flash(message, "danger")
         log_error(error_label, message, hint, code)
     except ValueError:
-        flash("Invalid response received from MyAnimeList.", "danger")
+        await flash("Invalid response received from MyAnimeList.", "danger")
         log_error("INVALID_JSON", "Empty or invalid JSON response from MAL", body, code)
-    return make_response(redirect(url_for("index")))
+    return redirect(url_for("ui.index"))
 
 
 def handle_api_error(err: HTTPError):
@@ -59,7 +59,7 @@ def log_error(error_label: str, message: str, hint: str, code: int = 0):
     )
 
 
-def respond_with(
+async def respond_with(
     data: dict,
     private: bool = False,
     cache_max_age: int = 0,
@@ -86,8 +86,8 @@ def respond_with(
     if cache_max_age > 0:
         resp.content_type = "application/json; charset=utf-8"
         resp.vary = "Accept-Encoding"
-        resp.add_etag(True)
-        resp.make_conditional(request)
+        await resp.add_etag(True)
+        await resp.make_conditional(request)
 
         # Set Expires header with correct format
         expires = datetime.datetime.utcnow() + datetime.timedelta(seconds=cache_max_age)
@@ -98,9 +98,11 @@ def respond_with(
             "private" if private else "public",
             f"max-age={cache_max_age}",
             f"s-maxage={cache_max_age}" if not private else "",
-            f"stale-while-revalidate={stale_revalidate}"
-            if stale_revalidate > 0
-            else "",
+            (
+                f"stale-while-revalidate={stale_revalidate}"
+                if stale_revalidate > 0
+                else ""
+            ),
             f"stale-if-error={stale_error}" if stale_error > 0 else "",
         ]
         resp.headers["Cache-Control"] = ", ".join(filter(None, cache_control))
