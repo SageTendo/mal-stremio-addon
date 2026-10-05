@@ -1,0 +1,43 @@
+[project]
+name = "MAL-Stremio-Addon"
+version = "0.0.1"
+requires-python = ">=3.12"
+dependencies = [
+    "backports.entry-points-selectable",
+    "lxml",
+    "python-dotenv",
+    "pymongo",
+    "requests",
+    "kitsu-py",
+    "quart>=0.20.0",
+    "pytest-asyncio>=1.2.0",
+    "pytest-mock>=3.15.1",
+    "uvicorn>=0.39.0",
+    "python-levenshtein>=0.27.1",
+    "mal-py",
+    "quart-compress2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-order",
+    "ruff==0.12.4",
+    "pytest-watcher",
+    "mongomock>=4.3.0",
+]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+
+[tool.uv.sources]
+kitsu-py = { git = "https://github.com/SageTendo/kitsu.py.git" }
+mal-py = { git = "https://github.com/SageTendo/mal.py.git" }
+quart-compress2 = { git = "https://github.com/SageTendo/quart-compress.git" }
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
