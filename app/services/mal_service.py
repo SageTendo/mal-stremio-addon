@@ -304,13 +304,14 @@ class MalService:
         if score := anime.mean:
             mean_score = str(score)
 
-        start_date: Optional[str] = None
+        release_info: Optional[str] = None
         if anime.start_date:
-            start_date = str(anime.start_date.year)
-            start_date += "-"
+            release_info = str(anime.start_date.year)
 
-            if anime.end_date:
-                start_date += str(anime.end_date.year)
+            if anime.end_date is None:
+                release_info += "-"
+            elif anime.end_date.year > anime.start_date.year:
+                release_info += f"-{anime.end_date.year}"
 
         picture_objects = anime.pictures("large") or anime.pictures("medium")
         background = parse_background(picture_objects)
@@ -339,7 +340,7 @@ class MalService:
             "poster": poster,
             "background": background if background else poster,
             "imdbRating": mean_score,
-            "releaseInfo": start_date,
+            "releaseInfo": release_info,
             "description": synopsis,
         }
 

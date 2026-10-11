@@ -44,7 +44,7 @@ def _meta_asserts(response_data):
         ]
 
         assert "releaseInfo" in anime
-        assert anime["releaseInfo"] in ["2002-", "2002-2002", None]
+        assert anime["releaseInfo"] in ["2002-", "2002", None]
 
         assert "description" in anime
         assert anime["description"] in [
