@@ -62,11 +62,94 @@
     "kitsu_id": 12,
     "imdb_id": "tt0388629",
     "title": "One Piece",
-    "nonImdbEpisodes": [
-      590
-    ],
+    "nonImdbEpisodes": [590],
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45690,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 40,
+    "imdbEpisodes": [40, 41, 49, 50]
+  },
+  {
+    "kitsu_id": 46215,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 42
+  },
+  {
+    "kitsu_id": 46447,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 43
+  },
+  {
+    "kitsu_id": 46629,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 44
+  },
+  {
+    "kitsu_id": 47643,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 45
+  },
+  {
+    "kitsu_id": 48291,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 47
+  },
+  {
+    "kitsu_id": 47642,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 48
+  },
+  {
+    "kitsu_id": 49212,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 51
+  },
+  {
+    "kitsu_id": 48727,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 52
+  },
+  {
+    "kitsu_id": 48726,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 53
+  },
+  {
+    "kitsu_id": 48969,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 54
+  },
+  {
+    "kitsu_id": 49133,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 55
   },
   {
     "kitsu_id": 49229,
@@ -83,6 +166,48 @@
     "fromEpisode": 57
   },
   {
+    "kitsu_id": 49878,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 58
+  },
+  {
+    "kitsu_id": 49911,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 59
+  },
+  {
+    "kitsu_id": 50022,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 60
+  },
+  {
+    "kitsu_id": 50130,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 61
+  },
+  {
+    "kitsu_id": 50262,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 62
+  },
+  {
+    "kitsu_id": 50372,
+    "imdb_id": "tt0388629",
+    "title": "One Piece",
+    "fromSeason": 0,
+    "fromEpisode": 63
+  },
+  {
     "kitsu_id": 13,
     "imdb_id": "tt0466352",
     "title": "The Prince of Tennis",
@@ -97,7 +222,7 @@
   {
     "kitsu_id": 15,
     "imdb_id": "tt0878037",
-    "fanartLogoId": "43651",
+    "fanartLogoId": "2841",
     "title": "School Rumble",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -261,8 +386,8 @@
     "imdb_id": "tt0872301",
     "fanartLogoId": "116243",
     "title": "Ah! My Goddess",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 25
   },
   {
     "kitsu_id": 7780,
@@ -445,7 +570,7 @@
   {
     "kitsu_id": 11460,
     "imdb_id": "tt0328739",
-    "fanartLogoId": "87000",
+    "fanartLogoId": "102891",
     "title": "Full Metal Panic!",
     "fromSeason": 4,
     "fromEpisode": 1
@@ -683,7 +808,8 @@
     "imdb_id": "tt0434694",
     "title": "Mobile Suit Gundam Seed Destiny",
     "fromSeason": 0,
-    "fromEpisode": 7
+    "fromEpisode": 7,
+    "imdbEpisodes": [7, null, null]
   },
   {
     "kitsu_id": 1117,
@@ -771,6 +897,13 @@
     "kitsu_id": 82,
     "imdb_id": "tt0108689",
     "title": "Akazukin Chacha"
+  },
+  {
+    "kitsu_id": 334,
+    "imdb_id": "tt0108689",
+    "title": "Akazukin Chacha",
+    "fromSeason": 0,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 83,
@@ -1371,13 +1504,6 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 167,
-    "imdb_id": "tt0279570",
-    "title": "Love Hina",
-    "fromSeason": 0,
-    "fromEpisode": 5
-  },
-  {
     "kitsu_id": 168,
     "imdb_id": "tt0279570",
     "title": "Love Hina Christmas Special: Silent Eve",
@@ -1392,6 +1518,13 @@
     "fromEpisode": 2
   },
   {
+    "kitsu_id": 167,
+    "imdb_id": "tt0279570",
+    "title": "Love Hina",
+    "fromSeason": 0,
+    "fromEpisode": 5
+  },
+  {
     "kitsu_id": 170,
     "imdb_id": "tt0399990",
     "title": "Maburaho"
@@ -1404,7 +1537,16 @@
   {
     "kitsu_id": 172,
     "imdb_id": "tt0366848",
-    "title": "Please Teacher!"
+    "title": "Please Teacher!",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 406,
+    "imdb_id": "tt0983133",
+    "title": "Please Teacher!",
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 173,
@@ -1896,7 +2038,7 @@
   {
     "kitsu_id": 232,
     "imdb_id": "tt0486171",
-    "fanartLogoId": "48791",
+    "fanartLogoId": "96065",
     "title": "Ikki tosen: Dragon Destiny",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -1944,7 +2086,7 @@
   {
     "kitsu_id": 5365,
     "imdb_id": "tt0486171",
-    "fanartLogoId": "96247",
+    "fanartLogoId": "132925",
     "title": "Ikki tosen: Dragon Destiny",
     "fromSeason": 0,
     "fromEpisode": 13
@@ -1959,6 +2101,7 @@
   {
     "kitsu_id": 13220,
     "imdb_id": "tt0486171",
+    "fanartLogoId": "173986",
     "title": "Ikki tosen: Dragon Destiny",
     "fromSeason": 0,
     "fromEpisode": 20
@@ -1966,7 +2109,7 @@
   {
     "kitsu_id": 42005,
     "imdb_id": "tt0486171",
-    "fanartLogoId": "42005",
+    "fanartLogoId": "99047",
     "title": "Ikki tosen: Dragon Destiny",
     "fromSeason": 0,
     "fromEpisode": 22
@@ -1998,31 +2141,31 @@
     "kitsu_id": 238,
     "imdb_id": "tt0481256",
     "fanartLogoId": "131847",
-    "title": "Hajime no Ippo",
+    "title": "Fighting Spirit",
     "fromSeason": 1,
     "fromEpisode": 1
   },
   {
     "kitsu_id": 4016,
     "imdb_id": "tt0481256",
-    "fanartLogoId": "55113",
-    "title": "Hajime no Ippo",
+    "fanartLogoId": "196808",
+    "title": "Fighting Spirit",
     "fromSeason": 2,
     "fromEpisode": 1
   },
   {
     "kitsu_id": 7855,
     "imdb_id": "tt0481256",
-    "fanartLogoId": "55114",
-    "title": "Hajime no Ippo",
+    "fanartLogoId": "174596",
+    "title": "Fighting Spirit",
     "fromSeason": 3,
     "fromEpisode": 1
   },
   {
     "kitsu_id": 6660,
     "imdb_id": "tt0481256",
-    "fanartLogoId": "131847",
-    "title": "Hajime no Ippo",
+    "fanartLogoId": "91116",
+    "title": "Fighting Spirit",
     "fromSeason": 0,
     "fromEpisode": 1
   },
@@ -2084,6 +2227,15 @@
     "fanartLogoId": "157743",
     "title": "Bleach: Thousand Year Blood War",
     "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49444,
+    "imdb_id": "tt14986406",
+    "tvdb_id": "74796",
+    "fanartLogoId": "157743",
+    "title": "Bleach: Thousand Year Blood War",
+    "fromSeason": 4,
     "fromEpisode": 1
   },
   {
@@ -2268,6 +2420,13 @@
     "kitsu_id": 264,
     "imdb_id": "tt0447582",
     "title": "Comic Party"
+  },
+  {
+    "kitsu_id": 640,
+    "imdb_id": "tt0447582",
+    "title": "Comic Party",
+    "fromSeason": 2,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 265,
@@ -2489,7 +2648,9 @@
   {
     "kitsu_id": 299,
     "imdb_id": "tt0330592",
-    "title": "Mahôjin guru guru"
+    "title": "Mahôjin guru guru",
+    "fromSeason": 2,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 300,
@@ -2510,6 +2671,13 @@
     "kitsu_id": 303,
     "imdb_id": "tt1183586",
     "title": "Meine Liebe"
+  },
+  {
+    "kitsu_id": 692,
+    "imdb_id": "tt1183586",
+    "title": "Meine Liebe",
+    "fromSeason": 2,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 304,
@@ -2773,9 +2941,18 @@
     "title": "Agent Aika"
   },
   {
-    "kitsu_id": 334,
-    "imdb_id": "tt0108689",
-    "title": "Akazukin Chacha"
+    "kitsu_id": 3758,
+    "imdb_id": "tt0270758",
+    "title": "Agent Aika",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 4979,
+    "imdb_id": "tt0270758",
+    "title": "Agent Aika",
+    "fromSeason": 0,
+    "fromEpisode": 3
   },
   {
     "kitsu_id": 335,
@@ -2957,13 +3134,6 @@
   },
   {
     "kitsu_id": 366
-  },
-  {
-    "kitsu_id": 367,
-    "imdb_id": "tt0266171",
-    "title": "Outlaw Star",
-    "fromSeason": 1,
-    "fromEpisode": 0
   },
   {
     "kitsu_id": 368,
@@ -3214,13 +3384,6 @@
     "kitsu_id": 1941,
     "imdb_id": "tt1071815",
     "title": "Naruto the Movie 3: Guardians of the Crescent Moon Kingdom"
-  },
-  {
-    "kitsu_id": 406,
-    "imdb_id": "tt0983133",
-    "title": "MPlease Teacher!",
-    "fromSeason": 1,
-    "fromEpisode": 13
   },
   {
     "kitsu_id": 407
@@ -3583,8 +3746,8 @@
     "kitsu_id": 7263,
     "imdb_id": "tt2363624",
     "title": "Yu-Gi-Oh! Zexal",
-    "fromSeason": 2,
-    "fromEpisode": 25
+    "fromSeason": 4,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 444,
@@ -3917,7 +4080,7 @@
     "imdb_id": "tt0168366",
     "title": "Pokémon",
     "fromSeason": 0,
-    "fromEpisode": 83
+    "fromEpisode": 82
   },
   {
     "kitsu_id": 5334,
@@ -4363,36 +4526,36 @@
     "kitsu_id": 499,
     "imdb_id": "tt0105559",
     "title": "Tenchi Muyo!",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 8
   },
   {
     "kitsu_id": 500,
     "imdb_id": "tt0105559",
     "title": "Tenchi Muyo!",
-    "fromSeason": 3,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 1028,
     "imdb_id": "tt0105559",
     "title": "Tenchi Muyo!",
-    "fromSeason": 3,
-    "fromEpisode": 7
+    "fromSeason": 1,
+    "fromEpisode": 20
   },
   {
     "kitsu_id": 11451,
     "imdb_id": "tt0105559",
     "title": "Tenchi Muyo!",
-    "fromSeason": 4,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 21
   },
   {
     "kitsu_id": 42491,
     "imdb_id": "tt0105559",
     "title": "Tenchi Muyo!",
-    "fromSeason": 5,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 25
   },
   {
     "kitsu_id": 2485,
@@ -4833,18 +4996,6 @@
     "title": "Vampire Princess Miyu"
   },
   {
-    "kitsu_id": 640,
-    "imdb_id": "tt0447582",
-    "title": "Comic Party"
-  },
-  {
-    "kitsu_id": 637,
-    "imdb_id": "tt0105559",
-    "title": "Tenchi Muyo!",
-    "fromSeason": 1,
-    "fromEpisode": 1
-  },
-  {
     "kitsu_id": 642,
     "imdb_id": "tt1576820",
     "title": "Patapata hikousen no bouken",
@@ -4932,11 +5083,6 @@
     "kitsu_id": 1566,
     "imdb_id": "tt0398617",
     "title": "Zoids Fuzors"
-  },
-  {
-    "kitsu_id": 692,
-    "imdb_id": "tt1183586",
-    "title": "Meine Liebe"
   },
   {
     "kitsu_id": 693,
@@ -5179,7 +5325,8 @@
     "imdb_id": "tt0978215",
     "title": "Utawarerumono",
     "fromSeason": 0,
-    "fromEpisode": 7
+    "fromEpisode": 7,
+    "imdbEpisodes": [7, 8, 9, 10]
   },
   {
     "kitsu_id": 41429,
@@ -5293,6 +5440,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 1686,
+    "imdb_id": "tt0810705",
+    "title": "Nana",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 778,
     "imdb_id": "tt0972751",
     "title": "Zegapain"
@@ -5360,17 +5514,17 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 1236,
+    "kitsu_id": 3600,
     "imdb_id": "tt0143007",
     "title": "King of the Braves GaoGaiGar",
     "fromSeason": 2,
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 3600,
+    "kitsu_id": 1236,
     "imdb_id": "tt0143007",
     "title": "King of the Braves GaoGaiGar",
-    "fromSeason": 3,
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -5566,7 +5720,7 @@
     "imdb_id": "tt0988818",
     "title": "Gintama",
     "fromSeason": 0,
-    "fromEpisode": 8
+    "fromEpisode": 12
   },
   {
     "kitsu_id": 43829,
@@ -6118,8 +6272,8 @@
     "kitsu_id": 989,
     "imdb_id": "tt1634548",
     "title": "Marriage of God & Soul Godannar!! ",
-    "fromSeason": 1,
-    "fromEpisode": 14
+    "fromSeason": 2,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 992,
@@ -6489,7 +6643,7 @@
     "imdb_id": "tt2152368",
     "title": "Saint Seiya: The Lost Canvas",
     "fromSeason": 1,
-    "fromEpisode": 13
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 6850,
@@ -6810,7 +6964,7 @@
     "kitsu_id": 1810,
     "imdb_id": "tt4164662",
     "title": "You're Under Arrest: Mini Specials",
-    "fromSeason": 3,
+    "fromSeason": 1,
     "fromEpisode": 1
   },
   {
@@ -7132,11 +7286,6 @@
     "kitsu_id": 1384,
     "imdb_id": "tt0878633",
     "title": "Brighter Than the Dawning Blue"
-  },
-  {
-    "kitsu_id": 1387,
-    "imdb_id": "tt0480493",
-    "title": "Negima!"
   },
   {
     "kitsu_id": 1389,
@@ -7477,11 +7626,6 @@
     "kitsu_id": 1486,
     "imdb_id": "tt0981247",
     "title": "Oroshitate Musical Nerima Daikon Brothers"
-  },
-  {
-    "kitsu_id": 1487,
-    "imdb_id": "tt2296348",
-    "title": "The Pet Girl of Sakurasou"
   },
   {
     "kitsu_id": 1488,
@@ -8703,7 +8847,7 @@
     "kitsu_id": 2182,
     "imdb_id": "tt0236924",
     "title": "Sazae-san",
-    "fromSeason": 1,
+    "fromSeason": 1969,
     "fromEpisode": 1
   },
   {
@@ -9205,7 +9349,9 @@
   {
     "kitsu_id": 2501,
     "imdb_id": "tt5009268",
-    "title": "Monkî tân"
+    "title": "Monkî tân",
+    "fromSeason": 2,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 2504,
@@ -10015,7 +10161,7 @@
     "fanartLogoId": "61773",
     "title": "Nogizaka Haruka no himitsu",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 3033,
@@ -10091,7 +10237,7 @@
     "kitsu_id": 4259,
     "imdb_id": "tt1524993",
     "title": "Kodai Oja Kyoryu Kingu",
-    "fromSeason": 1,
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -10455,6 +10601,7 @@
   {
     "kitsu_id": 47678,
     "imdb_id": "tt1352421",
+    "fanartLogoId": "200685",
     "title": "Natsume's Book of Friends",
     "fromSeason": 7,
     "fromEpisode": 1
@@ -10674,8 +10821,8 @@
     "kitsu_id": 4455,
     "imdb_id": "tt1356884",
     "title": "White Album",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 7697,
@@ -11414,11 +11561,6 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 4582,
-    "imdb_id": "tt0189254",
-    "title": "Cutey Honey Flash"
-  },
-  {
     "kitsu_id": 4597
   },
   {
@@ -11433,7 +11575,8 @@
     "imdb_id": "tt1639109",
     "title": "Angel Beats!",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 1,
+    "imdbEpisodes": [1, 3]
   },
   {
     "kitsu_id": 6019,
@@ -11898,6 +12041,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 5827,
+    "imdb_id": "tt1690400",
+    "title": "The Legend of the Legendary Heroes",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 5194,
     "imdb_id": "tt1794963",
     "title": "Fafner in the Azure: Heaven and Earth"
@@ -12064,18 +12214,18 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 5943,
-    "imdb_id": "tt1685397",
-    "title": "Amagami SS",
-    "fromSeason": 0,
-    "fromEpisode": 7
-  },
-  {
     "kitsu_id": 6785,
     "imdb_id": "tt1685397",
     "title": "Amagami SS",
     "fromSeason": 0,
     "fromEpisode": 8
+  },
+  {
+    "kitsu_id": 5943,
+    "imdb_id": "tt1685397",
+    "title": "Amagami SS",
+    "fromSeason": 0,
+    "fromEpisode": 18
   },
   {
     "kitsu_id": 5443,
@@ -12125,11 +12275,12 @@
     "imdb_id": "tt1751305",
     "title": "Oreimo: My Little Sister Can't Be This Cute?",
     "fromSeason": 0,
-    "fromEpisode": 38
+    "fromEpisode": 21
   },
   {
     "kitsu_id": 5497,
     "imdb_id": "tt1727444",
+    "fanartLogoId": "63431",
     "title": "Panty & Stocking with Garterbelt",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -12137,9 +12288,10 @@
   {
     "kitsu_id": 46227,
     "imdb_id": "tt1727444",
+    "fanartLogoId": "208369",
     "title": "Panty & Stocking with Garterbelt",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 6326,
@@ -12827,6 +12979,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 6358,
+    "imdb_id": "tt1987179",
+    "title": "Croisée in a Foreign Labyrinth -The Animation",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 5953,
     "imdb_id": "tt2061527",
     "title": "Tiger & Bunny",
@@ -12972,13 +13131,6 @@
     "title": "Magical Girl Lyrical Nanoha the Movie 2nd A's"
   },
   {
-    "kitsu_id": 6057,
-    "imdb_id": "tt2082624",
-    "title": "Dog Days",
-    "fromSeason": 2,
-    "fromEpisode": 1
-  },
-  {
     "kitsu_id": 6598,
     "imdb_id": "tt2082624",
     "title": "Dog Days",
@@ -12990,6 +13142,13 @@
     "imdb_id": "tt2082624",
     "title": "Dog Days",
     "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 6057,
+    "imdb_id": "tt2082624",
+    "title": "Dog Days",
+    "fromSeason": 1,
     "fromEpisode": 1
   },
   {
@@ -13116,7 +13275,7 @@
   {
     "kitsu_id": 5588,
     "imdb_id": "tt2629754",
-    "fanartLogoId": "110959",
+    "fanartLogoId": "110889",
     "title": "Tamayura: Hitotose",
     "fromSeason": 0,
     "fromEpisode": 1
@@ -13142,6 +13301,27 @@
     "kitsu_id": 6126,
     "imdb_id": "tt2362887",
     "title": "Uta no prince-sama - maji love 1000%"
+  },
+  {
+    "kitsu_id": 6796,
+    "imdb_id": "tt2362887",
+    "title": "Uta no prince-sama - maji love 1000%",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 8143,
+    "imdb_id": "tt2362887",
+    "title": "Uta no prince-sama - maji love 1000%",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 11217,
+    "imdb_id": "tt2362887",
+    "title": "Uta no prince-sama - maji love 1000%",
+    "fromSeason": 4,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 6146,
@@ -13202,6 +13382,13 @@
     "kitsu_id": 6191,
     "imdb_id": "tt7164706",
     "title": "Kimi to Boku"
+  },
+  {
+    "kitsu_id": 6581,
+    "imdb_id": "tt7164706",
+    "title": "Kimi to Boku",
+    "fromSeason": 2,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 6193,
@@ -13347,7 +13534,7 @@
     "imdb_id": "tt2645500",
     "title": "Haganai: I Don't Have Many Friends",
     "fromSeason": 0,
-    "fromEpisode": 2
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 6318,
@@ -13435,7 +13622,7 @@
     "imdb_id": "tt2266660",
     "title": "Koi to senkyo to chokoreto",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 6442,
@@ -13694,7 +13881,8 @@
     "imdb_id": "tt2230051",
     "title": "High School DxD BorN: Yomigaeranai Fushichou",
     "fromSeason": 0,
-    "fromEpisode": 11
+    "fromEpisode": 11,
+    "imdbEpisodes": [11, 12, 13, 14, 16, 17]
   },
   {
     "kitsu_id": 11598,
@@ -13738,13 +13926,6 @@
     "kitsu_id": 6570,
     "imdb_id": "tt2294070",
     "title": "Code: Breaker"
-  },
-  {
-    "kitsu_id": 6581,
-    "imdb_id": "tt7164706",
-    "title": "Kimi to Boku",
-    "fromSeason": 1,
-    "fromEpisode": 1
   },
   {
     "kitsu_id": 6587,
@@ -13926,6 +14107,7 @@
   {
     "kitsu_id": 13894,
     "imdb_id": "tt7978710",
+    "fanartLogoId": "84209",
     "title": "Sword Art Online: Alternative Gun Gale Online",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -13933,6 +14115,7 @@
   {
     "kitsu_id": 47748,
     "imdb_id": "tt7978710",
+    "fanartLogoId": "194590",
     "title": "Sword Art Online: Alternative Gun Gale Online",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -13983,6 +14166,14 @@
     "title": "Kuroko's Basketball",
     "fromSeason": 3,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 8717,
+    "imdb_id": "tt2348803",
+    "title": "Kuroko's Basketball",
+    "fromSeason": 0,
+    "fromEpisode": 13,
+    "imdbEpisodes": [13, 14, 15, 16, 17, 18, 20, 21, 22]
   },
   {
     "kitsu_id": 8261,
@@ -14112,8 +14303,8 @@
     "kitsu_id": 7184,
     "imdb_id": "tt2245880",
     "title": "AKB0048",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 6686,
@@ -14261,11 +14452,6 @@
     "title": "Joshiraku",
     "fromSeason": 1,
     "fromEpisode": 1
-  },
-  {
-    "kitsu_id": 6796,
-    "imdb_id": "tt2362887",
-    "title": "Uta no prince-sama - maji love 1000%"
   },
   {
     "kitsu_id": 6803,
@@ -14448,7 +14634,7 @@
     "imdb_id": "tt1210339",
     "title": "Junjou Romantica",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 3
   },
   {
     "kitsu_id": 7071,
@@ -14477,21 +14663,24 @@
     "imdb_id": "tt2294076",
     "title": "Girls und Panzer",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 1,
+    "imdbEpisodes": [1, 9]
   },
   {
     "kitsu_id": 7315,
     "imdb_id": "tt2294076",
     "title": "Girls und Panzer",
     "fromSeason": 0,
-    "fromEpisode": 2
+    "fromEpisode": 2,
+    "imdbEpisodes": [2, 10, 15, 20, 24, 28]
   },
   {
     "kitsu_id": 7811,
     "imdb_id": "tt2294076",
     "title": "Girls und Panzer",
     "fromSeason": 0,
-    "fromEpisode": 3
+    "fromEpisode": 8,
+    "imdbEpisodes": [8, 11, 16, 21, 25, 29]
   },
   {
     "kitsu_id": 7981,
@@ -14501,11 +14690,39 @@
     "fromEpisode": 34
   },
   {
+    "kitsu_id": 12320,
+    "imdb_id": "tt2294076",
+    "title": "Girls und Panzer",
+    "fromSeason": 0,
+    "fromEpisode": 35
+  },
+  {
+    "kitsu_id": 12203,
+    "imdb_id": "tt2294076",
+    "title": "Girls und Panzer",
+    "fromSeason": 0,
+    "fromEpisode": 38
+  },
+  {
+    "kitsu_id": 42385,
+    "imdb_id": "tt2294076",
+    "title": "Girls und Panzer",
+    "fromSeason": 0,
+    "fromEpisode": 44
+  },
+  {
     "kitsu_id": 42948,
     "imdb_id": "tt2294076",
     "title": "Girls und Panzer",
     "fromSeason": 0,
     "fromEpisode": 46
+  },
+  {
+    "kitsu_id": 45025,
+    "imdb_id": "tt2294076",
+    "title": "Girls und Panzer",
+    "fromSeason": 0,
+    "fromEpisode": 52
   },
   {
     "kitsu_id": 7090,
@@ -14677,13 +14894,6 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 7143,
-    "imdb_id": "tt6163360",
-    "title": "Recorder to Randoseru",
-    "fromSeason": 2,
-    "fromEpisode": 13
-  },
-  {
     "kitsu_id": 7146,
     "imdb_id": "tt2338857",
     "title": "Hiiro no Kakera",
@@ -14775,6 +14985,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 42116,
+    "imdb_id": "tt2359704",
+    "title": "JoJo's Bizarre Adventure",
+    "fromSeason": 0,
+    "fromEpisode": 3
+  },
+  {
+    "kitsu_id": 13306,
+    "imdb_id": "tt2359704",
+    "title": "JoJo's Bizarre Adventure",
+    "fromSeason": 0,
+    "fromEpisode": 8
+  },
+  {
     "kitsu_id": 3136,
     "imdb_id": "tt6490990",
     "title": "JoJo's Bizarre Adventure: Phantom Blood"
@@ -14794,25 +15018,53 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 7293,
+    "kitsu_id": 7556,
     "imdb_id": "tt2321542",
     "title": "Love, Chunibyo & Other Delusions",
     "fromSeason": 0,
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 9132,
+    "imdb_id": "tt2321542",
+    "title": "Love, Chunibyo & Other Delusions",
+    "fromSeason": 0,
+    "fromEpisode": 2
+  },
+  {
+    "kitsu_id": 7293,
+    "imdb_id": "tt2321542",
+    "title": "Love, Chunibyo & Other Delusions",
+    "fromSeason": 0,
+    "fromEpisode": 5
+  },
+  {
+    "kitsu_id": 8154,
+    "imdb_id": "tt2321542",
+    "title": "Love, Chunibyo & Other Delusions",
+    "fromSeason": 0,
+    "fromEpisode": 11
+  },
+  {
+    "kitsu_id": 42215,
+    "imdb_id": "tt2321542",
+    "title": "Love, Chunibyo & Other Delusions",
+    "fromSeason": 0,
+    "fromEpisode": 18
+  },
+  {
     "kitsu_id": 7330,
     "imdb_id": "tt2321542",
     "title": "Love, Chunibyo & Other Delusions",
     "fromSeason": 0,
-    "fromEpisode": 7
+    "fromEpisode": 21
   },
   {
-    "kitsu_id": 7556,
+    "kitsu_id": 8415,
     "imdb_id": "tt2321542",
     "title": "Love, Chunibyo & Other Delusions",
     "fromSeason": 0,
-    "fromEpisode": 14
+    "fromEpisode": 28
   },
   {
     "kitsu_id": 7162,
@@ -14978,6 +15230,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 7828,
+    "imdb_id": "tt2552230",
+    "title": "Maoyuu Maou Yuusha",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 7199,
     "imdb_id": "tt3127798",
     "title": "Corpse Party: Tortured Souls",
@@ -15034,7 +15293,7 @@
     "imdb_id": "tt2595486",
     "title": "Love Live!: School Idol Project",
     "fromSeason": 0,
-    "fromEpisode": 7
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 7205,
@@ -15599,28 +15858,32 @@
     "imdb_id": "tt2560140",
     "title": "Attack on Titan",
     "fromSeason": 0,
-    "fromEpisode": 2
+    "fromEpisode": 2,
+    "imdbEpisodes": [2, 3, 4, 5, 6, 8, 9, 10, 11]
   },
   {
     "kitsu_id": 7694,
     "imdb_id": "tt2560140",
     "title": "Attack on Titan",
     "fromSeason": 0,
-    "fromEpisode": 7
+    "fromEpisode": 7,
+    "imdbEpisodes": [7, 12, 13]
   },
   {
     "kitsu_id": 8674,
     "imdb_id": "tt2560140",
     "title": "Attack on Titan",
     "fromSeason": 0,
-    "fromEpisode": 15
+    "fromEpisode": 15,
+    "imdbEpisodes": [15, 17]
   },
   {
     "kitsu_id": 13718,
     "imdb_id": "tt2560140",
     "title": "Attack on Titan",
     "fromSeason": 0,
-    "fromEpisode": 20
+    "fromEpisode": 20,
+    "imdbEpisodes": [20, 22, 23]
   },
   {
     "kitsu_id": 7446,
@@ -15823,24 +16086,24 @@
     "title": "Leviathan: The Last Defense"
   },
   {
-    "kitsu_id": 6064,
+    "kitsu_id": 7646,
     "imdb_id": "tt4563516",
     "title": "DD Fist of the North Star",
     "fromSeason": 1,
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 7646,
+    "kitsu_id": 11080,
     "imdb_id": "tt4563516",
     "title": "DD Fist of the North Star",
     "fromSeason": 2,
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 11080,
+    "kitsu_id": 6064,
     "imdb_id": "tt4563516",
     "title": "DD Fist of the North Star",
-    "fromSeason": 3,
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -15867,7 +16130,7 @@
     "imdb_id": "tt2250064",
     "title": "So, I Can't Play H!",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 7657,
@@ -16182,6 +16445,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 7143,
+    "imdb_id": "tt6163360",
+    "title": "Recorder to Randoseru",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 8569,
+    "imdb_id": "tt6163360",
+    "title": "Recorder to Randoseru Special",
+    "fromSeason": 0,
+    "fromEpisode": 3
+  },
+  {
     "kitsu_id": 7696,
     "imdb_id": "tt2425098",
     "title": "Magi: The Kingdom of Magic",
@@ -16192,12 +16469,13 @@
     "kitsu_id": 7698,
     "imdb_id": "tt2632048",
     "title": "Kakumeiki Valvrave",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 7699,
     "imdb_id": "tt3105422",
+    "fanartLogoId": "89761",
     "title": "Ace of Diamond",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -16205,6 +16483,7 @@
   {
     "kitsu_id": 10741,
     "imdb_id": "tt3105422",
+    "fanartLogoId": "183053",
     "title": "Ace of Diamond",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -16212,6 +16491,7 @@
   {
     "kitsu_id": 42160,
     "imdb_id": "tt3105422",
+    "fanartLogoId": "131845",
     "title": "Ace of Diamond",
     "fromSeason": 3,
     "fromEpisode": 1
@@ -16219,13 +16499,23 @@
   {
     "kitsu_id": 48878,
     "imdb_id": "tt3105422",
+    "fanartLogoId": "131845",
     "title": "Ace of Diamond",
     "fromSeason": 4,
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50822,
+    "imdb_id": "tt3105422",
+    "fanartLogoId": "131845",
+    "title": "Ace of Diamond",
+    "fromSeason": 4,
+    "fromEpisode": 14
+  },
+  {
     "kitsu_id": 8792,
     "imdb_id": "tt3105422",
+    "fanartLogoId": "89761",
     "title": "Ace of Diamond",
     "fromSeason": 0,
     "fromEpisode": 1
@@ -16233,6 +16523,7 @@
   {
     "kitsu_id": 12725,
     "imdb_id": "tt3105422",
+    "fanartLogoId": "183053",
     "title": "Ace of Diamond",
     "fromSeason": 0,
     "fromEpisode": 4
@@ -16462,11 +16753,39 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 367,
+    "imdb_id": "tt0266171",
+    "title": "Outlaw Star",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 5044,
+    "imdb_id": "tt2716982",
+    "title": "Nura: Rise of the Yokai Clan",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 7728,
     "imdb_id": "tt2716982",
     "title": "Nura: Rise of the Yokai Clan",
     "fromSeason": 2,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 6010,
+    "imdb_id": "tt2716982",
+    "title": "Nura: Rise of the Yokai Clan",
+    "fromSeason": 0,
+    "fromEpisode": 4
+  },
+  {
+    "kitsu_id": 7347,
+    "imdb_id": "tt2716982",
+    "title": "Nura: Rise of the Yokai Clan",
+    "fromSeason": 0,
+    "fromEpisode": 6
   },
   {
     "kitsu_id": 7729,
@@ -16596,6 +16915,20 @@
     "title": "No-Rin"
   },
   {
+    "kitsu_id": 1387,
+    "imdb_id": "tt1187349",
+    "title": "Negima!? Magister Negi Magi",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 637,
+    "imdb_id": "tt30291774",
+    "title": "Tenchi Muyo! Tenchi Universe",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 7786,
     "imdb_id": "tt0115104",
     "title": "Sorcerer Hunters",
@@ -16615,6 +16948,25 @@
     "title": "Sorcerer Hunters",
     "fromSeason": 0,
     "fromEpisode": 4
+  },
+  {
+    "kitsu_id": 1799,
+    "imdb_id": "tt4045154",
+    "title": "Sakura Taisen: Sumire",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 2084,
+    "imdb_id": "tt12737150",
+    "title": "Mobile Suit SD Gundam Mk I"
+  },
+  {
+    "kitsu_id": 2085,
+    "imdb_id": "tt31443809",
+    "title": "Mobile Suit SD Gundam Mk II",
+    "fromSeason": 1,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 7795,
@@ -16815,6 +17167,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50773,
+    "imdb_id": "tt3111906",
+    "title": "Yamishibai: Japanese Ghost Stories",
+    "fromSeason": 17,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 7843,
     "imdb_id": "tt3169640",
     "title": "Yozakura Quartet: Hana no Uta",
@@ -16869,6 +17228,7 @@
   {
     "kitsu_id": 7852,
     "imdb_id": "tt3213642",
+    "fanartLogoId": "90789",
     "title": "Gundam Build Fighters",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -17186,14 +17546,43 @@
     "imdb_id": "tt3066242",
     "title": "RWBY",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 1,
+    "nonImdbEpisodes": [1, 2, 3, 4]
+  },
+  {
+    "kitsu_id": 8707,
+    "imdb_id": "tt3066242",
+    "title": "RWBY",
+    "fromSeason": 0,
+    "fromEpisode": 18
+  },
+  {
+    "kitsu_id": 11439,
+    "imdb_id": "tt3066242",
+    "title": "RWBY",
+    "fromSeason": 0,
+    "fromEpisode": 22
   },
   {
     "kitsu_id": 12629,
     "imdb_id": "tt3066242",
     "title": "RWBY",
-    "fromSeason": 4,
-    "fromEpisode": 0
+    "fromSeason": 0,
+    "fromEpisode": 26
+  },
+  {
+    "kitsu_id": 12669,
+    "imdb_id": "tt3066242",
+    "title": "RWBY",
+    "fromSeason": 0,
+    "fromEpisode": 28
+  },
+  {
+    "kitsu_id": 13649,
+    "imdb_id": "tt3066242",
+    "title": "RWBY",
+    "fromSeason": 0,
+    "fromEpisode": 36
   },
   {
     "kitsu_id": 7936,
@@ -17499,6 +17888,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 51007,
+    "imdb_id": "tt15660128",
+    "title": "The Prince of Tennis II: U-17 WORLD CUP",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 8039,
     "imdb_id": "tt3639872",
     "title": "Kantai Collection: Kan Colle",
@@ -17787,11 +18183,6 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 8143,
-    "imdb_id": "tt2362887",
-    "title": "Uta no prince-sama - maji love 1000%"
-  },
-  {
     "kitsu_id": 8144,
     "imdb_id": "tt4292186",
     "title": "The Disappearance of Nagato Yuki-chan",
@@ -17878,8 +18269,8 @@
     "kitsu_id": 8194,
     "imdb_id": "tt4219290",
     "title": "Sengoku musou Special",
-    "fromSeason": 1,
-    "fromEpisode": 13
+    "fromSeason": 0,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 8195,
@@ -17887,6 +18278,20 @@
     "title": "Rage of Bahamut: Genesis",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 10019,
+    "imdb_id": "tt3981938",
+    "title": "Rage of Bahamut: Genesis",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 13013,
+    "imdb_id": "tt3981938",
+    "title": "Rage of Bahamut: Genesis",
+    "fromSeason": 0,
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 8199,
@@ -18123,7 +18528,7 @@
     "imdb_id": "tt1807824",
     "title": "Wakfu",
     "fromSeason": 0,
-    "fromEpisode": 14
+    "fromEpisode": 18
   },
   {
     "kitsu_id": 8306,
@@ -18180,7 +18585,7 @@
     "imdb_id": "tt3895144",
     "title": "Sora No Method",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 8339,
@@ -18394,13 +18799,6 @@
     "title": "Nobunaga Concerto"
   },
   {
-    "kitsu_id": 8569,
-    "imdb_id": "tt6163360",
-    "title": "Recorder to Randoseru Special",
-    "fromSeason": 3,
-    "fromEpisode": 13
-  },
-  {
     "kitsu_id": 8575,
     "imdb_id": "tt3985242",
     "title": "Orenchi no Furo Jijou",
@@ -18412,6 +18810,13 @@
     "imdb_id": "tt5025394",
     "title": "Gangsta.",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 11361,
+    "imdb_id": "tt5025394",
+    "title": "Gangsta.",
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -18481,9 +18886,42 @@
   {
     "kitsu_id": 8637,
     "imdb_id": "tt3213642",
+    "fanartLogoId": "90790",
     "title": "Gundam Build Fighters",
     "fromSeason": 2,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 9837,
+    "imdb_id": "tt3213642",
+    "fanartLogoId": "90789",
+    "title": "Gundam Build Fighters",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 10872,
+    "imdb_id": "tt3213642",
+    "fanartLogoId": "106666",
+    "title": "Gundam Build Fighters",
+    "fromSeason": 0,
+    "fromEpisode": 4
+  },
+  {
+    "kitsu_id": 13756,
+    "imdb_id": "tt3213642",
+    "fanartLogoId": "90789",
+    "title": "Gundam Build Fighters",
+    "fromSeason": 0,
+    "fromEpisode": 5
+  },
+  {
+    "kitsu_id": 13711,
+    "imdb_id": "tt3213642",
+    "fanartLogoId": "91596",
+    "title": "Gundam Build Fighters",
+    "fromSeason": 0,
+    "fromEpisode": 6
   },
   {
     "kitsu_id": 8638,
@@ -18778,7 +19216,7 @@
     "fanartLogoId": "116951",
     "title": "The Seven Deadly Sins",
     "fromSeason": 0,
-    "fromEpisode": 8
+    "fromEpisode": 10
   },
   {
     "kitsu_id": 13647,
@@ -18836,6 +19274,20 @@
     "imdb_id": "tt1210339",
     "title": "Junjou Romantica",
     "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 2822,
+    "imdb_id": "tt39310374",
+    "title": "GR -Giant Robo-",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 3014,
+    "imdb_id": "tt1304991",
+    "title": "The Ultraman",
+    "fromSeason": 1,
     "fromEpisode": 1
   },
   {
@@ -18999,8 +19451,8 @@
     "kitsu_id": 9136,
     "imdb_id": "tt3544556",
     "title": "Aldnoah.Zero",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 9137
@@ -19395,7 +19847,7 @@
   {
     "kitsu_id": 42372,
     "imdb_id": "tt4384306",
-    "fanartLogoId": "188528",
+    "fanartLogoId": "189746",
     "title": "Sound! Euphonium",
     "fromSeason": 3,
     "fromEpisode": 1
@@ -19403,6 +19855,7 @@
   {
     "kitsu_id": 11137,
     "imdb_id": "tt4384306",
+    "fanartLogoId": "91799",
     "title": "Sound! Euphonium",
     "fromSeason": 0,
     "fromEpisode": 1
@@ -19410,6 +19863,7 @@
   {
     "kitsu_id": 11391,
     "imdb_id": "tt4384306",
+    "fanartLogoId": "91799",
     "title": "Sound! Euphonium",
     "fromSeason": 0,
     "fromEpisode": 8
@@ -19417,6 +19871,7 @@
   {
     "kitsu_id": 13212,
     "imdb_id": "tt4384306",
+    "fanartLogoId": "90934",
     "title": "Sound! Euphonium",
     "fromSeason": 0,
     "fromEpisode": 10
@@ -19858,6 +20313,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 8122,
+    "imdb_id": "tt3114350",
+    "title": "Diabolik Lovers",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 9093,
+    "imdb_id": "tt3114350",
+    "title": "Diabolik Lovers",
+    "fromSeason": 0,
+    "fromEpisode": 2
+  },
+  {
     "kitsu_id": 10464,
     "imdb_id": "tt5857720",
     "title": "ReLIFE",
@@ -20181,8 +20650,8 @@
     "kitsu_id": 11421,
     "imdb_id": "tt5095466",
     "title": "The Asterisk War: The Academy City on the Water",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 10858,
@@ -20202,9 +20671,6 @@
     "kitsu_id": 10869,
     "imdb_id": "tt4663760",
     "title": "Typhoon Noruda"
-  },
-  {
-    "kitsu_id": 10872
   },
   {
     "kitsu_id": 10878,
@@ -20464,8 +20930,8 @@
     "kitsu_id": 11109,
     "imdb_id": "tt4163486",
     "title": "Bee and PuppyCat",
-    "fromSeason": 1,
-    "fromEpisode": 0
+    "fromSeason": 0,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 11110,
@@ -20626,8 +21092,8 @@
     "kitsu_id": 11179,
     "imdb_id": "tt4542568",
     "title": "Snow White with the Red Hair",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 11181,
@@ -20666,6 +21132,13 @@
     "title": "Mobile Suit Gundam: Iron-Blooded Orphans",
     "fromSeason": 2,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50759,
+    "imdb_id": "tt5344382",
+    "title": "Kidou Senshi Gundam: Tekketsu no Orphans - Makuai no Kusabi",
+    "fromSeason": 0,
+    "fromEpisode": 23
   },
   {
     "kitsu_id": 11207,
@@ -20822,11 +21295,6 @@
   },
   {
     "kitsu_id": 11215
-  },
-  {
-    "kitsu_id": 11217,
-    "imdb_id": "tt2362887",
-    "title": "Uta no prince-sama - maji love 1000%"
   },
   {
     "kitsu_id": 11234,
@@ -21004,7 +21472,16 @@
   {
     "kitsu_id": 11337,
     "imdb_id": "tt5276152",
-    "title": "Norn9"
+    "title": "Norn9",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 11898,
+    "imdb_id": "tt5276152",
+    "title": "Norn9",
+    "fromSeason": 0,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 11338,
@@ -21130,6 +21607,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 12115,
+    "imdb_id": "tt5537534",
+    "title": "Ajin",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 11369,
     "imdb_id": "tt5513012",
     "title": "JK meshi!",
@@ -21231,6 +21715,13 @@
     "imdb_id": "tt5683292",
     "title": "Rewrite",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 12861,
+    "imdb_id": "tt5683292",
+    "title": "Rewrite",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -21403,6 +21894,7 @@
   {
     "kitsu_id": 49279,
     "imdb_id": "tt5626028",
+    "fanartLogoId": "207601",
     "title": "Boku No Hero Academia",
     "fromSeason": 8,
     "fromEpisode": 1
@@ -21450,6 +21942,13 @@
     "fromEpisode": 13
   },
   {
+    "kitsu_id": 50701,
+    "imdb_id": "tt5626028",
+    "title": "My Hero Academia",
+    "fromSeason": 0,
+    "fromEpisode": 24
+  },
+  {
     "kitsu_id": 14084,
     "imdb_id": "tt7745068",
     "title": "My Hero Academia: Two Heroes"
@@ -21470,17 +21969,39 @@
     "title": "The Reflection"
   },
   {
-    "kitsu_id": 11476
-  },
-  {
-    "kitsu_id": 12755
-  },
-  {
     "kitsu_id": 11477,
     "imdb_id": "tt5023666",
     "title": "Arslan Senki",
     "fromSeason": 2,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 11164,
+    "imdb_id": "tt5023666",
+    "title": "Arslan Senki",
+    "fromSeason": 0,
+    "fromEpisode": 3
+  },
+  {
+    "kitsu_id": 11054,
+    "imdb_id": "tt5023666",
+    "title": "Arslan Senki",
+    "fromSeason": 0,
+    "fromEpisode": 4
+  },
+  {
+    "kitsu_id": 11666,
+    "imdb_id": "tt5023666",
+    "title": "Arslan Senki",
+    "fromSeason": 0,
+    "fromEpisode": 12
+  },
+  {
+    "kitsu_id": 41623,
+    "imdb_id": "tt5023666",
+    "title": "Arslan Senki",
+    "fromSeason": 0,
+    "fromEpisode": 18
   },
   {
     "kitsu_id": 11485,
@@ -21523,6 +22044,20 @@
     "title": "KADO: The Right Answer",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 13523,
+    "imdb_id": "tt7001136",
+    "title": "KADO: The Right Answer",
+    "fromSeason": 0,
+    "fromEpisode": 2
+  },
+  {
+    "kitsu_id": 41390,
+    "imdb_id": "tt7001136",
+    "title": "KADO: The Right Answer",
+    "fromSeason": 0,
+    "fromEpisode": 3
   },
   {
     "kitsu_id": 11498,
@@ -21600,6 +22135,13 @@
     "imdb_id": "tt5669064",
     "title": "Mahô shôjo nante môiidesukara",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 12467,
+    "imdb_id": "tt5669064",
+    "title": "Mahô shôjo nante môiidesukara",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -21808,6 +22350,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 13540,
+    "imdb_id": "tt5847454",
+    "title": "Berserk",
+    "fromSeason": 0,
+    "fromEpisode": 5
+  },
+  {
     "kitsu_id": 11662,
     "imdb_id": "tt7120888",
     "title": "Clockwork Planet"
@@ -21830,7 +22379,7 @@
   {
     "kitsu_id": 11688,
     "imdb_id": "tt5296398",
-    "fanartLogoId": "106222",
+    "fanartLogoId": "197754",
     "title": "Maho Tsukai PreCure!",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -21838,7 +22387,7 @@
   {
     "kitsu_id": 47186,
     "imdb_id": "tt5296398",
-    "fanartLogoId": "197426",
+    "fanartLogoId": "197427",
     "title": "Maho Tsukai PreCure!! MIRAI DAYS",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -21895,6 +22444,20 @@
     "title": "Cheer Boys!!"
   },
   {
+    "kitsu_id": 12472,
+    "imdb_id": "tt5921946",
+    "title": "Cheer Boys!!",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 13216,
+    "imdb_id": "tt5921946",
+    "title": "Cheer Boys!!",
+    "fromSeason": 0,
+    "fromEpisode": 2
+  },
+  {
     "kitsu_id": 11779,
     "imdb_id": "tt5648400",
     "title": "Cerberus",
@@ -21940,11 +22503,18 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 44778,
+    "imdb_id": "tt6455986",
+    "title": "Youjo Senki II",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 13215,
     "imdb_id": "tt6455986",
     "title": "Saga of Tanya the Evil",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 44779,
@@ -22023,6 +22593,7 @@
   {
     "kitsu_id": 11838,
     "imdb_id": "tt6765658",
+    "fanartLogoId": "207605",
     "title": "Thunderbolt Fantasy",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -22030,6 +22601,7 @@
   {
     "kitsu_id": 13609,
     "imdb_id": "tt6765658",
+    "fanartLogoId": "198823",
     "title": "Thunderbolt Fantasy",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -22037,6 +22609,7 @@
   {
     "kitsu_id": 43201,
     "imdb_id": "tt6765658",
+    "fanartLogoId": "198824",
     "title": "Thunderbolt Fantasy",
     "fromSeason": 3,
     "fromEpisode": 1
@@ -22044,6 +22617,7 @@
   {
     "kitsu_id": 49089,
     "imdb_id": "tt6765658",
+    "fanartLogoId": "198825",
     "title": "Thunderbolt Fantasy",
     "fromSeason": 4,
     "fromEpisode": 1
@@ -22130,8 +22704,8 @@
     "kitsu_id": 12672,
     "imdb_id": "tt6114698",
     "title": "Nobunaga No Shinobi",
-    "fromSeason": 1,
-    "fromEpisode": 0
+    "fromSeason": 0,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 11880,
@@ -22239,6 +22813,13 @@
     "imdb_id": "tt6631966",
     "title": "Bananya",
     "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50811,
+    "imdb_id": "tt6631966",
+    "title": "Bananya",
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -22431,8 +23012,8 @@
     "kitsu_id": 41396,
     "imdb_id": "tt7940468",
     "title": "Fate/Extra Last Encore",
-    "fromSeason": 1,
-    "fromEpisode": 11
+    "fromSeason": 2,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 12009,
@@ -22477,6 +23058,27 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 13304,
+    "imdb_id": "tt5824736",
+    "title": "Shônen Ashibe GO! GO! Goma-chan",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 41138,
+    "imdb_id": "tt5824736",
+    "title": "Shônen Ashibe GO! GO! Goma-chan",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42239,
+    "imdb_id": "tt5824736",
+    "title": "Shônen Ashibe GO! GO! Goma-chan",
+    "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 12063,
     "imdb_id": "tt5731132",
     "title": "Napping Princess"
@@ -22506,64 +23108,78 @@
     "kitsu_id": 12276,
     "imdb_id": "tt9089548",
     "title": "Fox Spirit Matchmaker",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 12277,
     "imdb_id": "tt9089548",
     "title": "Fox Spirit Matchmaker",
-    "fromSeason": 3,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 28
   },
   {
     "kitsu_id": 13246,
     "imdb_id": "tt9089548",
     "title": "Fox Spirit Matchmaker",
-    "fromSeason": 4,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 41
   },
   {
     "kitsu_id": 13644,
     "imdb_id": "tt9089548",
     "title": "Fox Spirit Matchmaker",
-    "fromSeason": 5,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 49
   },
   {
     "kitsu_id": 14238,
     "imdb_id": "tt9089548",
     "title": "Fox Spirit Matchmaker",
-    "fromSeason": 6,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 64
   },
   {
     "kitsu_id": 42411,
     "imdb_id": "tt9089548",
     "title": "Fox Spirit Matchmaker",
-    "fromSeason": 7,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 90
   },
   {
     "kitsu_id": 42926,
     "imdb_id": "tt9089548",
     "title": "Fox Spirit Matchmaker",
-    "fromSeason": 8,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 102
   },
   {
     "kitsu_id": 43350,
     "imdb_id": "tt9089548",
     "title": "Fox Spirit Matchmaker",
-    "fromSeason": 9,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 112
   },
   {
     "kitsu_id": 43885,
     "imdb_id": "tt9089548",
     "title": "Fox Spirit Matchmaker",
-    "fromSeason": 10,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 122
+  },
+  {
+    "kitsu_id": 48339,
+    "imdb_id": "tt9089548",
+    "title": "Fox Spirit Matchmaker",
+    "fromSeason": 1,
+    "fromEpisode": 134
+  },
+  {
+    "kitsu_id": 48341,
+    "imdb_id": "tt9089548",
+    "title": "Fox Spirit Matchmaker",
+    "fromSeason": 1,
+    "fromEpisode": 146
   },
   {
     "kitsu_id": 12088,
@@ -22658,6 +23274,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 3316,
+    "imdb_id": "tt0303492",
+    "title": "Maeterlinck's Blue Bird: Tyltyl and Mytyl's Adventurous Journey",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 12154,
     "imdb_id": "tt6356032",
     "title": "Chi's Sweet Home",
@@ -22691,13 +23314,6 @@
     "title": "Magic Kyun! Renaissance",
     "fromSeason": 1,
     "fromEpisode": 1
-  },
-  {
-    "kitsu_id": 12199,
-    "imdb_id": "tt2320220",
-    "title": "Kamisama Kiss",
-    "fromSeason": 0,
-    "fromEpisode": 6
   },
   {
     "kitsu_id": 12200,
@@ -22821,7 +23437,7 @@
     "imdb_id": "tt6185782",
     "title": "Miss Kobayashi's Dragon Maid",
     "fromSeason": 0,
-    "fromEpisode": 26
+    "fromEpisode": 30
   },
   {
     "kitsu_id": 12244,
@@ -22976,6 +23592,20 @@
     "fromEpisode": 6
   },
   {
+    "kitsu_id": 47680,
+    "imdb_id": "tt11605032",
+    "title": "Zhen Hun Jie",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49349,
+    "imdb_id": "tt11605032",
+    "title": "Zhen Hun Jie",
+    "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 12292,
     "imdb_id": "tt6475250",
     "title": "Assassination Classroom: 365 Days"
@@ -23126,13 +23756,6 @@
     "kitsu_id": 12465
   },
   {
-    "kitsu_id": 12467,
-    "imdb_id": "tt5669064",
-    "title": "Mahô shôjo nante môiidesukara",
-    "fromSeason": 1,
-    "fromEpisode": 1
-  },
-  {
     "kitsu_id": 12473,
     "imdb_id": "tt2390066",
     "title": "Teekyû",
@@ -23281,6 +23904,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50872,
+    "imdb_id": "tt23139038",
+    "title": "To Be Hero X Concept Movie",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 12538,
     "imdb_id": "tt6494518",
     "title": "Onihei",
@@ -23394,11 +24024,6 @@
     "kitsu_id": 12567
   },
   {
-    "kitsu_id": 12593,
-    "imdb_id": "tt3104246",
-    "title": "Aoki Hagane no Arpeggio: Ars Nova"
-  },
-  {
     "kitsu_id": 12596
   },
   {
@@ -23432,6 +24057,13 @@
     "imdb_id": "tt6859260",
     "title": "The King's Avatar",
     "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45074,
+    "imdb_id": "tt6859260",
+    "title": "The King's Avatar",
+    "fromSeason": 3,
     "fromEpisode": 1
   },
   {
@@ -23484,6 +24116,11 @@
     "kitsu_id": 44520,
     "imdb_id": "tt28821523",
     "title": "Girls und Panzer das Finale: Part IV"
+  },
+  {
+    "kitsu_id": 50989,
+    "imdb_id": "tt39195693",
+    "title": "Girls und Panzer das Finale: Part V"
   },
   {
     "kitsu_id": 12634,
@@ -23620,6 +24257,13 @@
     "kitsu_id": 12705,
     "imdb_id": "tt7897050",
     "title": "Record of Grancrest War"
+  },
+  {
+    "kitsu_id": 41108,
+    "imdb_id": "tt7897050",
+    "title": "Record of Grancrest War",
+    "fromSeason": 0,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 12707,
@@ -23889,6 +24533,27 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 47049,
+    "imdb_id": "tt11317074",
+    "title": "Full-Time Magister",
+    "fromSeason": 6,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50880,
+    "imdb_id": "tt11317074",
+    "title": "Full-Time Magister",
+    "fromSeason": 7,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48052,
+    "imdb_id": "tt11317074",
+    "title": "Full-Time Magister",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 13096,
     "imdb_id": "tt6340502",
     "title": "Inuyashiki",
@@ -23941,6 +24606,13 @@
     "imdb_id": "tt7441658",
     "title": "Black Clover",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50024,
+    "imdb_id": "tt7441658",
+    "title": "Black Clover",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -24050,6 +24722,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 13522,
+    "imdb_id": "tt6472710",
+    "title": "As the Moon, So Beautiful",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 13948,
+    "imdb_id": "tt6472710",
+    "title": "As the Moon, So Beautiful",
+    "fromSeason": 0,
+    "fromEpisode": 2
+  },
+  {
     "kitsu_id": 13245,
     "imdb_id": "tt8938030",
     "title": "Ani ni Tsukeru Kusuri wa Nai!",
@@ -24075,6 +24761,13 @@
     "imdb_id": "tt8938030",
     "title": "Ani ni Tsukeru Kusuri wa Nai!",
     "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45538,
+    "imdb_id": "tt8938030",
+    "title": "Ani ni Tsukeru Kusuri wa Nai!",
+    "fromSeason": 5,
     "fromEpisode": 1
   },
   {
@@ -24235,9 +24928,6 @@
     "title": "Sekai no Yami Zukan"
   },
   {
-    "kitsu_id": 13306
-  },
-  {
     "kitsu_id": 10988,
     "imdb_id": "tt5603088",
     "title": "Monster Strike",
@@ -24250,13 +24940,6 @@
     "title": "Monster Strike",
     "fromSeason": 2,
     "fromEpisode": 1
-  },
-  {
-    "kitsu_id": 13343,
-    "imdb_id": "tt5603088",
-    "title": "Monster Strike",
-    "fromSeason": 2,
-    "fromEpisode": 0
   },
   {
     "kitsu_id": 13970,
@@ -24273,11 +24956,18 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 13343,
+    "imdb_id": "tt5603088",
+    "title": "Monster Strike",
+    "fromSeason": 0,
+    "fromEpisode": 3
+  },
+  {
     "kitsu_id": 41499,
     "imdb_id": "tt5603088",
     "title": "Monster Strike",
-    "fromSeason": 4,
-    "fromEpisode": 0
+    "fromSeason": 0,
+    "fromEpisode": 7
   },
   {
     "kitsu_id": 13317,
@@ -24332,6 +25022,20 @@
     "title": "March Comes in Like a Lion",
     "fromSeason": 2,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 13074,
+    "imdb_id": "tt6074794",
+    "title": "March Comes in Like a Lion",
+    "fromSeason": 0,
+    "fromEpisode": 2
+  },
+  {
+    "kitsu_id": 47785,
+    "imdb_id": "tt6074794",
+    "title": "March Comes in Like a Lion",
+    "fromSeason": 0,
+    "fromEpisode": 3
   },
   {
     "kitsu_id": 13402,
@@ -24438,7 +25142,7 @@
   {
     "kitsu_id": 41976,
     "imdb_id": "tt7742120",
-    "fanartLogoId": "140327",
+    "fanartLogoId": "177276",
     "title": "Laid-Back Camp",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -24454,6 +25158,7 @@
   {
     "kitsu_id": 41068,
     "imdb_id": "tt7742120",
+    "fanartLogoId": "140329",
     "title": "Laid-Back Camp",
     "fromSeason": 0,
     "fromEpisode": 1
@@ -24461,6 +25166,7 @@
   {
     "kitsu_id": 44601,
     "imdb_id": "tt7742120",
+    "fanartLogoId": "177276",
     "title": "Laid-Back Camp",
     "fromSeason": 0,
     "fromEpisode": 18
@@ -24528,7 +25234,8 @@
   {
     "kitsu_id": 49194,
     "imdb_id": "tt7263328",
-    "title": "Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e 4th Season: 2-nensei-hen 1 Gakki",
+    "fanartLogoId": "214296",
+    "title": "Classroom of the Elite",
     "fromSeason": 4,
     "fromEpisode": 1
   },
@@ -24656,7 +25363,7 @@
   {
     "kitsu_id": 42530,
     "imdb_id": "tt9529546",
-    "fanartLogoId": "145608",
+    "fanartLogoId": "207863",
     "title": "The Rising of the Shield Hero",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -24672,6 +25379,7 @@
   {
     "kitsu_id": 48444,
     "imdb_id": "tt9529546",
+    "fanartLogoId": "206935",
     "title": "The Rising of the Shield Hero",
     "fromSeason": 4,
     "fromEpisode": 1
@@ -24725,13 +25433,6 @@
     "kitsu_id": 13615,
     "imdb_id": "tt7836688",
     "title": "Sora yori mo Tooi Basho"
-  },
-  {
-    "kitsu_id": 13616,
-    "imdb_id": "tt9089548",
-    "title": "Fox Spirit Matchmaker",
-    "fromSeason": 1,
-    "fromEpisode": 1
   },
   {
     "kitsu_id": 13618,
@@ -24896,6 +25597,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 41281,
+    "imdb_id": "tt7742090",
+    "title": "Hakyu Hoshin Engi",
+    "fromSeason": 0,
+    "fromEpisode": 2
+  },
+  {
+    "kitsu_id": 43245,
+    "imdb_id": "tt7742090",
+    "title": "Hakyu Hoshin Engi",
+    "fromSeason": 0,
+    "fromEpisode": 3
+  },
+  {
     "kitsu_id": 13689,
     "imdb_id": "tt8225204",
     "title": "Golden Kamuy",
@@ -25026,7 +25741,18 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 13711
+    "kitsu_id": 41205,
+    "imdb_id": "tt7829656",
+    "title": "Katana Maidens",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 43592,
+    "imdb_id": "tt7829656",
+    "title": "Katana Maidens",
+    "fromSeason": 0,
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 13712,
@@ -25142,9 +25868,6 @@
   },
   {
     "kitsu_id": 13755
-  },
-  {
-    "kitsu_id": 13756
   },
   {
     "kitsu_id": 13760,
@@ -25272,11 +25995,6 @@
     "title": "Kud Wafter"
   },
   {
-    "kitsu_id": 13892,
-    "imdb_id": "tt7058854",
-    "title": "Haikara-San: Here Comes Miss Modern"
-  },
-  {
     "kitsu_id": 13901
   },
   {
@@ -25382,6 +26100,156 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 4349,
+    "imdb_id": "tt11859118",
+    "title": "White Fang Story"
+  },
+  {
+    "kitsu_id": 4383,
+    "imdb_id": "tt1642495",
+    "title": "Jewelpet",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 5249,
+    "imdb_id": "tt1642495",
+    "title": "Jewelpet",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 6147,
+    "imdb_id": "tt1642495",
+    "title": "Jewelpet",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 6857,
+    "imdb_id": "tt1642495",
+    "title": "Jewelpet",
+    "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 7650,
+    "imdb_id": "tt1642495",
+    "title": "Jewelpet",
+    "fromSeason": 5,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 8354,
+    "imdb_id": "tt1642495",
+    "title": "Jewelpet",
+    "fromSeason": 6,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 10597,
+    "imdb_id": "tt1642495",
+    "title": "Jewelpet",
+    "fromSeason": 7,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 4582,
+    "imdb_id": "tt0422610",
+    "title": "Cutie Honey Flash: The Movie"
+  },
+  {
+    "kitsu_id": 4779,
+    "imdb_id": "tt27028526",
+    "title": "Battle Spirits: Shounen Gekiha Dan",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 4817,
+    "imdb_id": "tt1685415",
+    "title": "Shukufuku no Campanella",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 5248,
+    "imdb_id": "tt7976226",
+    "title": "Aah! Harimanada",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 5387,
+    "imdb_id": "tt1527559",
+    "title": "Rescueman",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 5693,
+    "imdb_id": "tt34582240",
+    "title": "Battle Spirits: Brave",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 5829,
+    "imdb_id": "tt1750905",
+    "title": "Moshidora",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 7102,
+    "imdb_id": "tt2390022",
+    "title": "Busou Shinki: Armored War Goddess",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 7287,
+    "imdb_id": "tt2609072",
+    "title": "Puchimas!: Petit Idolm@ster",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 8405,
+    "imdb_id": "tt2609072",
+    "title": "Puchimas!: Petit Idolm@ster",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 8058,
+    "imdb_id": "tt3437760",
+    "title": "Minna Atsumare! Falcom Gakuen",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 8853,
+    "imdb_id": "tt3437760",
+    "title": "Minna Atsumare! Falcom Gakuen",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 8132,
+    "imdb_id": "tt39949828",
+    "title": "Sugar Soldier",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 8134,
+    "imdb_id": "tt3492720",
+    "title": "Romantica Clock",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 13988,
     "imdb_id": "tt8515016",
     "title": "Banana Fish"
@@ -25446,10 +26314,24 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 42672,
+    "imdb_id": "tt7945066",
+    "title": "Gen: Lock",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 13999,
     "imdb_id": "tt6296094",
     "title": "Lastman",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46719,
+    "imdb_id": "tt6296094",
+    "title": "Lastman",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -25494,6 +26376,7 @@
   {
     "kitsu_id": 14043,
     "imdb_id": "tt10431290",
+    "fanartLogoId": "146349",
     "title": "Arifureta: From Commonplace to World's Strongest",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -25501,6 +26384,7 @@
   {
     "kitsu_id": 42611,
     "imdb_id": "tt10431290",
+    "fanartLogoId": "193773",
     "title": "Arifureta: From Commonplace to World's Strongest",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -25508,6 +26392,7 @@
   {
     "kitsu_id": 46454,
     "imdb_id": "tt10431290",
+    "fanartLogoId": "193774",
     "title": "Arifureta: From Commonplace to World's Strongest",
     "fromSeason": 3,
     "fromEpisode": 1
@@ -25515,6 +26400,7 @@
   {
     "kitsu_id": 42493,
     "imdb_id": "tt10431290",
+    "fanartLogoId": "146349",
     "title": "Arifureta: From Commonplace to World's Strongest",
     "fromSeason": 0,
     "fromEpisode": 1
@@ -25522,6 +26408,7 @@
   {
     "kitsu_id": 42446,
     "imdb_id": "tt10431290",
+    "fanartLogoId": "146349",
     "title": "Arifureta: From Commonplace to World's Strongest",
     "fromSeason": 0,
     "fromEpisode": 2
@@ -25598,6 +26485,27 @@
     "title": "Dou Po Cangqiong: Nian Fan",
     "fromSeason": 5,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48062,
+    "imdb_id": "tt12409194",
+    "title": "Dou Po Cangqiong: Nian Fan",
+    "fromSeason": 5,
+    "fromEpisode": 53
+  },
+  {
+    "kitsu_id": 48063,
+    "imdb_id": "tt12409194",
+    "title": "Dou Po Cangqiong: Nian Fan",
+    "fromSeason": 5,
+    "fromEpisode": 105
+  },
+  {
+    "kitsu_id": 50105,
+    "imdb_id": "tt12409194",
+    "title": "Dou Po Cangqiong: Nian Fan",
+    "fromSeason": 5,
+    "fromEpisode": 157
   },
   {
     "kitsu_id": 40595,
@@ -25732,6 +26640,7 @@
   {
     "kitsu_id": 14190,
     "imdb_id": "tt8086718",
+    "fanartLogoId": "214733",
     "title": "Grand Blue",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -25739,8 +26648,16 @@
   {
     "kitsu_id": 49247,
     "imdb_id": "tt8086718",
+    "fanartLogoId": "202205",
     "title": "Grand Blue",
     "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50181,
+    "imdb_id": "tt8086718",
+    "title": "Grand Blue Season 3",
+    "fromSeason": 3,
     "fromEpisode": 1
   },
   {
@@ -25802,9 +26719,41 @@
   {
     "kitsu_id": 40565,
     "imdb_id": "tt8631370",
+    "fanartLogoId": "90373",
     "title": "Gundam Build Divers",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42585,
+    "imdb_id": "tt8631370",
+    "tvdb_id": "369139",
+    "title": "Gundam Build Divers",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 43144,
+    "imdb_id": "tt8631370",
+    "tvdb_id": "369139",
+    "title": "Gundam Build Divers",
+    "fromSeason": 2,
+    "fromEpisode": 14
+  },
+  {
+    "kitsu_id": 40564,
+    "imdb_id": "tt8631370",
+    "title": "Gundam Build Divers",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47903,
+    "imdb_id": "tt8631370",
+    "fanartLogoId": "129888",
+    "title": "Gundam Build Divers",
+    "fromSeason": 0,
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 40568,
@@ -25860,6 +26809,13 @@
     "fanartLogoId": "175723",
     "title": "Goblin Slayer",
     "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42023,
+    "imdb_id": "tt8690728",
+    "title": "Goblin Slayer",
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -25938,148 +26894,206 @@
     "kitsu_id": 42037,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 27
   },
   {
     "kitsu_id": 44607,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 3,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 79
   },
   {
     "kitsu_id": 44609,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 4,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 92
   },
   {
     "kitsu_id": 44611,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 5,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 105
   },
   {
     "kitsu_id": 44616,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 6,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 118
   },
   {
     "kitsu_id": 44617,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 7,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 131
   },
   {
     "kitsu_id": 44624,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 8,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 144
   },
   {
     "kitsu_id": 44625,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 9,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 157
   },
   {
     "kitsu_id": 45032,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 10,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 170
   },
   {
     "kitsu_id": 45661,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 11,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 183
   },
   {
     "kitsu_id": 46149,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 12,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 196
   },
   {
     "kitsu_id": 46150,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 13,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 209,
+    "nonImdbEpisodes": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
   },
   {
     "kitsu_id": 46536,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 14,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 212
   },
   {
     "kitsu_id": 46535,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 15,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 215
   },
   {
     "kitsu_id": 46537,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 16,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 218
   },
   {
     "kitsu_id": 46538,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 17,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 221
   },
   {
     "kitsu_id": 46539,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 18,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 224
   },
   {
     "kitsu_id": 46557,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 19,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 227
   },
   {
     "kitsu_id": 46558,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 20,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 232,
+    "nonImdbEpisodes": [4]
   },
   {
     "kitsu_id": 46813,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 21,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 235
   },
   {
     "kitsu_id": 47595,
     "imdb_id": "tt8948436",
     "title": "Douluo Dalu",
-    "fromSeason": 22,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 239
+  },
+  {
+    "kitsu_id": 47596,
+    "imdb_id": "tt8948436",
+    "title": "Douluo Dalu",
+    "fromSeason": 1,
+    "fromEpisode": 242
+  },
+  {
+    "kitsu_id": 47597,
+    "imdb_id": "tt8948436",
+    "title": "Douluo Dalu",
+    "fromSeason": 1,
+    "fromEpisode": 245
+  },
+  {
+    "kitsu_id": 47598,
+    "imdb_id": "tt8948436",
+    "title": "Douluo Dalu",
+    "fromSeason": 1,
+    "fromEpisode": 248
+  },
+  {
+    "kitsu_id": 47599,
+    "imdb_id": "tt8948436",
+    "title": "Douluo Dalu",
+    "fromSeason": 1,
+    "fromEpisode": 251
+  },
+  {
+    "kitsu_id": 47600,
+    "imdb_id": "tt8948436",
+    "title": "Douluo Dalu",
+    "fromSeason": 1,
+    "fromEpisode": 254
+  },
+  {
+    "kitsu_id": 47601,
+    "imdb_id": "tt8948436",
+    "title": "Douluo Dalu",
+    "fromSeason": 1,
+    "fromEpisode": 257
+  },
+  {
+    "kitsu_id": 47602,
+    "imdb_id": "tt8948436",
+    "title": "Douluo Dalu",
+    "fromSeason": 1,
+    "fromEpisode": 260
+  },
+  {
+    "kitsu_id": 47603,
+    "imdb_id": "tt8948436",
+    "title": "Douluo Dalu",
+    "fromSeason": 1,
+    "fromEpisode": 262
   },
   {
     "kitsu_id": 41007,
@@ -26278,6 +27292,7 @@
   {
     "kitsu_id": 41056,
     "imdb_id": "tt8993398",
+    "fanartLogoId": "91160",
     "title": "Rascal Does Not Dream of Bunny Girl Senpai",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -26285,6 +27300,7 @@
   {
     "kitsu_id": 48917,
     "imdb_id": "tt8993398",
+    "fanartLogoId": "207969",
     "title": "Rascal Does Not Dream of Bunny Girl Senpai",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -26401,6 +27417,13 @@
     "title": "Vinland Saga",
     "fromSeason": 2,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47444,
+    "imdb_id": "tt10233448",
+    "title": "Vinland Saga",
+    "fromSeason": 0,
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 41085,
@@ -26533,15 +27556,15 @@
     "kitsu_id": 42114,
     "imdb_id": "tt12209234",
     "title": "Kiratto Pri Chan",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 52
   },
   {
     "kitsu_id": 43369,
     "imdb_id": "tt12209234",
     "title": "Kiratto Pri Chan",
-    "fromSeason": 3,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 103
   },
   {
     "kitsu_id": 41142,
@@ -26605,7 +27628,7 @@
   {
     "kitsu_id": 41165,
     "imdb_id": "tt8400662",
-    "fanartLogoId": "87761",
+    "fanartLogoId": "90138",
     "title": "Dropkick on My Devil!!",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -26631,14 +27654,14 @@
     "imdb_id": "tt8400662",
     "title": "Jashin-chan Dropkick",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 43163,
     "imdb_id": "tt8400662",
     "title": "Jashin-chan Dropkick",
     "fromSeason": 0,
-    "fromEpisode": 2
+    "fromEpisode": 3
   },
   {
     "kitsu_id": 48357,
@@ -26704,6 +27727,7 @@
   {
     "kitsu_id": 42065,
     "imdb_id": "tt11038886",
+    "fanartLogoId": "207636",
     "title": "Psychic Princess",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -26711,6 +27735,7 @@
   {
     "kitsu_id": 49521,
     "imdb_id": "tt11038886",
+    "fanartLogoId": "207637",
     "title": "Psychic Princess",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -26852,8 +27877,8 @@
     "kitsu_id": 42039,
     "imdb_id": "tt8755254",
     "title": "Hangyakusei Million Arthur",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 11
   },
   {
     "kitsu_id": 41336,
@@ -26889,6 +27914,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 45557,
+    "imdb_id": "tt12953630",
+    "title": "Fog Hill of Five Elements",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 41363,
     "imdb_id": "tt12923874",
     "title": "The Wonderland of Ten Thousands",
@@ -26914,6 +27946,13 @@
     "imdb_id": "tt12923874",
     "title": "The Wonderland of Ten Thousands",
     "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45036,
+    "imdb_id": "tt12923874",
+    "title": "The Wonderland of Ten Thousands",
+    "fromSeason": 5,
     "fromEpisode": 1
   },
   {
@@ -27151,18 +28190,18 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 46942,
+    "kitsu_id": 50090,
     "imdb_id": "tt13077966",
     "title": "Iya na Kao sare nagara Opantsu Misete Moraitai",
     "fromSeason": 3,
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 50090,
+    "kitsu_id": 46942,
     "imdb_id": "tt13077966",
     "title": "Iya na Kao sare nagara Opantsu Misete Moraitai",
-    "fromSeason": 4,
-    "fromEpisode": 1
+    "fromSeason": 0,
+    "fromEpisode": 5
   },
   {
     "kitsu_id": 41440,
@@ -27237,6 +28276,13 @@
     "imdb_id": "tt5580664",
     "title": "Voltron",
     "fromSeason": 7,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 41492,
+    "imdb_id": "tt5580664",
+    "title": "Voltron",
+    "fromSeason": 8,
     "fromEpisode": 1
   },
   {
@@ -27330,6 +28376,7 @@
   {
     "kitsu_id": 41950,
     "imdb_id": "tt10443362",
+    "fanartLogoId": "115594",
     "title": "Demon Lord, Retry!",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -27337,6 +28384,7 @@
   {
     "kitsu_id": 47881,
     "imdb_id": "tt10443362",
+    "fanartLogoId": "194598",
     "title": "Demon Lord, Retry!",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -27363,6 +28411,13 @@
     "imdb_id": "tt9883676",
     "title": "We Never Learn: Bokuben",
     "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42356,
+    "imdb_id": "tt9883676",
+    "title": "We Never Learn: Bokuben",
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -27632,6 +28687,7 @@
   {
     "kitsu_id": 43114,
     "imdb_id": "tt9193770",
+    "fanartLogoId": "207104",
     "title": "Isekai Quartet",
     "fromSeason": 3,
     "fromEpisode": 1
@@ -27647,13 +28703,8 @@
     "kitsu_id": 43142,
     "imdb_id": "tt9466298",
     "title": "Ghost in the Shell SAC_2045",
-    "fromSeason": 1,
-    "fromEpisode": 13
-  },
-  {
-    "kitsu_id": 42042,
-    "imdb_id": "tt9567240",
-    "title": "How Clumsy You Are, Miss Ueno."
+    "fromSeason": 2,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 42043,
@@ -27789,6 +28840,13 @@
     "title": "Cautious Hero: The Hero Is Overpowered but Overly Cautious"
   },
   {
+    "kitsu_id": 42889,
+    "imdb_id": "tt10974198",
+    "title": "Cautious Hero: The Hero Is Overpowered but Overly Cautious",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 42080,
     "imdb_id": "tt9679542",
     "fanartLogoId": "99616",
@@ -27839,6 +28897,7 @@
   {
     "kitsu_id": 50187,
     "imdb_id": "tt9679542",
+    "fanartLogoId": "196889",
     "title": "Dr. Stone",
     "fromSeason": 4,
     "fromEpisode": 25
@@ -27889,7 +28948,7 @@
     "kitsu_id": 45523,
     "imdb_id": "tt11764320",
     "title": "Yatogame-chan Kansatsu Nikki",
-    "fromSeason": 3,
+    "fromSeason": 4,
     "fromEpisode": 1
   },
   {
@@ -27952,13 +29011,6 @@
     "kitsu_id": 42094,
     "imdb_id": "tt11008522",
     "title": "Stars Align"
-  },
-  {
-    "kitsu_id": 42097,
-    "imdb_id": "tt8688814",
-    "title": "The Dragon Prince",
-    "fromSeason": 2,
-    "fromEpisode": 1
   },
   {
     "kitsu_id": 42101,
@@ -28225,6 +29277,39 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 11359,
+    "imdb_id": "tt6323526",
+    "title": "Touhou Gensou Mangekyou: The Memories of Phantasm",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 11476,
+    "imdb_id": "tt13963530",
+    "title": "Mobile Suit Gundam Thunderbolt",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 12755,
+    "imdb_id": "tt13963530",
+    "title": "Mobile Suit Gundam Thunderbolt",
+    "fromSeason": 1,
+    "fromEpisode": 5
+  },
+  {
+    "kitsu_id": 12593,
+    "imdb_id": "tt32156033",
+    "title": "Hagane Orchestra"
+  },
+  {
+    "kitsu_id": 12643,
+    "imdb_id": "tt42962627",
+    "title": "Escha Chron",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 42199,
     "imdb_id": "tt8963328",
     "title": "Hi Score Girl",
@@ -28327,13 +29412,6 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 42232,
-    "imdb_id": "tt8688814",
-    "title": "The Dragon Prince",
-    "fromSeason": 3,
-    "fromEpisode": 1
-  },
-  {
     "kitsu_id": 42241,
     "imdb_id": "tt10885406",
     "title": "Ascendance of a Bookworm",
@@ -28357,6 +29435,7 @@
   {
     "kitsu_id": 48293,
     "imdb_id": "tt10885406",
+    "fanartLogoId": "214029",
     "title": "Ascendance of a Bookworm",
     "fromSeason": 1,
     "fromEpisode": 37
@@ -28416,6 +29495,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 46770,
+    "imdb_id": "tt11858104",
+    "title": "Dragon Quest: The Adventure of Dai",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 42242,
     "imdb_id": "tt12899130",
     "title": "Mobile Suit Gundam: The Origin - Advent of the Red Comet",
@@ -28445,6 +29531,81 @@
     "kitsu_id": 42268,
     "imdb_id": "tt10431310",
     "title": "To the Abandoned Sacred Beasts"
+  },
+  {
+    "kitsu_id": 13688,
+    "imdb_id": "tt20565622",
+    "title": "Tales of Demon and God",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 41742,
+    "imdb_id": "tt20565622",
+    "title": "Tales of Demon and God",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42048,
+    "imdb_id": "tt20565622",
+    "title": "Tales of Demon and God",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 43564,
+    "imdb_id": "tt20565622",
+    "title": "Tales of Demon and God",
+    "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45518,
+    "imdb_id": "tt20565622",
+    "title": "Tales of Demon and God",
+    "fromSeason": 5,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47013,
+    "imdb_id": "tt20565622",
+    "title": "Tales of Demon and God",
+    "fromSeason": 6,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49158,
+    "imdb_id": "tt20565622",
+    "title": "Tales of Demon and God",
+    "fromSeason": 7,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49159,
+    "imdb_id": "tt20565622",
+    "title": "Tales of Demon and God",
+    "fromSeason": 8,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50185,
+    "imdb_id": "tt20565622",
+    "title": "Tales of Demon and God",
+    "fromSeason": 9,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 13616,
+    "imdb_id": "tt28772637",
+    "title": "Fox Spirit Matchmaker",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 13892,
+    "imdb_id": "tt7058884",
+    "title": "Haikara-san: Here Comes Miss Modern Part 2"
   },
   {
     "kitsu_id": 42269,
@@ -28478,7 +29639,7 @@
     "kitsu_id": 40811,
     "imdb_id": "tt14209702",
     "title": "Oshiri Tantei",
-    "fromSeason": 10,
+    "fromSeason": 1,
     "fromEpisode": 1
   },
   {
@@ -28522,6 +29683,20 @@
     "title": "Tokunana"
   },
   {
+    "kitsu_id": 42873,
+    "imdb_id": "tt10054654",
+    "title": "Tokunana",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42963,
+    "imdb_id": "tt10054654",
+    "title": "Tokunana",
+    "fromSeason": 0,
+    "fromEpisode": 2
+  },
+  {
     "kitsu_id": 42273,
     "imdb_id": "tt11418344",
     "title": "Drifting Dragons",
@@ -28560,6 +29735,13 @@
     "imdb_id": "tt10707854",
     "title": "Chidori RSC",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42852,
+    "imdb_id": "tt10707854",
+    "title": "Chidori RSC",
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -28723,6 +29905,13 @@
     "fromEpisode": 13
   },
   {
+    "kitsu_id": 49002,
+    "imdb_id": "tt13293588",
+    "title": "Mushoku Tensei: Jobless Reincarnation",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 45492,
     "imdb_id": "tt13293588",
     "title": "Mushoku Tensei: Jobless Reincarnation",
@@ -28851,6 +30040,13 @@
     "title": "Mob Psycho 100 REIGEN - The Miracle Psychic that Nobody Knows"
   },
   {
+    "kitsu_id": 41923,
+    "imdb_id": "tt38939446",
+    "title": "Nijusseiki Denki Mokuroku: Eureka Evrika",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 42404,
     "imdb_id": "tt12150560",
     "title": "Tamayomi: The Baseball Girls",
@@ -28908,6 +30104,42 @@
     "title": "Ling Cage",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 43617,
+    "imdb_id": "tt10827146",
+    "title": "Ling Cage",
+    "fromSeason": 1,
+    "fromEpisode": 7
+  },
+  {
+    "kitsu_id": 48310,
+    "imdb_id": "tt10827146",
+    "fanartLogoId": "208225",
+    "title": "Ling Cage",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 44571,
+    "imdb_id": "tt10827146",
+    "title": "Ling Cage",
+    "fromSeason": 0,
+    "fromEpisode": 3
+  },
+  {
+    "kitsu_id": 43616,
+    "imdb_id": "tt10827146",
+    "title": "Ling Cage",
+    "fromSeason": 0,
+    "fromEpisode": 4
+  },
+  {
+    "kitsu_id": 43743,
+    "imdb_id": "tt10827146",
+    "title": "Ling Cage",
+    "fromSeason": 0,
+    "fromEpisode": 5
   },
   {
     "kitsu_id": 42434,
@@ -29137,20 +30369,6 @@
     "title": "Given"
   },
   {
-    "kitsu_id": 42585,
-    "imdb_id": "tt11100658",
-    "title": "Gundam Build Divers Re: Rise",
-    "fromSeason": 1,
-    "fromEpisode": 1
-  },
-  {
-    "kitsu_id": 43144,
-    "imdb_id": "tt11100658",
-    "title": "Gundam Build Divers Re: Rise",
-    "fromSeason": 2,
-    "fromEpisode": 1
-  },
-  {
     "kitsu_id": 41994,
     "imdb_id": "tt7745956",
     "title": "She-Ra and the Princesses of Power",
@@ -29218,6 +30436,7 @@
   {
     "kitsu_id": 42628,
     "imdb_id": "tt13248062",
+    "fanartLogoId": "118180",
     "title": "I've Been Killing Slimes for 300 Years and Maxed Out My Level",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -29225,6 +30444,7 @@
   {
     "kitsu_id": 45717,
     "imdb_id": "tt13248062",
+    "fanartLogoId": "200446",
     "title": "I've Been Killing Slimes for 300 Years and Maxed Out My Level",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -29247,13 +30467,6 @@
     "kitsu_id": 42682,
     "imdb_id": "tt12699782",
     "title": "Shoujo Kageki Revue Starlight: Rondo Rondo Rondo"
-  },
-  {
-    "kitsu_id": 42356,
-    "imdb_id": "tt9883676",
-    "title": "We Never Learn: Bokuben",
-    "fromSeason": 1,
-    "fromEpisode": 1
   },
   {
     "kitsu_id": 42653,
@@ -29326,7 +30539,7 @@
     "imdb_id": "tt11405408",
     "title": "Asteroid in Love",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 7
   },
   {
     "kitsu_id": 42391,
@@ -29388,6 +30601,7 @@
   {
     "kitsu_id": 43004,
     "imdb_id": "tt12057106",
+    "fanartLogoId": "183841",
     "title": "Tower of God",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -29395,6 +30609,7 @@
   {
     "kitsu_id": 46312,
     "imdb_id": "tt12057106",
+    "fanartLogoId": "194675",
     "title": "Tower of God",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -29402,6 +30617,7 @@
   {
     "kitsu_id": 49244,
     "imdb_id": "tt12057106",
+    "fanartLogoId": "194675",
     "title": "Tower of God",
     "fromSeason": 2,
     "fromEpisode": 14
@@ -29664,6 +30880,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 43524,
+    "imdb_id": "tt12443322",
+    "title": "Deca-Dence",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 42563,
     "imdb_id": "tt12464204",
     "fanartLogoId": "116408",
@@ -29698,6 +30921,62 @@
     "imdb_id": "tt13620226",
     "title": "Star Twinkle PreCure",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42042,
+    "imdb_id": "tt12887816",
+    "title": "Virtual-san Looking",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42096,
+    "imdb_id": "tt8688814",
+    "title": "The Dragon Prince",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42097,
+    "imdb_id": "tt8688814",
+    "title": "The Dragon Prince",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42232,
+    "imdb_id": "tt8688814",
+    "title": "The Dragon Prince",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46169,
+    "imdb_id": "tt8688814",
+    "title": "The Dragon Prince",
+    "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47629,
+    "imdb_id": "tt8688814",
+    "title": "The Dragon Prince",
+    "fromSeason": 5,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48220,
+    "imdb_id": "tt8688814",
+    "title": "The Dragon Prince",
+    "fromSeason": 6,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49369,
+    "imdb_id": "tt8688814",
+    "title": "The Dragon Prince",
+    "fromSeason": 7,
     "fromEpisode": 1
   },
   {
@@ -29997,22 +31276,22 @@
     "kitsu_id": 43614,
     "imdb_id": "tt12809744",
     "title": "All Saints Street",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 44980,
     "imdb_id": "tt12809744",
     "title": "All Saints Street",
-    "fromSeason": 3,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 25
   },
   {
     "kitsu_id": 46867,
     "imdb_id": "tt12809744",
     "title": "All Saints Street",
-    "fromSeason": 4,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 37
   },
   {
     "kitsu_id": 43198,
@@ -30054,8 +31333,8 @@
     "kitsu_id": 50331,
     "imdb_id": "tt12471116",
     "title": "Pokétoon",
-    "fromSeason": 3,
-    "fromEpisode": 1
+    "fromSeason": 2,
+    "fromEpisode": 10
   },
   {
     "kitsu_id": 43240,
@@ -30074,8 +31353,17 @@
   {
     "kitsu_id": 43248,
     "imdb_id": "tt12590266",
+    "fanartLogoId": "115588",
     "title": "Cyberpunk: Edgerunners",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50016,
+    "imdb_id": "tt12590266",
+    "fanartLogoId": "203709",
+    "title": "Cyberpunk: Edgerunners",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -30099,12 +31387,19 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 42337,
+    "imdb_id": "tt43587102",
+    "title": "Mebius Dust",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 43755,
     "imdb_id": "tt11328872",
     "fanartLogoId": "169319",
     "title": "In/Spectre",
-    "fromSeason": 1,
-    "fromEpisode": 13
+    "fromSeason": 2,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 42524,
@@ -30133,6 +31428,11 @@
     "title": "Assault Lily: Bouquet",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 42683,
+    "imdb_id": "tt9288776",
+    "title": "White Snake"
   },
   {
     "kitsu_id": 42865,
@@ -30228,6 +31528,13 @@
     "imdb_id": "tt8050756",
     "title": "The Owl House",
     "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46485,
+    "imdb_id": "tt8050756",
+    "title": "The Owl House",
+    "fromSeason": 3,
     "fromEpisode": 1
   },
   {
@@ -30359,6 +31666,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 43165,
+    "imdb_id": "tt12516564",
+    "title": "Da Li Si Ri Zhi",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45489,
+    "imdb_id": "tt12516564",
+    "title": "Da Li Si Ri Zhi",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 44276,
     "imdb_id": "tt12745218",
     "title": "Heaven's Design Team",
@@ -30418,8 +31739,8 @@
     "kitsu_id": 44199,
     "imdb_id": "tt12287748",
     "title": "Yashahime: Princess Half-Demon",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 25
   },
   {
     "kitsu_id": 43212,
@@ -30527,7 +31848,7 @@
   {
     "kitsu_id": 45355,
     "imdb_id": "tt12635162",
-    "fanartLogoId": "156537",
+    "fanartLogoId": "168734",
     "title": "Don't Toy with Me, Miss Nagatoro",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -30547,6 +31868,83 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 43274,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 43794,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 1,
+    "fromEpisode": 9
+  },
+  {
+    "kitsu_id": 45491,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46096,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46565,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47757,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 5,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48327,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 5,
+    "fromEpisode": 5
+  },
+  {
+    "kitsu_id": 49511,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 6,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50789,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 8,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 43877,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47063,
+    "imdb_id": "tt12879782",
+    "title": "A Mortal's Journey",
+    "fromSeason": 0,
+    "fromEpisode": 5
+  },
+  {
     "kitsu_id": 43278,
     "imdb_id": "tt13695606",
     "title": "Yi Nian Yong Heng 2020",
@@ -30554,17 +31952,45 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 48055,
+    "kitsu_id": 45066,
     "imdb_id": "tt13695606",
     "title": "Yi Nian Yong Heng 2020",
     "fromSeason": 2,
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 48054,
+    "imdb_id": "tt13695606",
+    "title": "Yi Nian Yong Heng 2020",
+    "fromSeason": 2,
+    "fromEpisode": 21
+  },
+  {
+    "kitsu_id": 48055,
+    "imdb_id": "tt13695606",
+    "title": "Yi Nian Yong Heng 2020",
+    "fromSeason": 2,
+    "fromEpisode": 37
+  },
+  {
+    "kitsu_id": 49859,
+    "imdb_id": "tt13695606",
+    "title": "Yi Nian Yong Heng 2020",
+    "fromSeason": 2,
+    "fromEpisode": 52
+  },
+  {
     "kitsu_id": 48056,
     "imdb_id": "tt13695606",
     "title": "Yi Nian Yong Heng 2020",
     "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50279,
+    "imdb_id": "tt13695606",
+    "title": "Yi Nian Yong Heng 2020",
+    "fromSeason": 4,
     "fromEpisode": 1
   },
   {
@@ -30641,6 +32067,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50328,
+    "imdb_id": "tt13192574",
+    "title": "Bungou Stray Dogs Wan! 2",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 43307,
     "imdb_id": "tt13415416",
     "title": "I-Chu: Halfway Through the Idol",
@@ -30673,6 +32106,13 @@
     "imdb_id": "tt13196080",
     "title": "Tokyo Revengers",
     "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48960,
+    "imdb_id": "tt13196080",
+    "title": "Tokyo Revengers",
+    "fromSeason": 4,
     "fromEpisode": 1
   },
   {
@@ -30992,8 +32432,8 @@
     "kitsu_id": 45252,
     "imdb_id": "tt13399402",
     "title": "How a Realist Hero Rebuilt the Kingdom",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 43620,
@@ -31014,6 +32454,20 @@
     "imdb_id": "tt10009170",
     "title": "Blood of Zeus",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 44416,
+    "imdb_id": "tt10009170",
+    "title": "Blood of Zeus",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49422,
+    "imdb_id": "tt10009170",
+    "title": "Blood of Zeus",
+    "fromSeason": 3,
     "fromEpisode": 1
   },
   {
@@ -31062,6 +32516,13 @@
     "title": "Hetalia: World Stars",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51075,
+    "imdb_id": "tt13344434",
+    "title": "Hetalia: World Stars",
+    "fromSeason": 0,
+    "fromEpisode": 4
   },
   {
     "kitsu_id": 43690,
@@ -31151,6 +32612,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 43739,
+    "imdb_id": "tt20527766",
+    "title": "Peerless Martial Spirit",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 43740,
     "imdb_id": "tt15447298",
     "title": "Holo no Graffiti",
@@ -31191,6 +32659,49 @@
     "title": "The SpongeBob SquarePants Anime",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 43803,
+    "imdb_id": "tt17050076",
+    "title": "Swallowed Star",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45077,
+    "imdb_id": "tt17050076",
+    "title": "Swallowed Star",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48060,
+    "imdb_id": "tt17050076",
+    "title": "Swallowed Star",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48061,
+    "imdb_id": "tt17050076",
+    "title": "Swallowed Star",
+    "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49492,
+    "imdb_id": "tt17050076",
+    "title": "Swallowed Star",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50285,
+    "imdb_id": "tt17050076",
+    "title": "Swallowed Star",
+    "fromSeason": 0,
+    "fromEpisode": 2,
+    "nonImdbEpisodes": [2]
   },
   {
     "kitsu_id": 43806,
@@ -31254,7 +32765,7 @@
   {
     "kitsu_id": 43820,
     "imdb_id": "tt13362302",
-    "fanartLogoId": "143565",
+    "fanartLogoId": "131703",
     "title": "Shadows House",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -31262,7 +32773,7 @@
   {
     "kitsu_id": 45155,
     "imdb_id": "tt13362302",
-    "fanartLogoId": "142532",
+    "fanartLogoId": "201256",
     "title": "Shadows House",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -31279,6 +32790,13 @@
     "imdb_id": "tt13084120",
     "title": "Azur Lane: Bisoku Zenshin!",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47929,
+    "imdb_id": "tt13084120",
+    "title": "Azur Lane Bisoku Zenshin! 2nd Season",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -31327,8 +32845,8 @@
     "kitsu_id": 46532,
     "imdb_id": "tt13567394",
     "title": "Cute Executive Officer",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 43845,
@@ -31469,6 +32987,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 51129,
+    "imdb_id": "tt14134550",
+    "title": "Oddtaxi",
+    "fromSeason": 0,
+    "fromEpisode": 14
+  },
+  {
     "kitsu_id": 43933,
     "imdb_id": "tt13851958",
     "title": "Vivy: Fluorite Eye's Song",
@@ -31548,8 +33073,17 @@
   {
     "kitsu_id": 44022,
     "imdb_id": "tt13884052",
+    "fanartLogoId": "131689",
     "title": "Tantei wa Mou, Shindeiru.",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46275,
+    "imdb_id": "tt13884052",
+    "fanartLogoId": "202738",
+    "title": "Tantei wa mou, Shindeiru. Season 2",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -31584,6 +33118,13 @@
     "kitsu_id": 44019,
     "imdb_id": "tt32742508",
     "title": "My Friend's Little Sister Has It in for Me!",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 44021,
+    "imdb_id": "tt37015024",
+    "title": "Tai-Ari deshita.: Ojou-sama wa Kakutou Game nante Shinai",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -31828,6 +33369,11 @@
     "title": "Aria the Benedizione"
   },
   {
+    "kitsu_id": 44173,
+    "imdb_id": "tt15000314",
+    "title": "Green Snake"
+  },
+  {
     "kitsu_id": 44179,
     "imdb_id": "tt13409412",
     "title": "Cestvs: The Roman Fighter",
@@ -31946,8 +33492,8 @@
     "kitsu_id": 45993,
     "imdb_id": "tt15170340",
     "title": "Orient",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 44206,
@@ -31959,6 +33505,7 @@
   {
     "kitsu_id": 44207,
     "imdb_id": "tt13676344",
+    "fanartLogoId": "132978",
     "title": "Shuumatsu no Valkyrie",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -31966,6 +33513,7 @@
   {
     "kitsu_id": 44988,
     "imdb_id": "tt13676344",
+    "fanartLogoId": "214707",
     "title": "Shuumatsu no Valkyrie",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -31973,6 +33521,7 @@
   {
     "kitsu_id": 47495,
     "imdb_id": "tt13676344",
+    "fanartLogoId": "214707",
     "title": "Shuumatsu no Valkyrie",
     "fromSeason": 2,
     "fromEpisode": 11
@@ -31980,6 +33529,7 @@
   {
     "kitsu_id": 49669,
     "imdb_id": "tt13676344",
+    "fanartLogoId": "214708",
     "title": "Shuumatsu no Valkyrie",
     "fromSeason": 3,
     "fromEpisode": 1
@@ -31989,6 +33539,13 @@
     "imdb_id": "tt14979604",
     "title": "Bara Ou no Souretsu",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46045,
+    "imdb_id": "tt14979604",
+    "title": "Bara Ou no Souretsu",
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -32035,6 +33592,13 @@
     "kitsu_id": 44221,
     "imdb_id": "tt13084262",
     "title": "Uchuu Nanchara Kotetsu-kun",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 44224,
+    "imdb_id": "tt14821350",
+    "title": "iii icecrin",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -32107,7 +33671,7 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 44280,
+    "kitsu_id": 46933,
     "imdb_id": "tt33038878",
     "title": "Fate/Grand Order: Fujimaru Ritsuka wa Wakaranai",
     "fromSeason": 1,
@@ -32299,6 +33863,41 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 46566,
+    "imdb_id": "tt14986786",
+    "title": "Wanmei Shijie",
+    "fromSeason": 1,
+    "fromEpisode": 27
+  },
+  {
+    "kitsu_id": 46567,
+    "imdb_id": "tt14986786",
+    "title": "Wanmei Shijie",
+    "fromSeason": 1,
+    "fromEpisode": 79
+  },
+  {
+    "kitsu_id": 48051,
+    "imdb_id": "tt14986786",
+    "title": "Wanmei Shijie",
+    "fromSeason": 1,
+    "fromEpisode": 131
+  },
+  {
+    "kitsu_id": 49271,
+    "imdb_id": "tt14986786",
+    "title": "Wanmei Shijie",
+    "fromSeason": 1,
+    "fromEpisode": 183
+  },
+  {
+    "kitsu_id": 50231,
+    "imdb_id": "tt14986786",
+    "title": "Wanmei Shijie",
+    "fromSeason": 1,
+    "fromEpisode": 235
+  },
+  {
     "kitsu_id": 44419,
     "imdb_id": "tt15391190",
     "title": "Dance Dance Danseur",
@@ -32327,8 +33926,17 @@
   {
     "kitsu_id": 44423,
     "imdb_id": "tt14476236",
+    "fanartLogoId": "138485",
     "title": "Gaikotsu Kishi-sama, Tadaima Isekai e Odekakechuu",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49410,
+    "imdb_id": "tt14476236",
+    "fanartLogoId": "198700",
+    "title": "Gaikotsu Kishi-sama, Tadaima Isekai e Odekakechuu 2nd Season",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -32379,6 +33987,11 @@
     "title": "Uta No Prince-Sama: Maji Love Taboo Night Xxxx"
   },
   {
+    "kitsu_id": 44451,
+    "imdb_id": "tt14523706",
+    "title": "Mahou Shoujo Madoka☆Magica: Walpurgis no Kaiten"
+  },
+  {
     "kitsu_id": 44494,
     "imdb_id": "tt19409404",
     "title": "Healer Girl",
@@ -32409,8 +34022,16 @@
   {
     "kitsu_id": 48133,
     "imdb_id": "tt14976292",
+    "fanartLogoId": "197167",
     "title": "Link Click",
     "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49889,
+    "imdb_id": "tt14976292",
+    "title": "Shiguang Dailiren III",
+    "fromSeason": 4,
     "fromEpisode": 1
   },
   {
@@ -32419,6 +34040,27 @@
     "title": "Link Click",
     "fromSeason": 0,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45073,
+    "imdb_id": "tt14976292",
+    "title": "Link Click",
+    "fromSeason": 0,
+    "fromEpisode": 2
+  },
+  {
+    "kitsu_id": 45503,
+    "imdb_id": "tt14976292",
+    "title": "Link Click",
+    "fromSeason": 0,
+    "fromEpisode": 3
+  },
+  {
+    "kitsu_id": 50691,
+    "imdb_id": "tt14976292",
+    "title": "Link Click",
+    "fromSeason": 0,
+    "fromEpisode": 21
   },
   {
     "kitsu_id": 45506,
@@ -32445,6 +34087,11 @@
     "title": "Overlord: The Sacred Kingdom"
   },
   {
+    "kitsu_id": 44536,
+    "imdb_id": "tt32915652",
+    "title": "MOBILE SUIT GUNDAM HATHAWAY The Sorcery of Nymph Circe"
+  },
+  {
     "kitsu_id": 44551,
     "imdb_id": "tt14626352",
     "title": "Komi Can't Communicate",
@@ -32455,8 +34102,8 @@
     "kitsu_id": 45641,
     "imdb_id": "tt14626352",
     "title": "Komi Can't Communicate",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 44574,
@@ -32518,6 +34165,18 @@
     "title": "Aoashi",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49883,
+    "imdb_id": "tt15792808",
+    "title": "Aoashi",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 44631,
+    "imdb_id": "tt13269670",
+    "title": "New Gods: Nezha Reborn"
   },
   {
     "kitsu_id": 44632,
@@ -32702,6 +34361,7 @@
   {
     "kitsu_id": 44944,
     "imdb_id": "tt16341212",
+    "fanartLogoId": "201748",
     "title": "Aharen-san wa hakarenai",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -32709,6 +34369,7 @@
   {
     "kitsu_id": 49095,
     "imdb_id": "tt16341212",
+    "fanartLogoId": "201749",
     "title": "Aharen-san wa hakarenai",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -32956,8 +34617,17 @@
   {
     "kitsu_id": 45242,
     "imdb_id": "tt15483602",
+    "fanartLogoId": "202779",
     "title": "Tensei shitara ken deshita",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46917,
+    "imdb_id": "tt15483602",
+    "fanartLogoId": "202739",
+    "title": "Tensei Shitara Ken Deshita 2nd Season",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -33011,8 +34681,8 @@
     "kitsu_id": 47231,
     "imdb_id": "tt15538376",
     "title": "Sugar Apple Fairy Tale",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 45271,
@@ -33059,8 +34729,8 @@
   },
   {
     "kitsu_id": 45328,
-    "imdb_id": "tt10915840",
-    "title": "Uchuu senkan Yamato 2205: Aratanaru tabidachi"
+    "imdb_id": "tt21038566",
+    "title": "Space Battleship Yamato 2205: A New Journey"
   },
   {
     "kitsu_id": 45333,
@@ -33105,6 +34775,7 @@
   {
     "kitsu_id": 48796,
     "imdb_id": "tt22443832",
+    "fanartLogoId": "203566",
     "title": "Arknights: Prelude to Dawn",
     "fromSeason": 3,
     "fromEpisode": 1
@@ -33114,6 +34785,13 @@
     "imdb_id": "tt15758108",
     "title": "Tokyo 24-ku",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46008,
+    "imdb_id": "tt15758108",
+    "title": "Tokyo 24-ku",
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -33233,6 +34911,7 @@
   {
     "kitsu_id": 45483,
     "imdb_id": "tt15975122",
+    "fanartLogoId": "153181",
     "title": "Yofukashi no uta",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -33240,6 +34919,7 @@
   {
     "kitsu_id": 48611,
     "imdb_id": "tt15975122",
+    "fanartLogoId": "202203",
     "title": "Yofukashi no uta",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -33250,6 +34930,13 @@
     "title": "Mononogatari",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47269,
+    "imdb_id": "tt26140070",
+    "title": "Mononogatari",
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 45512,
@@ -33296,8 +34983,17 @@
   {
     "kitsu_id": 45529,
     "imdb_id": "tt16255458",
+    "fanartLogoId": "149900",
     "title": "Trapped in a Dating Sim: The World of Otome Games is Tough for Mobs",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46925,
+    "imdb_id": "tt16255458",
+    "fanartLogoId": "214699",
+    "title": "Otomege Sekai wa Mob ni Kibishii Sekai desu 2nd Season",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -33331,6 +35027,13 @@
     "imdb_id": "tt16409202",
     "title": "Spare Me, Great Lord!",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48486,
+    "imdb_id": "tt16409202",
+    "title": "Spare Me, Great Lord!",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -33394,6 +35097,20 @@
     "title": "Bubble"
   },
   {
+    "kitsu_id": 45570,
+    "imdb_id": "tt28259824",
+    "title": "Blades of the Guardians",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47954,
+    "imdb_id": "tt28259824",
+    "title": "Blades of the Guardians",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 45605,
     "imdb_id": "tt19383782",
     "title": "Yu☆Gi☆Oh! Go Rush!!",
@@ -33410,6 +35127,7 @@
   {
     "kitsu_id": 45616,
     "imdb_id": "tt22249034",
+    "fanartLogoId": "175724",
     "title": "Rurouni Kenshin: Meiji Kenkaku Romantan",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -33417,6 +35135,7 @@
   {
     "kitsu_id": 48393,
     "imdb_id": "tt22249034",
+    "fanartLogoId": "194659",
     "title": "Rurouni Kenshin: Meiji Kenkaku Romantan",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -33443,6 +35162,32 @@
     "imdb_id": "tt25721166",
     "title": "Tsundere Akuyaku Reijou Liselotte to Jikkyou no Endou-kun to Kaisetsu no Kobayashi-san",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45666,
+    "imdb_id": "tt31970593",
+    "title": "Mahoutsukai no Yoru"
+  },
+  {
+    "kitsu_id": 45677,
+    "imdb_id": "tt27517921",
+    "title": "Nitian Xie Shen (2023)",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49945,
+    "imdb_id": "tt27517921",
+    "title": "Nitian Xie Shen (2023)",
+    "fromSeason": 1,
+    "fromEpisode": 31
+  },
+  {
+    "kitsu_id": 45676,
+    "imdb_id": "tt27517921",
+    "title": "Nitian Xie Shen 2",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -33503,13 +35248,22 @@
   {
     "kitsu_id": 45715,
     "imdb_id": "tt19064770",
+    "fanartLogoId": "166742",
     "title": "Otonari no tenshi-sama ni itsu no ma ni ka dame-ningen ni sareteita ken",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45719,
+    "imdb_id": "tt29007226",
+    "title": "Di Yi Xulie",
     "fromSeason": 1,
     "fromEpisode": 1
   },
   {
     "kitsu_id": 48069,
     "imdb_id": "tt19064770",
+    "fanartLogoId": "214261",
     "title": "Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken 2nd Season",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -33560,6 +35314,20 @@
     "kitsu_id": 45794,
     "imdb_id": "tt12105800",
     "title": "Hoshi no samidare",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46548,
+    "imdb_id": "tt12105800",
+    "title": "Hoshi no samidare",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 45798,
+    "imdb_id": "tt26007176",
+    "title": "Yao-Chinese Folktales",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -33689,6 +35457,13 @@
     "fromEpisode": 13
   },
   {
+    "kitsu_id": 49134,
+    "imdb_id": "tt18311412",
+    "title": "NieR: Automata Ver 1.1a",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 45930,
     "imdb_id": "tt28534254",
     "title": "Spice and Wolf: Merchant Meets the Wise Wolf",
@@ -33707,6 +35482,20 @@
     "imdb_id": "tt11247158",
     "title": "The Legend of Vox Machina",
     "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49161,
+    "imdb_id": "tt11247158",
+    "title": "The Legend of Vox Machina",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50688,
+    "imdb_id": "tt11247158",
+    "title": "The Legend of Vox Machina",
+    "fromSeason": 4,
     "fromEpisode": 1
   },
   {
@@ -33857,6 +35646,7 @@
   {
     "kitsu_id": 46016,
     "imdb_id": "tt19223420",
+    "fanartLogoId": "163854",
     "title": "Isekai Nonbiri Nouka",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -33864,6 +35654,7 @@
   {
     "kitsu_id": 50117,
     "imdb_id": "tt19223420",
+    "fanartLogoId": "213573",
     "title": "Isekai Nonbiri Nouka 2",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -33909,6 +35700,13 @@
     "title": "Watashi no Shiawase na Kekkon",
     "fromSeason": 0,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49838,
+    "imdb_id": "tt19869172",
+    "title": "Watashi no Shiawase na Kekkon",
+    "fromSeason": 0,
+    "fromEpisode": 2
   },
   {
     "kitsu_id": 46055,
@@ -33997,6 +35795,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50723,
+    "imdb_id": "tt25531288",
+    "title": "Hyouken no Majutsushi ga Sekai wo Suberu II",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 46089,
     "imdb_id": "tt27419998",
     "title": "Kaminaki Sekai no Kamisama Katsudou",
@@ -34014,15 +35819,15 @@
     "kitsu_id": 46974,
     "imdb_id": "tt21244528",
     "title": "Yoru wa Neko to Issho",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 31
   },
   {
     "kitsu_id": 48567,
     "imdb_id": "tt21244528",
     "title": "Yoru wa Neko to Issho",
-    "fromSeason": 3,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 61
   },
   {
     "kitsu_id": 46099,
@@ -34308,6 +36113,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 51113,
+    "imdb_id": "tt21209804",
+    "title": "Mashle: Magic and Muscles",
+    "fromSeason": 0,
+    "fromEpisode": 2
+  },
+  {
     "kitsu_id": 46231,
     "imdb_id": "tt21209876",
     "fanartLogoId": "154023",
@@ -34321,6 +36133,13 @@
     "fanartLogoId": "195713",
     "title": "Solo Leveling",
     "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48572,
+    "imdb_id": "tt21209876",
+    "title": "Solo Leveling",
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -34340,6 +36159,7 @@
   {
     "kitsu_id": 46238,
     "imdb_id": "tt16183478",
+    "fanartLogoId": "194596",
     "title": "Yowai 5000-nen no Soushoku Dragon, Iwarenaki Jaryuu Nintei",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -34347,6 +36167,7 @@
   {
     "kitsu_id": 48191,
     "imdb_id": "tt16183478",
+    "fanartLogoId": "204434",
     "title": "Yowai 5000-nen no Soushoku Dragon, Iwarenaki Jaryuu Nintei",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -34485,10 +36306,26 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50452,
+    "imdb_id": "tt21975436",
+    "title": "Kaiju No. 8",
+    "fromSeason": 0,
+    "fromEpisode": 4
+  },
+  {
     "kitsu_id": 46303,
     "imdb_id": "tt27524116",
+    "fanartLogoId": "186921",
     "title": "Sasaki to Pi-chan",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48651,
+    "imdb_id": "tt27524116",
+    "fanartLogoId": "207034",
+    "title": "Sasaki to Pii-chan 2nd Season",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -34515,6 +36352,7 @@
   {
     "kitsu_id": 46311,
     "imdb_id": "tt28100731",
+    "fanartLogoId": "157609",
     "title": "Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -34522,6 +36360,7 @@
   {
     "kitsu_id": 47968,
     "imdb_id": "tt28100731",
+    "fanartLogoId": "202198",
     "title": "Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -34606,6 +36445,13 @@
     "imdb_id": "tt27417996",
     "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50637,
+    "imdb_id": "tt27417996",
+    "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta",
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -34763,6 +36609,7 @@
   {
     "kitsu_id": 46516,
     "imdb_id": "tt27442011",
+    "fanartLogoId": "189027",
     "title": "Long Zu",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -34770,6 +36617,7 @@
   {
     "kitsu_id": 49191,
     "imdb_id": "tt27442011",
+    "fanartLogoId": "204302",
     "title": "Long Zu",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -34851,6 +36699,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 48124,
+    "imdb_id": "tt11680642",
+    "title": "Pantheon",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 46589,
     "imdb_id": "tt22524872",
     "title": "Shy",
@@ -34861,8 +36716,8 @@
     "kitsu_id": 48328,
     "imdb_id": "tt22524872",
     "title": "Shy",
-    "fromSeason": 1,
-    "fromEpisode": 13
+    "fromSeason": 2,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 46600,
@@ -34949,6 +36804,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 47264,
+    "imdb_id": "tt22986710",
+    "title": "Buddy Daddies",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 46652,
     "imdb_id": "tt19047064",
     "title": "Rakudai Majo"
@@ -34970,7 +36832,7 @@
   {
     "kitsu_id": 46667,
     "imdb_id": "tt27617338",
-    "fanartLogoId": "178240",
+    "fanartLogoId": "193776",
     "title": "Hyakushô Kizoku",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -34988,12 +36850,12 @@
     "imdb_id": "tt27617338",
     "title": "Hyakushô Kizoku",
     "fromSeason": 1,
-    "fromEpisode": 24
+    "fromEpisode": 25
   },
   {
     "kitsu_id": 48933,
     "imdb_id": "tt27617338",
-    "fanartLogoId": "190427",
+    "fanartLogoId": "193776",
     "title": "Hyakushô Kizoku",
     "fromSeason": 0,
     "fromEpisode": 1
@@ -35060,6 +36922,7 @@
   {
     "kitsu_id": 46689,
     "imdb_id": "tt23132598",
+    "fanartLogoId": "170904",
     "title": "Higeki no Genkyo to naru Saikyo Gedo Last Boss Joo wa Min no tame ni Tsukushimasu",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -35067,6 +36930,7 @@
   {
     "kitsu_id": 50073,
     "imdb_id": "tt23132598",
+    "fanartLogoId": "214322",
     "title": "Higeki no Genkyou to Naru Saikyou Gedou Last Boss Joou wa Tami no Tame ni Tsukushimasu. Season 2",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -35183,7 +37047,7 @@
     "imdb_id": "tt23844810",
     "title": "Bye Bye, Earth",
     "fromSeason": 1,
-    "fromEpisode": 10
+    "fromEpisode": 11
   },
   {
     "kitsu_id": 46780,
@@ -35304,6 +37168,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50823,
+    "imdb_id": "tt31131310",
+    "title": "Yozakura-san Chi no Daisakusen 2nd Season",
+    "fromSeason": 2,
+    "fromEpisode": 13
+  },
+  {
     "kitsu_id": 46874,
     "imdb_id": "tt26684398",
     "title": "Spy x Family Movie: Code: White"
@@ -35350,6 +37221,13 @@
     "imdb_id": "tt29201691",
     "title": "Megumi no Daigo: Kyuukoku no Orange",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48463,
+    "imdb_id": "tt29201691",
+    "title": "Megumi no Daigo: Kyuukoku no Orange",
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -35447,6 +37325,11 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 47017,
+    "imdb_id": "tt38864557",
+    "title": "Made in Abyss: Mezameru Shinpi"
+  },
+  {
     "kitsu_id": 47018,
     "imdb_id": "tt27679458",
     "title": "Overtake!",
@@ -35541,6 +37424,35 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50021,
+    "imdb_id": "tt26743760",
+    "title": "Kusuriya no Hitorigoto 3rd Season",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48183,
+    "imdb_id": "tt26743760",
+    "title": "Kusuriya no Hitorigoto",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49494,
+    "imdb_id": "tt26743760",
+    "title": "Kusuriya no Hitorigoto",
+    "fromSeason": 0,
+    "fromEpisode": 25,
+    "imdbEpisodes": [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 49, 50]
+  },
+  {
+    "kitsu_id": 50029,
+    "imdb_id": "tt26743760",
+    "title": "Kusuriya no Hitorigoto",
+    "fromSeason": 0,
+    "fromEpisode": 47
+  },
+  {
     "kitsu_id": 47106,
     "imdb_id": "tt27724196",
     "title": "Kuromi's Pretty Journey",
@@ -35586,8 +37498,8 @@
     "kitsu_id": 48610,
     "imdb_id": "tt27531662",
     "title": "Chibi Godzilla no Gyakushuu",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 47151,
@@ -35600,15 +37512,15 @@
     "kitsu_id": 49962,
     "imdb_id": "tt27531662",
     "title": "Chibi Godzilla no Gyakushuu",
-    "fromSeason": 3,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 66
   },
   {
     "kitsu_id": 50818,
     "imdb_id": "tt27531662",
     "title": "Chibi Godzilla no Gyakushuu",
-    "fromSeason": 4,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 105
   },
   {
     "kitsu_id": 47152,
@@ -35650,6 +37562,13 @@
     "imdb_id": "tt28919914",
     "title": "Kimi no Koto ga Daidaidaidaidaisuki na 100-nin no Kanojo",
     "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50272,
+    "imdb_id": "tt28919914",
+    "title": "Kimi no Koto ga Daidaidaidaidaisuki na 100-nin no Kanojo 3rd Season",
+    "fromSeason": 3,
     "fromEpisode": 1
   },
   {
@@ -35709,6 +37628,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49265,
+    "imdb_id": "tt27187054",
+    "title": "Nige Jouzu no Wakagimi 2nd Season",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49192,
+    "imdb_id": "tt27187054",
+    "title": "Nige Jouzu no Wakagimi",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 47198,
     "imdb_id": "tt27182605",
     "title": "3-nen Z-gumi Ginpachi Sensei",
@@ -35725,6 +37658,7 @@
   {
     "kitsu_id": 47222,
     "imdb_id": "tt31543920",
+    "fanartLogoId": "179550",
     "title": "The Idolm@ster: Shiny Colors",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -35732,6 +37666,7 @@
   {
     "kitsu_id": 48603,
     "imdb_id": "tt31543920",
+    "fanartLogoId": "194660",
     "title": "The Idolm@ster: Shiny Colors",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -35751,6 +37686,7 @@
   {
     "kitsu_id": 47227,
     "imdb_id": "tt29475583",
+    "fanartLogoId": "183368",
     "title": "Kamierabi",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -35758,6 +37694,7 @@
   {
     "kitsu_id": 48398,
     "imdb_id": "tt29475583",
+    "fanartLogoId": "194585",
     "title": "Kamierabi",
     "fromSeason": 1,
     "fromEpisode": 13
@@ -35819,6 +37756,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 48397,
+    "imdb_id": "tt28313387",
+    "title": "Kikansha no Mahou wa Tokubetsu desu 2nd Season",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 47241,
     "imdb_id": "tt27250301",
     "title": "Ōoku: The Inner Chambers",
@@ -35841,13 +37785,6 @@
     "kitsu_id": 47268,
     "imdb_id": "tt27250338",
     "title": "Yakitori: Soldiers of Misfortune",
-    "fromSeason": 1,
-    "fromEpisode": 1
-  },
-  {
-    "kitsu_id": 47269,
-    "imdb_id": "tt26140070",
-    "title": "Mononogatari",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -35939,6 +37876,13 @@
     "kitsu_id": 47384,
     "imdb_id": "tt27497198",
     "title": "Da Zhu Zai Nian Fan",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49944,
+    "imdb_id": "tt27497198",
+    "title": "Da Zhu Zai Nian Fan",
     "fromSeason": 2,
     "fromEpisode": 1
   },
@@ -35979,8 +37923,8 @@
     "kitsu_id": 49013,
     "imdb_id": "tt31957516",
     "title": "Oi! Tonbo",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 47454,
@@ -36027,6 +37971,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49437,
+    "imdb_id": "tt31975847",
+    "title": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 47483,
     "imdb_id": "tt31309480",
     "title": "The Way of Pon",
@@ -36046,6 +37997,11 @@
     "title": "Kyoukai Senki Kyokkou no Souki",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47529,
+    "imdb_id": "tt33503342",
+    "title": "Make a Girl"
   },
   {
     "kitsu_id": 47530,
@@ -36107,6 +38063,11 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 47637,
+    "imdb_id": "tt35652378",
+    "title": "Boku to Roboco Movie"
+  },
+  {
     "kitsu_id": 47656,
     "imdb_id": "tt30643998",
     "title": "Himesama Goumon no Jikan desu",
@@ -36117,8 +38078,8 @@
     "kitsu_id": 48667,
     "imdb_id": "tt30643998",
     "title": "Himesama Goumon no Jikan desu",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 47658,
@@ -36131,6 +38092,34 @@
     "title": "Fate/strange Fake",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47684,
+    "imdb_id": "tt27497430",
+    "title": "Cang Yuan Tu",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49036,
+    "imdb_id": "tt27497430",
+    "title": "Cang Yuan Tu",
+    "fromSeason": 1,
+    "fromEpisode": 31
+  },
+  {
+    "kitsu_id": 50671,
+    "imdb_id": "tt27497430",
+    "title": "Cang Yuan Tu",
+    "fromSeason": 1,
+    "fromEpisode": 70
+  },
+  {
+    "kitsu_id": 50672,
+    "imdb_id": "tt27497430",
+    "title": "Cang Yuan Tu",
+    "fromSeason": 0,
+    "fromEpisode": 5
   },
   {
     "kitsu_id": 47686,
@@ -36186,6 +38175,20 @@
     "imdb_id": "tt14681924",
     "title": "My Adventures with Superman",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48819,
+    "imdb_id": "tt14681924",
+    "title": "My Adventures with Superman",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50695,
+    "imdb_id": "tt14681924",
+    "title": "My Adventures with Superman",
+    "fromSeason": 3,
     "fromEpisode": 1
   },
   {
@@ -36325,6 +38328,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 47862,
+    "imdb_id": "tt33253422",
+    "title": "Flower Angels: On the Fragrance of Magic Flowers",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 47872,
     "imdb_id": "tt32832441",
     "title": "Dungeon People",
@@ -36356,8 +38366,8 @@
     "kitsu_id": 48212,
     "imdb_id": "tt29473209",
     "title": "After-school Hanako-kun",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 5
   },
   {
     "kitsu_id": 47891,
@@ -36454,9 +38464,30 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 47985,
+    "imdb_id": "tt41296506",
+    "title": "Magical★Explorer: Eroge no Yuujin Chara ni Tensei Shitakedo, Game Chishiki Tsukatte Jiyuu ni Ikiru",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 47987,
     "imdb_id": "tt37532971",
     "title": "Class de 2-banme ni Kawaii Onnanoko to Tomodachi ni Natta",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47988,
+    "imdb_id": "tt41278615",
+    "title": "Tenkousaki no Seiso Karen na Bishoujo ga, Mukashi Danshi to Omotte Issho ni Asonda Osananajimi datta Ken",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47989,
+    "imdb_id": "tt32862795",
+    "title": "Saikyou Degarashi Ouji no Anyaku Teii Arasoi: Munou wo Enjiru SS Rank Ouji wa Koui Keishou-sen wo Kage kara Shihai suru",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -36501,6 +38532,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 48037,
+    "imdb_id": "tt38348352",
+    "title": "Xiuluo Wushen",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50281,
+    "imdb_id": "tt38348352",
+    "title": "Xiuluo Wushen",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 48047,
     "imdb_id": "tt29402539",
     "title": "T. P. Bon",
@@ -36533,13 +38578,6 @@
     "imdb_id": "tt30643971",
     "title": "Saikyou Tank no Meikyuu Kouryaku: Tairyoku 9999 no Rare Skill-mochi Tank, Yuusha Party wo Tsuihou sareru",
     "fromSeason": 1,
-    "fromEpisode": 1
-  },
-  {
-    "kitsu_id": 48061,
-    "imdb_id": "tt17050076",
-    "title": "Tunshi Xingkong 4",
-    "fromSeason": 4,
     "fromEpisode": 1
   },
   {
@@ -36653,9 +38691,9 @@
   {
     "kitsu_id": 50455,
     "imdb_id": "tt28618556",
-    "title": "Guimi Zhi Zhu Tebie Pian: Liewu",
+    "title": "Lord of Mysteries",
     "fromSeason": 0,
-    "fromEpisode": 1
+    "fromEpisode": 18
   },
   {
     "kitsu_id": 48237,
@@ -36676,6 +38714,13 @@
     "imdb_id": "tt32639706",
     "title": "Ao no Hako",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49752,
+    "imdb_id": "tt32639706",
+    "title": "Ao no Hako 2nd Season",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -36721,6 +38766,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49427,
+    "imdb_id": "tt30476504",
+    "title": "Kabushiki Gaisha Magi Lumiere 2nd Season",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 48275,
     "imdb_id": "tt30608459",
     "title": "Wonderful Precure!",
@@ -36732,6 +38784,20 @@
     "imdb_id": "tt31078645",
     "title": "Astro Note",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48298,
+    "imdb_id": "tt31381913",
+    "title": "Jiaonang Jihua",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48299,
+    "imdb_id": "tt31381913",
+    "title": "Jiaonang Jihua",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -36817,6 +38883,7 @@
   {
     "kitsu_id": 48415,
     "imdb_id": "tt30844357",
+    "fanartLogoId": "192496",
     "title": "Shoshimin: How to Become Ordinary",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -36824,6 +38891,7 @@
   {
     "kitsu_id": 49201,
     "imdb_id": "tt30844357",
+    "fanartLogoId": "204436",
     "title": "Shoshimin: How to Become Ordinary",
     "fromSeason": 1,
     "fromEpisode": 11
@@ -36934,6 +39002,11 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 48469,
+    "imdb_id": "tt31068334",
+    "title": "Liberated from Paradise: Resonance of the Heart"
+  },
+  {
     "kitsu_id": 48476,
     "imdb_id": "tt37205655",
     "title": "Nukitashi the Animation",
@@ -36964,6 +39037,7 @@
   {
     "kitsu_id": 48534,
     "imdb_id": "tt31889371",
+    "fanartLogoId": "192381",
     "title": "Tsue to Tsurugi no Wistoria",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -36971,6 +39045,7 @@
   {
     "kitsu_id": 49241,
     "imdb_id": "tt31889371",
+    "fanartLogoId": "214262",
     "title": "Tsue to Tsurugi no Wistoria 2nd Season",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -36978,6 +39053,7 @@
   {
     "kitsu_id": 50650,
     "imdb_id": "tt31889371",
+    "fanartLogoId": "192381",
     "title": "Tsue to Tsurugi no Wistoria",
     "fromSeason": 0,
     "fromEpisode": 2
@@ -37105,7 +39181,7 @@
     "kitsu_id": 49335,
     "imdb_id": "tt32592756",
     "title": "Tensui no Sakuna-hime",
-    "fromSeason": 2,
+    "fromSeason": 0,
     "fromEpisode": 1
   },
   {
@@ -37135,6 +39211,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 48625,
+    "imdb_id": "tt32792277",
+    "title": "Slay The Gods",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50329,
+    "imdb_id": "tt32792277",
+    "title": "Slay The Gods",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 48628,
     "imdb_id": "tt32856718",
     "title": "Beheneko: The Elf-Girl's Cat is Secretly an S-Ranked Monster!",
@@ -37146,6 +39236,13 @@
     "imdb_id": "tt30400535",
     "title": "Raijingu Inpakuto",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49149,
+    "imdb_id": "tt30400535",
+    "title": "Raijingu Inpakuto",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -37232,6 +39329,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 51018,
+    "imdb_id": "tt32344704",
+    "title": "Tougen Anki: Dark Demon of Paradise",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 48836,
     "imdb_id": "tt36592995",
     "title": "Odekake Kozame: Tokai no Otomodachi"
@@ -37312,9 +39416,23 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50613,
+    "imdb_id": "tt38646611",
+    "title": "Hanazakari no Kimitachi e 2nd Season",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 48871,
     "imdb_id": "tt33613782",
     "title": "Kinokoinu: Mushroom Pup",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48880,
+    "imdb_id": "tt38049145",
+    "title": "Sayonara Lara",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -37341,6 +39459,13 @@
     "kitsu_id": 48893,
     "imdb_id": "tt33028568",
     "title": "The Summer Hikaru Died",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48899,
+    "imdb_id": "tt36517689",
+    "title": "Koukaku Kidoutai: THE GHOST IN THE SHELL",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -37453,6 +39578,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50626,
+    "imdb_id": "tt32766897",
+    "title": "Ranma 1/2",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 48995,
     "imdb_id": "tt32741637",
     "title": "I'm Getting Married to a Girl I Hate in My Class",
@@ -37481,6 +39613,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49008,
+    "imdb_id": "tt32813343",
+    "title": "Magic Knight Rayearth",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 49011,
     "imdb_id": "tt33014582",
     "title": "Mythical Creatures Are My Dinners",
@@ -37504,6 +39643,7 @@
   {
     "kitsu_id": 49043,
     "imdb_id": "tt32903600",
+    "fanartLogoId": "192854",
     "title": "0-Saiji Start Dash Monogatari",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -37511,6 +39651,7 @@
   {
     "kitsu_id": 49405,
     "imdb_id": "tt32903600",
+    "fanartLogoId": "209266",
     "title": "0-Saiji Start Dash Monogatari",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -37560,14 +39701,30 @@
   {
     "kitsu_id": 49061,
     "imdb_id": "tt32991344",
+    "fanartLogoId": "197129",
     "title": "Kurebatesu -Majû no Ô to Akago to Kabane no Yûsha-",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50154,
+    "imdb_id": "tt32991344",
+    "fanartLogoId": "206494",
+    "title": "Clevatess II: Majuu no Ou to Itsuwari no Yuusha Denshou",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
     "kitsu_id": 49063,
     "imdb_id": "tt34621291",
     "title": "Magic Maker -Isekai Mahou no Tsukurikata",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49064,
+    "imdb_id": "tt32985844",
+    "title": "Shirobuta Kizoku desu ga Zense no Kioku ga Haeta node Hiyoko na Otouto Sodatemasu",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -37669,8 +39826,17 @@
   {
     "kitsu_id": 49119,
     "imdb_id": "tt35346717",
+    "fanartLogoId": "199815",
     "title": "Katainaka no Ossan, Kensei ni Naru",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49995,
+    "imdb_id": "tt35346717",
+    "fanartLogoId": "212273",
+    "title": "Katainaka no Ossan, Kensei ni Naru 2nd Season",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -37693,6 +39859,13 @@
     "title": "Chitose-kun wa Ramune Bin no Naka",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50966,
+    "imdb_id": "tt35769369",
+    "title": "Chitose-kun wa Ramune Bin no Naka",
+    "fromSeason": 1,
+    "fromEpisode": 14
   },
   {
     "kitsu_id": 49123,
@@ -37763,6 +39936,18 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49148,
+    "imdb_id": "tt36956670",
+    "title": "Jujutsu Kaisen: Kaigyoku/Gyokusetsu"
+  },
+  {
+    "kitsu_id": 50404,
+    "imdb_id": "tt33258199",
+    "title": "Yasei no Last Boss ga Arawareta! 2nd Season",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 49179,
     "imdb_id": "tt33615810",
     "title": "I Left My A-Rank Party to Help My Former Students Reach the Dungeon Depths!",
@@ -37773,6 +39958,13 @@
     "kitsu_id": 49182,
     "imdb_id": "tt35351289",
     "title": "Maebashi Witches",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49183,
+    "imdb_id": "tt33334216",
+    "title": "Tsuihou Sareta Tensei Juukishi wa Game Sashiki de Musou Suru",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -37791,6 +39983,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49196,
+    "imdb_id": "tt42727894",
+    "title": "Romeria Senki: Maou wo Taoshita nochi mo Jinrui Yabasou dakara Guntai Soshiki Shita",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 49204,
     "imdb_id": "tt39158244",
     "title": "Girls Band Cry: The Movie: Youth Rhapsody"
@@ -37799,8 +39998,8 @@
     "kitsu_id": 49283,
     "imdb_id": "tt33613789",
     "title": "Lockdown Zone: Lv. X",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 7
   },
   {
     "kitsu_id": 49205,
@@ -37917,6 +40116,7 @@
   {
     "kitsu_id": 49294,
     "imdb_id": "tt34119820",
+    "fanartLogoId": "199850",
     "title": "Saikyô no Ôsama, Nidome no Jinsei wa Nani wo Suru?",
     "fromSeason": 1,
     "fromEpisode": 1
@@ -37924,6 +40124,7 @@
   {
     "kitsu_id": 49983,
     "imdb_id": "tt34119820",
+    "fanartLogoId": "204874",
     "title": "The Beginning After the End Season 2",
     "fromSeason": 2,
     "fromEpisode": 1
@@ -38013,6 +40214,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50180,
+    "imdb_id": "tt36592708",
+    "title": "There's No Freaking Way I'll be Your Lover! Unless...",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 49360,
     "imdb_id": "tt34702901",
     "title": "Anne Shirley",
@@ -38031,6 +40239,13 @@
     "imdb_id": "tt36034547",
     "title": "You and I Are Polar Opposites",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50634,
+    "imdb_id": "tt36034547",
+    "title": "Seihantai na Kimi to Boku 2nd Season",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -38060,6 +40275,11 @@
     "title": "Kimi to Idol Precure",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49378,
+    "imdb_id": "tt34812090",
+    "title": "LUPIN THE IIIRD THE MOVIE: Fujimi no Ketsuzoku"
   },
   {
     "kitsu_id": 49379,
@@ -38137,6 +40357,13 @@
     "title": "Scarlet"
   },
   {
+    "kitsu_id": 49449,
+    "imdb_id": "tt39311004",
+    "title": "Magical Girl Lyrical Nanoha EXCEEDS Gun Blaze Vengeance",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 49466,
     "imdb_id": "tt36271866",
     "title": "Solo Camping for Two",
@@ -38168,6 +40395,13 @@
     "kitsu_id": 49496,
     "imdb_id": "tt36221414",
     "title": "With You, Our Love Will Make It Through",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49502,
+    "imdb_id": "tt33304729",
+    "title": "Mashin Souzouden Wataru",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -38215,6 +40449,18 @@
     "title": "Detective Conan Movie 28: One-Eyed Flashback"
   },
   {
+    "kitsu_id": 49542,
+    "imdb_id": "tt35966163",
+    "title": "Kairyuu to Yuubinya-san"
+  },
+  {
+    "kitsu_id": 49564,
+    "imdb_id": "tt41295083",
+    "title": "Toaru Anbu no ITEM",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 49567,
     "imdb_id": "tt36230718",
     "title": "My Status as an Assassin Obviously Exceeds the Hero's",
@@ -38225,6 +40471,13 @@
     "kitsu_id": 49569,
     "imdb_id": "tt37419888",
     "title": "Chuhai Lips: Canned Flavor of Married Women",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49585,
+    "imdb_id": "tt41278620",
+    "title": "Neko to Ryuu",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -38241,6 +40494,30 @@
     "title": "Replica Datte, Koi wo Suru.",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49607,
+    "imdb_id": "tt36056731",
+    "title": "Kimi ga Shinu made Koi wo Shitai",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49656,
+    "imdb_id": "tt37532893",
+    "title": "BLACK TORCH",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49660,
+    "imdb_id": "tt36639420",
+    "title": "Mumei no Jinsei"
+  },
+  {
+    "kitsu_id": 49666,
+    "imdb_id": "tt35405817",
+    "title": "Ordinary Life"
   },
   {
     "kitsu_id": 49671,
@@ -38276,6 +40553,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50996,
+    "imdb_id": "tt38752562",
+    "title": "Mahou no Shimai Lulutto Lilly",
+    "fromSeason": 1,
+    "fromEpisode": 13
+  },
+  {
     "kitsu_id": 49678,
     "imdb_id": "tt39123182",
     "title": "Saishuu Gakushou Hibike! Euphonium Zenpen"
@@ -38295,6 +40579,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49689,
+    "imdb_id": "tt41293157",
+    "title": "Futsutsuka na Akujo de wa Gozaimasu ga Hinamiya Chou Nezumi Torikae Den",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49691,
+    "imdb_id": "tt36467147",
+    "title": "Chikuwa Wars",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 49700,
     "imdb_id": "tt37499375",
     "title": "Digimon Beatbreak",
@@ -38302,9 +40600,44 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49701,
+    "imdb_id": "tt36295071",
+    "title": "PetitCure ~Precure Fairies~",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50221,
+    "imdb_id": "tt36295071",
+    "title": "PetitCure ~Precure Fairies~",
+    "fromSeason": 1,
+    "fromEpisode": 28
+  },
+  {
+    "kitsu_id": 50611,
+    "imdb_id": "tt36295071",
+    "title": "PetitCure ~Precure Fairies~",
+    "fromSeason": 1,
+    "fromEpisode": 51
+  },
+  {
+    "kitsu_id": 51123,
+    "imdb_id": "tt36295071",
+    "title": "PetitCure ~Precure Fairies~",
+    "fromSeason": 1,
+    "fromEpisode": 78
+  },
+  {
     "kitsu_id": 49704,
     "imdb_id": "tt37437763",
     "title": "Milky Subway: The Galactic Limited Express",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49712,
+    "imdb_id": "tt36600601",
+    "title": "Koisuru ONE PIECE",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -38321,6 +40654,11 @@
     "title": "Mushen Ji",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49726,
+    "imdb_id": "tt34881132",
+    "title": "Kidou Senshi Gundam: GQuuuuuuX - Beginning"
   },
   {
     "kitsu_id": 49731,
@@ -38356,9 +40694,21 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49758,
+    "imdb_id": "tt37894312",
+    "title": "Nomo no Kuni"
+  },
+  {
     "kitsu_id": 49779,
     "imdb_id": "tt36415390",
     "title": "Twins Hinahima"
+  },
+  {
+    "kitsu_id": 49803,
+    "imdb_id": "tt38754770",
+    "title": "False Memory",
+    "fromSeason": 1,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 49819,
@@ -38415,6 +40765,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50782,
+    "imdb_id": "tt36270045",
+    "title": "Koupen-chan",
+    "fromSeason": 0,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 49843,
     "imdb_id": "tt35348212",
     "title": "Kaijuu Sekai Seifuku",
@@ -38422,9 +40779,35 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49848,
+    "imdb_id": "tt28400589",
+    "title": "MIRU: Watashi no Mirai",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49851,
+    "imdb_id": "tt39281887",
+    "title": "Tenmaku no Jaadugar",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49853,
+    "imdb_id": "tt35641805",
+    "title": "Tamagawa-kun Wants to be a Cat"
+  },
+  {
     "kitsu_id": 49854,
     "imdb_id": "tt37729351",
     "title": "Kanan-sama wa Akumade Choroi",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49866,
+    "imdb_id": "tt43337681",
+    "title": "Star Wars: Visions - Kyuuninme no Jedi",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -38441,6 +40824,11 @@
     "title": "Araiguma Calcal-dan",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49870,
+    "imdb_id": "tt39308755",
+    "title": "Throne of Seal The Movie: The Crownless God"
   },
   {
     "kitsu_id": 49871,
@@ -38462,6 +40850,20 @@
     "title": "Aikatsu! x PriPara THE MOVIE -The Miracle of Encounters!-"
   },
   {
+    "kitsu_id": 49877,
+    "imdb_id": "tt43650242",
+    "title": "Seitokai ni mo Ana wa Aru!",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49892,
+    "imdb_id": "tt36836504",
+    "title": "The All-Devouring Whale: Homecoming",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 49896,
     "imdb_id": "tt36592820",
     "title": "Scooped Up by an S-Rank Adventurer!",
@@ -38480,6 +40882,13 @@
     "imdb_id": "tt35995459",
     "title": "Hotel Inhumans",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50208,
+    "imdb_id": "tt35995459",
+    "title": "Hotel Inhumans",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -38546,6 +40955,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49913,
+    "imdb_id": "tt41276835",
+    "title": "Heroine? Seijo? Iie, All Works Maid desu (Ko)!",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 49915,
     "imdb_id": "tt39255171",
     "title": "Does it Count if You Lose Your Innocence to an Android?",
@@ -38556,8 +40972,8 @@
     "kitsu_id": 50573,
     "imdb_id": "tt39255171",
     "title": "Does it Count if You Lose Your Innocence to an Android?",
-    "fromSeason": 0,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 9
   },
   {
     "kitsu_id": 49924,
@@ -38636,6 +41052,23 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49950,
+    "imdb_id": "tt28664733",
+    "title": "Lost in Starlight"
+  },
+  {
+    "kitsu_id": 49961,
+    "imdb_id": "tt37509404",
+    "title": "Gekkan! Nanmono Anime",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49964,
+    "imdb_id": "tt38703423",
+    "title": "Kono Hon wo Nusumu Mono wa"
+  },
+  {
     "kitsu_id": 49966,
     "imdb_id": "tt37196939",
     "title": "Wash It All Away",
@@ -38643,9 +41076,38 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 49971,
+    "imdb_id": "tt42939636",
+    "title": "Sound! Euphonium: The Final Movie, Part 2"
+  },
+  {
     "kitsu_id": 49973,
     "imdb_id": "tt36534643",
     "title": "Nmeneko",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49974,
+    "imdb_id": "tt35657512",
+    "title": "Endless Journey of Love"
+  },
+  {
+    "kitsu_id": 49975,
+    "imdb_id": "tt43686474",
+    "title": "WUKONG",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49976,
+    "imdb_id": "tt42220747",
+    "title": "Soul Land: Sword Master"
+  },
+  {
+    "kitsu_id": 49978,
+    "imdb_id": "tt39113208",
+    "title": "Oni no Hanayome",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -38662,6 +41124,11 @@
     "title": "The Demon King's Daughter is Too Kind!!",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49999,
+    "imdb_id": "tt36757407",
+    "title": "LUPIN THE IIIRD: Zenigata to Futari no Lupin"
   },
   {
     "kitsu_id": 50008,
@@ -38702,6 +41169,27 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50715,
+    "imdb_id": "tt36986811",
+    "title": "Kizu Darake Seijo Yori Hofuku wo Komete",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50031,
+    "imdb_id": "tt32649136",
+    "title": "Demon's Ascension",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50032,
+    "imdb_id": "tt37562288",
+    "title": "Honoo no Toukyuujyo Dodge Danko",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50035,
     "imdb_id": "tt37577523",
     "title": "MAO",
@@ -38714,9 +41202,49 @@
     "title": "Golden Kamuy Sapporo Beer Factory Arc Part 1"
   },
   {
+    "kitsu_id": 50040,
+    "imdb_id": "tt37614297",
+    "title": "Super no Ura de Yani Suu Futari",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50041,
     "imdb_id": "tt39229727",
     "title": "Snowball Earth",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50042,
+    "imdb_id": "tt37627165",
+    "title": "Cyborg 009 Nemesis",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50045,
+    "imdb_id": "tt37284198",
+    "title": "The Legend of Hei 2"
+  },
+  {
+    "kitsu_id": 50048,
+    "imdb_id": "tt41278636",
+    "title": "Mujikaku Seijo wa Kyou mo Muishiki ni Chikara wo Tare Nagasu",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50049,
+    "imdb_id": "tt41054252",
+    "title": "Ryoumin 0-Nin Start no Henkyou Ryoushu-sama",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50055,
+    "imdb_id": "tt37674481",
+    "title": "Ibitte Konai Gibo to Gishi",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -38740,9 +41268,28 @@
     "title": "Paris ni Saku Etoile"
   },
   {
+    "kitsu_id": 50089,
+    "imdb_id": "tt41295042",
+    "title": "ONE PIECE HEROINES"
+  },
+  {
+    "kitsu_id": 50104,
+    "imdb_id": "tt37968925",
+    "title": "Sekiro: No Defeat",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50108,
     "imdb_id": "tt39229633",
     "title": "LIAR GAME",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50109,
+    "imdb_id": "tt38262097",
+    "title": "LV999 no Murabito",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -38782,11 +41329,45 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50137,
+    "imdb_id": "tt38267477",
+    "title": "Bang Dream! Yume∞Mita",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50139,
+    "imdb_id": "tt41293112",
+    "title": "Sekai Saikyou no Kouei: Meikyuukoku no Shinjin Tansakusha",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50145,
+    "imdb_id": "tt36607192",
+    "title": "You and Idol Precure♪ the Movie For You! Our Kirakilala Concert!"
+  },
+  {
     "kitsu_id": 50149,
     "imdb_id": "tt37532319",
     "title": "Tojima Wants to Be a Kamen Rider",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50164,
+    "imdb_id": "tt37899207",
+    "title": "Galaxy Apartment☆Cosmo Hills"
+  },
+  {
+    "kitsu_id": 50165,
+    "imdb_id": "tt37626158",
+    "title": "Hoshi no Kodomo to Hajimari no Ki"
+  },
+  {
+    "kitsu_id": 50167,
+    "imdb_id": "tt38047814",
+    "title": "Trust"
   },
   {
     "kitsu_id": 50168,
@@ -38803,9 +41384,23 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50170,
+    "imdb_id": "tt43691424",
+    "title": "#Zombie Sagashitemasu",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50171,
-    "imdb_id": "tt17351512",
-    "title": "Kami no Niwatsuki Kusunoki-tei",
+    "imdb_id": "tt39122739",
+    "title": "Kusunoki's Garden of Gods",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50179,
+    "imdb_id": "tt41276828",
+    "title": "Hanaori-san wa Tensei Shite mo Kenka ga Shitai",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -38815,6 +41410,11 @@
     "title": "The Fated Magical Princess: Who Made Me a Princess",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50192,
+    "imdb_id": "tt39927807",
+    "title": "Rascal Does Not Dream of a Dear Friend"
   },
   {
     "kitsu_id": 50193,
@@ -38887,6 +41487,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50217,
+    "imdb_id": "tt43691398",
+    "title": "Tetsuryou! meet with Tetsudou Musume",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50218,
     "imdb_id": "tt39122769",
     "title": "MARRIAGETOXIN",
@@ -38894,10 +41501,10 @@
     "fromEpisode": 1
   },
   {
-    "kitsu_id": 50238,
-    "imdb_id": "tt31530980",
-    "title": "Tomb of Fallen Gods",
-    "fromSeason": 3,
+    "kitsu_id": 50244,
+    "imdb_id": "tt36290385",
+    "title": "Kore Kaite Shine",
+    "fromSeason": 1,
     "fromEpisode": 1
   },
   {
@@ -38913,6 +41520,20 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50258,
+    "imdb_id": "tt41278494",
+    "title": "Let's Go Kaiki-gumi",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50261,
+    "imdb_id": "tt43691391",
+    "title": "Choujun! Choujou Senpai",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50270,
     "imdb_id": "tt38711470",
     "title": "High School! Kimengumi",
@@ -38923,6 +41544,13 @@
     "kitsu_id": 50275,
     "imdb_id": "tt38840807",
     "title": "Saikyou no Shokugyou wa Yuusha demo Kenja demo Naku Kanteishi (Kari) Rashii desu yo?",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50317,
+    "imdb_id": "tt39166658",
+    "title": "So You're Raising a Warrior",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -38942,6 +41570,13 @@
     "kitsu_id": 50322,
     "imdb_id": "tt38872297",
     "title": "Cosmic Princess Kaguya!"
+  },
+  {
+    "kitsu_id": 50324,
+    "imdb_id": "tt34325696",
+    "title": "The Most Powerful Vendor",
+    "fromSeason": 1,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 50325,
@@ -38965,6 +41600,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50336,
+    "imdb_id": "tt41153966",
+    "title": "Shuiro no Kamen",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50337,
     "imdb_id": "tt33309549",
     "title": "Shiboyugi: Playing Death Games to Put Food on the Table",
@@ -38972,9 +41614,23 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50338,
+    "imdb_id": "tt39240299",
+    "title": "Magical Girl Raising Project Restart",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50341,
     "imdb_id": "tt39403976",
     "title": "NEEDY GIRL OVERDOSE",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50350,
+    "imdb_id": "tt39304754",
+    "title": "Tomei na Yoru ni Kakeru-kun to, Menimienai Koi wo Shita",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -39057,9 +41713,23 @@
     "title": "Your Letter"
   },
   {
+    "kitsu_id": 50392,
+    "imdb_id": "tt39181351",
+    "title": "PSYЯEN",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50393,
     "imdb_id": "tt38646016",
     "title": "A Misanthrope Teaches a Class for Demi-Humans",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50411,
+    "imdb_id": "tt39246964",
+    "title": "Otome Kaiju Caramelise",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -39106,11 +41776,25 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50622,
+    "imdb_id": "tt37532599",
+    "title": "Yoroi-Shinden Samurai Troopers Part 2",
+    "fromSeason": 1,
+    "fromEpisode": 13
+  },
+  {
     "kitsu_id": 50429,
     "imdb_id": "tt38983087",
     "title": "Hokuto no Ken: Ken'o-gun Zako-tachi no Banka",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50803,
+    "imdb_id": "tt38983087",
+    "title": "Hokuto no Ken: Ken'o-gun Zako-tachi no Banka",
+    "fromSeason": 1,
+    "fromEpisode": 13
   },
   {
     "kitsu_id": 50431,
@@ -39162,6 +41846,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50760,
+    "imdb_id": "tt38646634",
+    "title": "Hell Mode: Yarikomi-zuki no Gamer wa Haisettei no Isekai de Musou Suru 2nd Season",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50462,
     "imdb_id": "tt43685621",
     "title": "Guangyin Zhi Wai",
@@ -39172,8 +41863,8 @@
     "kitsu_id": 50835,
     "imdb_id": "tt43685621",
     "title": "Guangyin Zhi Wai",
-    "fromSeason": 2,
-    "fromEpisode": 1
+    "fromSeason": 1,
+    "fromEpisode": 27
   },
   {
     "kitsu_id": 50464,
@@ -39187,6 +41878,13 @@
     "imdb_id": "tt39123061",
     "title": "Koori no Jouheki",
     "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50827,
+    "imdb_id": "tt39123061",
+    "title": "Koori no Jouheki 2nd Season",
+    "fromSeason": 2,
     "fromEpisode": 1
   },
   {
@@ -39204,9 +41902,42 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50471,
+    "imdb_id": "tt39394153",
+    "title": "Hotaru no Yomeiri",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50478,
+    "imdb_id": "tt39369076",
+    "title": "Armored Trooper VOTOMS: Die Graue Hexe - Part 1"
+  },
+  {
+    "kitsu_id": 50480,
+    "imdb_id": "tt32869308",
+    "title": "Dogul Wang",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50483,
+    "imdb_id": "tt41276849",
+    "title": "Iwamoto-senpai no Suisen",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50484,
     "tvdb_id": "469053",
     "title": "I'll Live a Long Life to Dote on My Favorite Stepbrother!",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50497,
+    "imdb_id": "tt39395275",
+    "title": "Dragon Ball Super: Beerus",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -39221,6 +41952,20 @@
     "kitsu_id": 50502,
     "imdb_id": "tt37541600",
     "title": "Shinbi's Haunted House: 10th anniversary Movie: One more time, summoning"
+  },
+  {
+    "kitsu_id": 50519,
+    "imdb_id": "tt43589481",
+    "title": "Thunder 3",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50520,
+    "imdb_id": "tt43650300",
+    "title": "Doumo, Suki na Hito ni Horegusuri wo Irai sareta Majo desu.",
+    "fromSeason": 1,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 50537,
@@ -39240,9 +41985,30 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50551,
+    "imdb_id": "tt39551330",
+    "title": "Yani Neko",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50554,
     "imdb_id": "tt39122702",
     "title": "Mata Korosarete Shimatta no desu ne, Tantei-sama",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50555,
+    "imdb_id": "tt39443204",
+    "title": "Koko wa Ore ni Makasete Saki ni Ike to Ittekara 10-nen ga Tattara Densetsu ni Natteita.",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50562,
+    "imdb_id": "tt41278592",
+    "title": "Sora wa Akai Kawa no Hotori",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -39254,10 +42020,178 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 45795,
+    "imdb_id": "tt32894936",
+    "title": "You Shou Yan 5th Season",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46100,
+    "imdb_id": "tt27429868",
+    "fanartLogoId": "184655",
+    "title": "Umayuru",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50445,
+    "imdb_id": "tt27429868",
+    "fanartLogoId": "208017",
+    "title": "Umayuru",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51017,
+    "imdb_id": "tt27429868",
+    "title": "Umayuru",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 46821,
+    "imdb_id": "tt28651453",
+    "title": "Jade Dynasty",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48681,
+    "imdb_id": "tt28651453",
+    "title": "Jade Dynasty",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49985,
+    "imdb_id": "tt28651453",
+    "title": "Jade Dynasty",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50936,
+    "imdb_id": "tt28651453",
+    "title": "Jade Dynasty",
+    "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47045,
+    "imdb_id": "tt27834263",
+    "title": "My Senior Brother is Too Steady",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48712,
+    "imdb_id": "tt27834263",
+    "title": "My Senior Brother is Too Steady",
+    "fromSeason": 1,
+    "fromEpisode": 14
+  },
+  {
+    "kitsu_id": 49526,
+    "imdb_id": "tt27834263",
+    "title": "My Senior Brother is Too Steady",
+    "fromSeason": 1,
+    "fromEpisode": 40
+  },
+  {
+    "kitsu_id": 49977,
+    "imdb_id": "tt27834263",
+    "title": "My Senior Brother is Too Steady",
+    "fromSeason": 1,
+    "fromEpisode": 92
+  },
+  {
+    "kitsu_id": 50790,
+    "imdb_id": "tt27834263",
+    "title": "My Senior Brother is Too Steady",
+    "fromSeason": 1,
+    "fromEpisode": 144
+  },
+  {
+    "kitsu_id": 47172,
+    "imdb_id": "tt31530980",
+    "title": "Tomb of Fallen Gods",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49096,
+    "imdb_id": "tt31530980",
+    "title": "Tomb of Fallen Gods",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50238,
+    "imdb_id": "tt31530980",
+    "title": "Tomb of Fallen Gods",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47448,
+    "imdb_id": "tt28526428",
+    "title": "A World Worth Protecting",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 47712,
+    "imdb_id": "tt32894936",
+    "title": "You Shou Yan 5th Season",
+    "fromSeason": 2,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48882,
+    "imdb_id": "tt32894936",
+    "title": "You Shou Yan 5th Season",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 49109,
+    "imdb_id": "tt32894936",
+    "title": "You Shou Yan 5th Season",
+    "fromSeason": 4,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50566,
     "imdb_id": "tt32894936",
     "title": "You Shou Yan 5th Season",
     "fromSeason": 5,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50815,
+    "imdb_id": "tt32894936",
+    "title": "You Shou Yan 5th Season",
+    "fromSeason": 6,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 48250,
+    "imdb_id": "tt28612257",
+    "title": "My Daemon",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50457,
+    "imdb_id": "tt39966151",
+    "title": "The Outcast Special"
+  },
+  {
+    "kitsu_id": 50567,
+    "imdb_id": "tt41448834",
+    "title": "Rilakkuma: Goyururi Yume no Tabi",
+    "fromSeason": 1,
     "fromEpisode": 1
   },
   {
@@ -39297,6 +42231,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 51001,
+    "imdb_id": "tt41046414",
+    "title": "Nezumi-kun no Chokki (TV)",
+    "fromSeason": 1,
+    "fromEpisode": 14
+  },
+  {
     "kitsu_id": 50577,
     "imdb_id": "tt39371353",
     "title": "Entotsu-machi no Poupelle: Yakusoku no Tokei-dai"
@@ -39328,9 +42269,37 @@
     "title": "Mahouka Koukou no Rettousei: Yotsuba Keishou-hen"
   },
   {
+    "kitsu_id": 50607,
+    "imdb_id": "tt43691383",
+    "title": "Tensei Goblin Dakedo Shitsumon Aru?",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50610,
+    "imdb_id": "tt43691315",
+    "title": "Kanata Kara",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50614,
     "imdb_id": "tt40546965",
     "title": "Hyakki Yakou Shou",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50638,
+    "imdb_id": "tt39104949",
+    "title": "Paw & Palaces",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50640,
+    "imdb_id": "tt43691394",
+    "title": "Sensha Isu: TANK CHAIR",
     "fromSeason": 1,
     "fromEpisode": 1
   },
@@ -39354,6 +42323,11 @@
     "title": "Love Live! Hasu no Sora Jogakuin School Idol Club: Bloom Garden Party"
   },
   {
+    "kitsu_id": 50646,
+    "imdb_id": "tt41189965",
+    "title": "Shiboyugi: Playing Death Games to Put Food on the Table 44: Cloudy Beach"
+  },
+  {
     "kitsu_id": 50647,
     "imdb_id": "tt41274718",
     "title": "Komekami! Girls",
@@ -39368,11 +42342,23 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50649,
+    "imdb_id": "tt41358179",
+    "title": "Migawari Reijou wo Sukutta no wa Reikoku Mujihi na Koori no Ouji no Ai deshita",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50651,
     "imdb_id": "tt39673615",
     "title": "Ingoku Danchi",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50652,
+    "imdb_id": "tt43691434",
+    "title": "To You in the Beyond"
   },
   {
     "kitsu_id": 50657,
@@ -39389,11 +42375,61 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50670,
+    "imdb_id": "tt38693393",
+    "title": "Cat Tales",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50673,
+    "imdb_id": "tt28591181",
+    "title": "In Search of Gods",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 50675,
     "imdb_id": "tt27497321",
     "title": "Panlong",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50690,
+    "imdb_id": "tt41279522",
+    "title": "World Is Dancing",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50692,
+    "imdb_id": "tt14576898",
+    "title": "Cherry and Virgin"
+  },
+  {
+    "kitsu_id": 50694,
+    "imdb_id": "tt41047955",
+    "title": "Grow Up Show: Himawari no Circus-dan",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50697,
+    "imdb_id": "tt43691408",
+    "title": "Sekai Saikyou no Majo, Hajimemashita",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50704,
+    "imdb_id": "tt15738264",
+    "title": "A Star So Close and Distant"
+  },
+  {
+    "kitsu_id": 50705,
+    "imdb_id": "tt39746590",
+    "title": "Firstline"
   },
   {
     "kitsu_id": 50707,
@@ -39403,10 +42439,488 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 50711,
+    "imdb_id": "tt42487863",
+    "title": "Vertex Force",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50713,
+    "imdb_id": "tt0422766",
+    "title": "Mori no Yakyuudan"
+  },
+  {
+    "kitsu_id": 50716,
+    "imdb_id": "tt42584013",
+    "title": "Looney Tunes Gokko",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50726,
+    "imdb_id": "tt48313966",
+    "title": "Takopii no Genzai -Arigatou, Mata Ashita"
+  },
+  {
+    "kitsu_id": 50740,
+    "imdb_id": "tt45831796",
+    "title": "The Lonely Snow Widow and the Cursed Ring",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50743,
+    "imdb_id": "tt43691353",
+    "title": "Overgeared",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50751,
+    "imdb_id": "tt39195667",
+    "title": "Reiwa no Dara-san",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50752,
+    "imdb_id": "tt43650454",
+    "title": "Kanojo no Tomodachi",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50753,
+    "imdb_id": "tt37679220",
+    "title": "Junk World"
+  },
+  {
     "kitsu_id": 50755,
     "imdb_id": "tt43586663",
     "title": "Cheng Huang Lu",
     "fromSeason": 1,
     "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50761,
+    "imdb_id": "tt41278600",
+    "title": "Saijo no Osewa: Takane no Hanadarake na Meimonkou de, Gakuin Ichi no Ojousama (Seikatsu Nouryoku Kaimu) wo Kagenagara Osewa suru Koto ni Narimashita",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50763,
+    "imdb_id": "tt32602819",
+    "title": "Gill"
+  },
+  {
+    "kitsu_id": 50764,
+    "imdb_id": "tt41296544",
+    "title": "Kyouran Reijou Nia Liston",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50765,
+    "imdb_id": "tt42186253",
+    "title": "THE RIBBON HERO"
+  },
+  {
+    "kitsu_id": 50766,
+    "imdb_id": "tt39551287",
+    "title": "Buchigire Reijou wa Houfuku wo Chikaimashita.: Madousho no Chikara de Sokoku wo Tataki Tsubushimasu",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50767,
+    "imdb_id": "tt41277587",
+    "title": "\"Kimi wo Aisuru Ki wa nai\" to Itta Jiki Koushaku-sama ga Naze ka Dekiai Shitekimasu",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50768,
+    "imdb_id": "tt41095208",
+    "title": "Suterare Seijo no Isekai Gohantabi: Kakure Skill de Camping Car wo Shoukan Shimashita",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50769,
+    "imdb_id": "tt43587112",
+    "title": "Perfect Addiction",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50774,
+    "imdb_id": "tt41293380",
+    "title": "You, Fireworks, and Our Promise"
+  },
+  {
+    "kitsu_id": 50775,
+    "imdb_id": "tt43625959",
+    "title": "Unanswered//butterfly"
+  },
+  {
+    "kitsu_id": 50778,
+    "imdb_id": "tt36733027",
+    "title": "Nobody"
+  },
+  {
+    "kitsu_id": 50787,
+    "imdb_id": "tt47867242",
+    "title": "Renegade Immortal: Battle of the Immortal Slayer"
+  },
+  {
+    "kitsu_id": 50792,
+    "imdb_id": "tt43613803",
+    "title": "Fool Night",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50793,
+    "imdb_id": "tt40550160",
+    "title": "Rakudai Kenja no Gakuin Musou: Nidome no Tensei, S-Rank Cheat Majutsushi Boukenroku",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50797,
+    "imdb_id": "tt41293320",
+    "title": "Uchi no Otouto-domo ga Sumimasen",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50801,
+    "imdb_id": "tt42963873",
+    "title": "Tetsunabe no Jan!",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50805,
+    "imdb_id": "tt38273525",
+    "title": "Tefuda ga Oome no Victoria",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50806,
+    "imdb_id": "tt39026173",
+    "title": "Chiikawa the Movie: The Secret of the Mermaid Island"
+  },
+  {
+    "kitsu_id": 50809,
+    "imdb_id": "tt32603995",
+    "title": "Adventure Time: Side Quests",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50828,
+    "imdb_id": "tt43609776",
+    "title": "Crowned in a Hundred Days",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50829,
+    "imdb_id": "tt21056976",
+    "title": "Dragon Striker",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50842,
+    "imdb_id": "tt39110207",
+    "title": "Kusuriya no Hitorigoto: Bouhi no Hihou"
+  },
+  {
+    "kitsu_id": 50850,
+    "imdb_id": "tt38939893",
+    "title": "Tensei shita Dai Seijo wa, Seijo de Aru Koto wo Hita Kakusu",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50851,
+    "imdb_id": "tt41054228",
+    "title": "Demon's Crest",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50863,
+    "imdb_id": "tt36591286",
+    "title": "The Square"
+  },
+  {
+    "kitsu_id": 50864,
+    "imdb_id": "tt32409947",
+    "title": "Light Pillar"
+  },
+  {
+    "kitsu_id": 50873,
+    "imdb_id": "tt43515101",
+    "title": "All Wishes Come True!"
+  },
+  {
+    "kitsu_id": 50878,
+    "imdb_id": "tt44168238",
+    "title": "Raised by Demons: Panda Li",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50879,
+    "imdb_id": "tt35233952",
+    "title": "Grotesqqque"
+  },
+  {
+    "kitsu_id": 50900,
+    "imdb_id": "tt43672502",
+    "title": "Loca!"
+  },
+  {
+    "kitsu_id": 50914,
+    "imdb_id": "tt10986246",
+    "title": "The Greedy Pig"
+  },
+  {
+    "kitsu_id": 50925,
+    "imdb_id": "tt45615017",
+    "title": "Demon Agent"
+  },
+  {
+    "kitsu_id": 50932,
+    "imdb_id": "tt44800247",
+    "title": "One-Room TA",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50949,
+    "imdb_id": "tt28518178",
+    "title": "The War of Cards",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50954,
+    "imdb_id": "tt42969298",
+    "title": "Ushiro no Shoumen Kamui-san Mini Anime Gekijou",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50960,
+    "imdb_id": "tt4429160",
+    "title": "Red Shoes and the Seven Dwarfs"
+  },
+  {
+    "kitsu_id": 50963,
+    "imdb_id": "tt39335288",
+    "title": "Ave Mujica - prima aurora -"
+  },
+  {
+    "kitsu_id": 50964,
+    "imdb_id": "tt41295113",
+    "title": "Battle Spirits [Re] Zekkai No Ku",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50976,
+    "imdb_id": "tt44368752",
+    "title": "The Eternal Supreme, Li Yunxiao",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50986,
+    "imdb_id": "tt39390769",
+    "title": "DARK MACHINE THE ANIMATION",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50987,
+    "imdb_id": "tt43119470",
+    "title": "FX Fighter Kurumi-chan",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50988,
+    "imdb_id": "tt42938834",
+    "title": "Gensou Suikoden",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50990,
+    "imdb_id": "tt43650323",
+    "title": "Dark Summoner to Dekiteiru",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50991,
+    "imdb_id": "tt43339903",
+    "title": "Beast King War God Dandivine",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50992,
+    "imdb_id": "tt45373165",
+    "title": "Sgt. Frog",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50993,
+    "imdb_id": "tt43650419",
+    "title": "Kashita Maryoku wa [Revo Barai] de Kyousei Choushuu",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50994,
+    "imdb_id": "tt48391033",
+    "title": "Kyoufu Collector",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 50995,
+    "imdb_id": "tt43650359",
+    "title": "Gekijoban Maebashi Witches: Majo Minarai no Emoemories"
+  },
+  {
+    "kitsu_id": 50999,
+    "imdb_id": "tt46656123",
+    "title": "Detective Conan: The Counterfeit Case of Ultra 30"
+  },
+  {
+    "kitsu_id": 51004,
+    "imdb_id": "tt45257856",
+    "title": "Pan Dorobou",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51005,
+    "imdb_id": "tt41298100",
+    "title": "Mezametara Saikyou Soubi to Uchuusen-mochi datta node, Ikkodate Mezashite Youhei to shite Jiyuu ni Ikitai",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51011,
+    "imdb_id": "tt43650265",
+    "title": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51012,
+    "imdb_id": "tt43691365",
+    "title": "Shiotaiou no Satou-san ga Ore ni dake Amai",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51013,
+    "imdb_id": "tt43665709",
+    "title": "Sirotan",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51014,
+    "imdb_id": "tt43691412",
+    "title": "Tsuihou Sareta Cheat Fuyo Majutsushi wa Kimama na Second Life wo Ouka Suru.: Ore wa Buki dake ja Naku, Arayuru Mono ni \"Kyouka Point\" wo Fuyo Dekiru shi, Ore no Ishi de Itsudemo Kouka wo Kaijo Dekiru kedo, Nokotta Hitotachi Daijoubu?",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51015,
+    "imdb_id": "tt44757191",
+    "title": "Marronnier Oukoku no Shichinin no Kishi",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51020,
+    "imdb_id": "tt43691418",
+    "title": "Yowaki MAX Reijou Nano ni, Ratsuwan Konyakusha-sama no Kake ni Notte Shimatta",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51021,
+    "imdb_id": "tt43691343",
+    "title": "Oji-san wa Kawaii Mono ga Osuki.",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51027,
+    "imdb_id": "tt37438451",
+    "title": "Pretty Pretty Please I Don't Want To Be A Magical Girl",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51040,
+    "imdb_id": "tt43649005",
+    "title": "20001 an Earth Odyssey"
+  },
+  {
+    "kitsu_id": 51048,
+    "imdb_id": "tt36958590",
+    "title": "The Demon Hungers"
+  },
+  {
+    "kitsu_id": 51052,
+    "imdb_id": "tt0091123",
+    "title": "GoBots: Battle of the Rock Lords"
+  },
+  {
+    "kitsu_id": 51056,
+    "imdb_id": "tt32221651",
+    "title": "Ever Night",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51060,
+    "imdb_id": "tt32918701",
+    "title": "Sumikko Gurashi: Sorairo no Mainichi",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51064,
+    "imdb_id": "tt46653736",
+    "title": "Aoki Denshou: Welsh & Shedar",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51066,
+    "imdb_id": "tt13075174",
+    "title": "My Ghost Girlfriend"
+  },
+  {
+    "kitsu_id": 51067,
+    "imdb_id": "tt16152086",
+    "title": "An tu! An tu!"
   }
 ]
