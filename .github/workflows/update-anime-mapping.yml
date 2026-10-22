@@ -1,0 +1,72 @@
+name: Update Anime Mapping
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # every Monday at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Fetch and Update Anime Mapping
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout dev
+        uses: actions/checkout@v5
+        with:
+          ref: dev
+          token: ${{ secrets.GH_PR_ACTIONS }}
+
+      - name: Fetch anime-list-mini.json
+        run: |
+          curl -fsSL \
+            "https://raw.githubusercontent.com/Fribb/anime-lists/master/anime-list-mini.json" \
+            -o data/anime-list-mini.json
+
+      - name: Validate JSON
+        run: |
+          python - <<'EOF'
+          import json, sys
+
+          with open("data/anime-list-mini.json") as f:
+              data = json.load(f)
+
+          if not isinstance(data, list) or len(data) == 0:
+              print("ERROR: expected a non-empty JSON array", file=sys.stderr)
+              sys.exit(1)
+
+          required = {"mal_id", "kitsu_id"}
+          sample = [e for e in data if required.issubset(e)]
+          if not sample:
+              print("ERROR: no entries contain both mal_id and kitsu_id", file=sys.stderr)
+              sys.exit(1)
+
+          print(f"OK: {len(data)} entries, {len(sample)} with mal_id+kitsu_id")
+          EOF
+
+      - name: Create Pull Request
+        id: create-pr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GH_PR_ACTIONS }}
+          branch: anime-mapping-update
+          base: dev
+          title: "chore: update anime mapping from Fribb"
+          body: "Automated weekly anime mapping update from [Fribb/anime-lists](https://github.com/Fribb/anime-lists)."
+          commit-message: "chore: update anime mapping from Fribb"
+          delete-branch: true
+
+      - name: Auto-approve PR
+        if: steps.create-pr.outputs.pull-request-number != ''
+        run: gh pr review ${{ steps.create-pr.outputs.pull-request-number }} --approve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge
+        if: steps.create-pr.outputs.pull-request-number != ''
+        run: gh pr merge ${{ steps.create-pr.outputs.pull-request-number }} --auto --squash
+        env:
+          GH_TOKEN: ${{ secrets.GH_PR_ACTIONS }}
