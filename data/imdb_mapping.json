@@ -11542,6 +11542,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 4541,
+    "imdb_id": "tt1802896",
+    "title": "Chargeman Ken!",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 4572,
     "imdb_id": "tt1636815",
     "title": "Detective Conan: The Lost Ship in the Sky"
@@ -12871,6 +12878,13 @@
     "kitsu_id": 5937,
     "imdb_id": "tt1836435",
     "title": "Wish Upon the Pleiades"
+  },
+  {
+    "kitsu_id": 5938,
+    "imdb_id": "tt4058350",
+    "title": "Samurai Giants",
+    "fromSeason": 1,
+    "fromEpisode": 1
   },
   {
     "kitsu_id": 5940,
@@ -25172,6 +25186,13 @@
     "fromEpisode": 18
   },
   {
+    "kitsu_id": 49162,
+    "imdb_id": "tt7742120",
+    "title": "Laid-Back Camp",
+    "fromSeason": 0,
+    "fromEpisode": 20
+  },
+  {
     "kitsu_id": 41977,
     "imdb_id": "tt14364238",
     "title": "Laid-Back Camp Movie"
@@ -35037,6 +35058,13 @@
     "fromEpisode": 1
   },
   {
+    "kitsu_id": 51152,
+    "imdb_id": "tt16409202",
+    "title": "Spare Me, Great Lord!",
+    "fromSeason": 3,
+    "fromEpisode": 1
+  },
+  {
     "kitsu_id": 45564,
     "imdb_id": "tt16369708",
     "title": "The Imaginary"
@@ -42922,5 +42950,31 @@
     "kitsu_id": 51067,
     "imdb_id": "tt16152086",
     "title": "An tu! An tu!"
+  },
+  {
+    "kitsu_id": 51133,
+    "imdb_id": "tt49410334",
+    "title": "Dreamland",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51144,
+    "imdb_id": "tt33022149",
+    "title": "One Way or Another",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51147,
+    "imdb_id": "tt44687828",
+    "title": "GuAn",
+    "fromSeason": 1,
+    "fromEpisode": 1
+  },
+  {
+    "kitsu_id": 51151,
+    "imdb_id": "tt41830798",
+    "title": "We Are Aliens"
   }
 ]
