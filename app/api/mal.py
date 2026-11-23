@@ -142,7 +142,7 @@ class MyAnimeListAPI:
         :param kwargs: Additional query parameters
         :return: JSON response
         """
-        if token is None:
+        if not token:
             raise ValueError("Auth Token Must Be Provided")
 
         url = f"{BASE_URL}/users/@me/animelist?limit={limit}"
@@ -163,7 +163,7 @@ class MyAnimeListAPI:
         :param kwargs: Additional query parameters
         :return: JSON response
         """
-        if token is None:
+        if not token:
             raise Exception("Auth Token Must Be Provided")
 
         if anime_id is None:
